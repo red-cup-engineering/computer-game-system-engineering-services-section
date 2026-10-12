@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Study Replay — weiqi-web</title>
+  <meta name="description" content="Replay a game from a share link or an SGF file, inspect the shared rules engine's glossary-linked observations, and share it by link." />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/shelf-chrome.css" />
+<link rel="manifest" href="/manifest.webmanifest" /><meta name="theme-color" content="#8a5a2b" />
+</head>
+<body>
+  <header class="site-header">
+    <svg class="shelf-mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><ellipse cx="24" cy="24" rx="18" ry="11"/><path d="M13 17q11-6 22 0" stroke-width="1.3" opacity="0.6"/><path d="M11 24 14.25 21.5 17.5 24 20.75 21.5 24 24 27.25 21.5 30.5 24 33.75 21.5 37 24"/></svg>
+    <a class="brand" href="index.html">weiqi-web</a>
+    <nav><a href="play.html">Play</a><a href="learn.html">Learn</a><a href="tsumego.html">Tsumego</a><a href="review.html" aria-current="page">Study</a><a href="glossary.html">Glossary</a></nav>
+  </header>
+  <main class="wide">
+    <h1>Study Replay</h1>
+    <p class="subtitle">Replay a game from a share link, a finished Play session, or an SGF file. The timeline reports bounded rules observations from the shared engine; it is not AI analysis, a judgment of a move, or a recommendation. Use the arrow keys to step.</p>
+    <div id="review-empty" class="card" hidden>
+      <h2 style="margin-top:0;">Open a game</h2>
+      <p>Paste SGF text or choose an <code>.sgf</code> file. It is read through the engine's own parser and replayed move by move; setup stones and handicap records are not supported yet.</p>
+      <div class="settings-row"><label for="sgf-file">SGF file</label><input id="sgf-file" type="file" accept=".sgf,text/plain,application/x-go-sgf" /></div>
+      <textarea id="sgf-text" rows="6" style="width:100%; font-family: ui-monospace, monospace;" placeholder="(;GM[1]FF[4]SZ[9];B[cc];W[gg]...)" aria-label="SGF text"></textarea>
+      <div class="controls-row" style="margin-top:0.6rem;"><button id="load-sgf-btn" class="primary" type="button">Replay this SGF</button><a href="play.html">or play a game first</a></div>
+      <p id="import-error" class="status-line" role="alert" hidden></p>
+    </div>
+    <div id="review-app" class="board-layout" hidden>
+      <div class="board-wrap" id="board-wrap"><div id="board-host"></div></div>
+      <aside class="side-panel">
+        <div id="review-status" class="status-line" aria-live="polite"></div>
+        <div class="controls-row">
+          <button id="previous-move-btn" type="button">Previous</button>
+          <button id="next-move-btn" type="button">Next</button>
+          <button id="share-link-btn" type="button">Copy share link</button>
+          <button id="download-sgf-btn" type="button">Download SGF</button>
+        </div>
+        <p id="share-status" class="status-line" aria-live="polite"></p>
+        <div id="study-notes" class="card" hidden></div>
+        <label for="move-scrubber">Move <output id="move-number">0</output></label>
+        <input id="move-scrubber" type="range" min="0" value="0" step="1" />
+        <section class="card game-summary" aria-labelledby="observation-heading">
+          <h2 id="observation-heading" style="font-size:1rem; margin-top:0;">Rules observations</h2>
+          <p id="observation-summary">Select a move to inspect the rules observations it produced.</p>
+          <div id="selected-events" class="event-log"></div>
+        </section>
+        <section id="concept-summary" class="card game-summary" aria-label="Concepts in this game"></section>
+        <section aria-labelledby="timeline-heading">
+          <h2 id="timeline-heading" style="font-size:1rem; margin-bottom:0.4rem;">Move timeline</h2>
+          <div id="move-timeline" class="event-log"></div>
+        </section>
+      </aside>
+    </div>
+  </main>
+  <footer class="site-footer">weiqi-web &mdash; replayed by <code>@red-cup-engineering/weiqi-engine</code>.<p class="shelf-footer-line">Part of the <a href="https://play.561.group">561 shelf</a>.</p></footer>
+  <script type="module" src="js/review-app.mjs"></script>
+<script type="module" src="/js/pwa.mjs"></script>
+</body>
+</html>

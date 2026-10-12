@@ -1,0 +1,35 @@
+{
+  "name": "@lenticule-science/weiqi-web",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Static web face for a normal 9x9 Weiqi match, lessons, and glossary reading, built on the exact-pinned shared Weiqi engine.",
+  "license": "UNLICENSED",
+  "deliberateEntries": [
+    {
+      "path": "public/js/kernel/index.mjs",
+      "reason": "A browser-served bundle generated from weiqi-engine's src/index.mjs by scripts/build-kernel.mjs and named as the \"browser-engine\" artifact in scripts/public-release-contract.mjs."
+    }
+  ],
+  "scripts": {
+    "build": "node scripts/build-kernel.mjs && node scripts/build-glossary.mjs && node scripts/build-icons.mjs && node scripts/build-service-worker.mjs",
+    "check": "for f in public/js/*.mjs public/js/kernel/*.mjs scripts/*.mjs src/*.mjs test/*.test.mjs; do node --check \"$f\" || exit 1; done",
+    "test": "npm run check && node --test 'test/*.test.mjs'",
+    "verify:normal-play": "node scripts/verify-normal-play.mjs",
+    "verify:release": "npm run build && npm test && npm run verify:normal-play",
+    "verify:public": "node scripts/verify-public-release.mjs",
+    "serve": "node scripts/serve.mjs",
+    "deploy": "npm run verify:release && node scripts/deploy-public-release.mjs",
+    "dev": "wrangler dev"
+  },
+  "dependencies": {
+    "@red-cup-engineering/education-platform-service": "workspace:*",
+    "@red-cup-engineering/http-services-section": "workspace:*",
+    "@red-cup-engineering/markdown-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/uri-services-section": "workspace:*",
+    "@red-cup-engineering/web-release-candidate-service": "workspace:*",
+    "@red-cup-engineering/weiqi-engine": "workspace:*"
+  },
+  "devDependencies": {
+    "wrangler": "4.123.0"
+  }
+}

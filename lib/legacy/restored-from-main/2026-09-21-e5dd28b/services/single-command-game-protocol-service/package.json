@@ -1,0 +1,25 @@
+{
+  "name": "@red-cup-engineering/single-command-game-protocol-service",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "The simplest possible game intent shape for a qwzspace-based single-command text game: one free-text command string, capped in length, riding qwzspace's own intent envelope.",
+  "exports": {
+    ".": {
+      "types": "./src/single-command-game-protocol.d.ts",
+      "default": "./src/single-command-game-protocol.mjs"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "check": "node --check src/single-command-game-protocol.mjs && node --check test/single-command-game-protocol.test.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "sideEffects": false,
+  "license": "UNLICENSED"
+}

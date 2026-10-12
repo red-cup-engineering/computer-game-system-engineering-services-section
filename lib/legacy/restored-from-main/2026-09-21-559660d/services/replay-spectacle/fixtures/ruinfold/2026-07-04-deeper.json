@@ -1,0 +1,735 @@
+{
+  "date": "2026-07-04",
+  "log": {
+    "schema": "ruinfold-run/1",
+    "date": "2026-07-04",
+    "seed": 2462984262,
+    "actor": "wanderer-deepdive",
+    "mode": "scored",
+    "moves": [
+      {
+        "tick": 0,
+        "seq": 0,
+        "intent": {
+          "kind": "join",
+          "actor": "wanderer-deepdive"
+        }
+      },
+      {
+        "tick": 1,
+        "seq": 0,
+        "intent": {
+          "kind": "portal",
+          "actor": "wanderer-deepdive",
+          "dir": "north"
+        }
+      },
+      {
+        "tick": 2,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 3,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 4,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 5,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 6,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 7,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 8,
+        "seq": 0,
+        "intent": {
+          "kind": "ability",
+          "actor": "wanderer-deepdive",
+          "ability": "bolt",
+          "target": "skeleton-4"
+        }
+      },
+      {
+        "tick": 9,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 10,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 11,
+        "seq": 0,
+        "intent": {
+          "kind": "ability",
+          "actor": "wanderer-deepdive",
+          "ability": "bolt",
+          "target": "skeleton-4"
+        }
+      },
+      {
+        "tick": 12,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 13,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 14,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 15,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 16,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "n"
+        }
+      },
+      {
+        "tick": 17,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 18,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "n"
+        }
+      },
+      {
+        "tick": 19,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 20,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "n"
+        }
+      },
+      {
+        "tick": 21,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 22,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "n"
+        }
+      },
+      {
+        "tick": 23,
+        "seq": 0,
+        "intent": {
+          "kind": "pickup",
+          "actor": "wanderer-deepdive",
+          "item": "ground-item-1"
+        }
+      },
+      {
+        "tick": 24,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 25,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 26,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 27,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 28,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 29,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 30,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 31,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 32,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 33,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 34,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 35,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 36,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 37,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 38,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 39,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 40,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 41,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 42,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 43,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 44,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 45,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 46,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 47,
+        "seq": 0,
+        "intent": {
+          "kind": "pickup",
+          "actor": "wanderer-deepdive",
+          "item": "ground-item-0"
+        }
+      },
+      {
+        "tick": 48,
+        "seq": 0,
+        "intent": {
+          "kind": "portal",
+          "actor": "wanderer-deepdive",
+          "dir": "north"
+        }
+      },
+      {
+        "tick": 49,
+        "seq": 0,
+        "intent": {
+          "kind": "equip",
+          "actor": "wanderer-deepdive",
+          "item": "ground-item-1"
+        }
+      },
+      {
+        "tick": 50,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 51,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 52,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 53,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 54,
+        "seq": 0,
+        "intent": {
+          "kind": "ability",
+          "actor": "wanderer-deepdive",
+          "ability": "bolt",
+          "target": "goblin-0"
+        }
+      },
+      {
+        "tick": 55,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 56,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 57,
+        "seq": 0,
+        "intent": {
+          "kind": "ability",
+          "actor": "wanderer-deepdive",
+          "ability": "bolt",
+          "target": "goblin-0"
+        }
+      },
+      {
+        "tick": 58,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 59,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 60,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 61,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 62,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 63,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 64,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 65,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 66,
+        "seq": 0,
+        "intent": {
+          "kind": "attack",
+          "actor": "wanderer-deepdive",
+          "target": "wraith-5"
+        }
+      },
+      {
+        "tick": 67,
+        "seq": 0,
+        "intent": {
+          "kind": "attack",
+          "actor": "wanderer-deepdive",
+          "target": "wraith-5"
+        }
+      },
+      {
+        "tick": 68,
+        "seq": 0,
+        "intent": {
+          "kind": "attack",
+          "actor": "wanderer-deepdive",
+          "target": "wraith-5"
+        }
+      },
+      {
+        "tick": 69,
+        "seq": 0,
+        "intent": {
+          "kind": "attack",
+          "actor": "wanderer-deepdive",
+          "target": "wraith-5"
+        }
+      },
+      {
+        "tick": 70,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 71,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 72,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 73,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 74,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 75,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 76,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-deepdive",
+          "dir": "e"
+        }
+      },
+      {
+        "tick": 77,
+        "seq": 0,
+        "intent": {
+          "kind": "attack",
+          "actor": "wanderer-deepdive",
+          "target": "skeleton-7"
+        }
+      },
+      {
+        "tick": 78,
+        "seq": 0,
+        "intent": {
+          "kind": "attack",
+          "actor": "wanderer-deepdive",
+          "target": "skeleton-7"
+        }
+      },
+      {
+        "tick": 79,
+        "seq": 0,
+        "intent": {
+          "kind": "attack",
+          "actor": "wanderer-deepdive",
+          "target": "wraith-6"
+        }
+      }
+    ]
+  }
+}

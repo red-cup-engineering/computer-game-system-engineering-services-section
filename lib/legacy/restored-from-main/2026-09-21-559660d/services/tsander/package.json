@@ -1,0 +1,65 @@
+{
+  "name": "@red-cup-engineering/tsander",
+  "version": "0.1.1",
+  "type": "module",
+  "description": "tsander \u2014 the GAME ENGINE on @red-cup-engineering/arnold: terminal/wireframe games. Three engine-level concerns: (1) a single-source append-only trace WORLD substrate \u2014 a 'place' is a subject whose state is the fold of predications about it, unvisited = \u22a5, disagreement = \u22a4 HELD with both witnesses (a documented scope cut from the legacy federated substrate \u2014 see README); (2) a WIREFRAME renderer \u2014 3D vectors projected to Arnold cells, where a \u22a4 object renders DOUBLED and JITTERING (the bilattice readout, driven by tick phase not RNG, replay-identical); (3) a tick/realtime loop with NO global clock, and a hook to run a unit's flight-'computer' program on @561-group/horsetail, the recovered paraconsistent settling Lisp. THE LAW: \u22a4 held, append-only trace, evidence linear.",
+  "keywords": [
+    "game-engine",
+    "wireframe",
+    "terminal",
+    "paraconsistent",
+    "bilattice",
+    "settled-section",
+    "red-cup-engineering"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "tsander": "./scripts/tsander.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/prove-*.mjs",
+    "demo": "node scripts/tsander.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.mjs"
+    },
+    "./world": {
+      "types": "./src/world.d.ts",
+      "default": "./src/world.mjs"
+    },
+    "./wireframe": {
+      "types": "./src/wireframe.d.ts",
+      "default": "./src/wireframe.mjs"
+    },
+    "./horsetail": {
+      "types": "./src/horsetail-hook.d.ts",
+      "default": "./src/horsetail-hook.mjs"
+    },
+    "./engine": {
+      "types": "./src/engine.d.ts",
+      "default": "./src/engine.mjs"
+    },
+    "./math": {
+      "types": "./src/math.d.ts",
+      "default": "./src/math.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "scripts",
+    "world",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "dependencies": {
+    "@561-group/computer": "^0.0.5",
+    "@561-group/horsetail": "0.0.1",
+    "@red-cup-engineering/arnold": "^0.1.0",
+    "@red-cup-engineering/eavt": "0.10.0"
+  }
+}

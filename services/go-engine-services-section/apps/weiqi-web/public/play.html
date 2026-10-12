@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Play &mdash; weiqi-web</title>
+  <meta name="description" content="Play a normal game of Go on 9x9, 13x13, or 19x19, as Black or White, against a local AI." />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/shelf-chrome.css" />
+<link rel="manifest" href="/manifest.webmanifest" /><meta name="theme-color" content="#8a5a2b" />
+</head>
+<body>
+  <header class="site-header">
+    <svg class="shelf-mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><ellipse cx="24" cy="24" rx="18" ry="11"/><path d="M13 17q11-6 22 0" stroke-width="1.3" opacity="0.6"/><path d="M11 24 14.25 21.5 17.5 24 20.75 21.5 24 24 27.25 21.5 30.5 24 33.75 21.5 37 24"/></svg>
+    <a class="brand" href="index.html">weiqi-web</a>
+    <nav><a href="play.html" aria-current="page">Play</a><a href="learn.html">Learn</a><a href="tsumego.html">Tsumego</a><a href="review.html">Study</a><a href="glossary.html">Glossary</a></nav>
+  </header>
+  <main class="wide">
+    <h1>Play Weiqi</h1>
+    <p class="subtitle">Play a normal Chinese-rules game on 9×9, 13×13, or 19×19 against a local AI, as Black or White: captures do not end the game. Click an empty intersection; after your move the AI replies. Undo takes back your last move and the reply. Pass when you are done: two consecutive passes end the game, show an area count, and let you mark dead stones before the final count.</p>
+    <div class="board-layout">
+      <div class="board-wrap" id="board-wrap"><div id="board-host"></div></div>
+      <aside class="side-panel">
+        <div id="status-line" class="status-line" aria-live="polite">Black to move.</div>
+        <div class="controls-row"><button id="new-game-btn" class="primary" type="button">New game</button><button id="pass-btn" type="button">Pass</button><button id="resign-btn" type="button">Resign</button><button id="undo-btn" type="button" disabled>Undo</button><button id="study-game-btn" type="button">Study replay</button><button id="download-sgf-btn" type="button">Download SGF</button></div>
+        <p><a id="keep-game-link" href="#">Keep this game link</a> — bookmark or copy it to reopen these moves here or on another device. It updates after each move, undo, or marking. Anyone with the link can open a separate local copy.</p>
+        <div id="game-result" class="card game-summary" role="status" hidden></div>
+        <button id="accept-count-btn" class="primary" type="button" hidden disabled>Accept count</button>
+        <section id="concept-summary" class="card game-summary" aria-label="Concepts in this game" hidden></section>
+        <div class="card settings-panel">
+          <h2 style="font-size:1rem; margin:0 0 0.2rem;">Match settings</h2>
+          <div class="settings-row"><label for="board-size-select">Board</label><select id="board-size-select" aria-label="Board size for the next game"><option value="9">9×9</option><option value="13">13×13</option><option value="19">19×19</option></select></div>
+          <div class="settings-row"><label for="human-color-select">You play</label><select id="human-color-select" aria-label="Your color for the next game"><option value="black">Black (moves first)</option><option value="white">White</option></select></div>
+          <div class="settings-row"><label for="bot-select">AI opponent</label><select id="bot-select" aria-label="AI opponent"></select></div>
+          <div class="settings-row"><label for="sound-toggle-btn">Sound</label><button id="sound-toggle-btn" class="toggle-btn" type="button" aria-pressed="true">On</button></div>
+          <div class="settings-row"><label for="concept-tier-select">Concept toasts</label><select id="concept-tier-select"><option value="beginner">Beginner (all)</option><option value="intermediate">Intermediate (rare)</option><option value="off">Off</option></select></div>
+          <div class="settings-row"><label for="touch-mode-select">Touch controls</label><select id="touch-mode-select"><option value="drag">Magnifier (drag &amp; release)</option><option value="confirm">Tap to confirm</option></select></div>
+        </div>
+        <div><h2 style="font-size:1rem; margin-bottom:0.4rem;">Event log</h2><div id="event-log" class="event-log"></div></div>
+      </aside>
+    </div>
+  </main>
+  <footer class="site-footer">weiqi-web &mdash; rules enforced by <code>@red-cup-engineering/weiqi-engine</code>.<p class="shelf-footer-line">Part of the <a href="https://play.561.group">561 shelf</a>.</p></footer>
+  <script type="module" src="js/play-app.mjs"></script>
+<script type="module" src="/js/pwa.mjs"></script>
+</body>
+</html>

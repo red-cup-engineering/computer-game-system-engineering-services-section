@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>weiqi-web</title>
+  <meta name="description" content="Play normal 9x9 weiqi, use Capture Go as a focused first-capture learning mode, step through the overview lesson, or read the glossary the game explains itself with." />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/shelf-chrome.css" />
+<link rel="manifest" href="/manifest.webmanifest" /><meta name="theme-color" content="#8a5a2b" />
+</head>
+<body>
+  <header class="site-header">
+    <svg class="shelf-mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+      <ellipse cx="24" cy="24" rx="18" ry="11"/>
+      <path d="M13 17q11-6 22 0" stroke-width="1.3" opacity="0.6"/>
+      <path d="M11 24 14.25 21.5 17.5 24 20.75 21.5 24 24 27.25 21.5 30.5 24 33.75 21.5 37 24"/>
+    </svg>
+    <a class="brand" href="index.html">weiqi-web</a>
+    <nav>
+      <a href="play.html">Play</a>
+      <a href="learn.html">Learn</a>
+      <a href="tsumego.html">Tsumego</a>
+      <a href="glossary.html">Glossary</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="pill">Play, learn, and read &mdash; one rules engine</p>
+    <h1>The game explains itself while you play it.</h1>
+    <p class="subtitle">
+      A rules kernel that recognizes weiqi's own vocabulary &mdash; atari, capture, ko, connection,
+      eye &mdash; as it happens on the board, and an interface that surfaces this section's own
+      glossary the moment each concept becomes relevant. No account required.
+    </p>
+
+    <div class="face-grid">
+      <a class="face-card" href="play.html">
+        <span class="glyph" aria-hidden="true">&#9899;&#9898;</span>
+        <h2>Play</h2>
+        <p>Play normal Chinese-rules weiqi on 9&times;9, 13&times;13, or 19&times;19, as Black or White,
+          against five local AI tiers. Two passes end the game; mark dead stones, then count.</p>
+      </a>
+      <a class="face-card" href="learn/capture-go/">
+        <span class="glyph" aria-hidden="true">&#9678;</span>
+        <h2>Capture Go</h2>
+        <p>A separate first-capture learning game on 7&times;7. Use it to make liberties, atari,
+          and capture concrete before returning to normal play.</p>
+      </a>
+      <a class="face-card" href="learn.html">
+        <span class="glyph" aria-hidden="true">&#9634;</span>
+        <h2>Learn</h2>
+        <p>Step through the Weiqi Overview lesson as an interactive board sequence: liberties,
+          atari, and capture, worked out one move at a time.</p>
+      </a>
+      <a class="face-card" href="tsumego.html">
+        <span class="glyph" aria-hidden="true">&#9673;</span>
+        <h2>Tsumego</h2>
+        <p>Graded life-and-death problems, every answer checked by the real rules kernel. Reviews
+          are scheduled by spaced repetition, so problems come back right when you're about to
+          forget them.</p>
+      </a>
+      <a class="face-card" href="glossary.html">
+        <span class="glyph" aria-hidden="true">&#128214;</span>
+        <h2>Read</h2>
+        <p>The section's own glossary, compiled straight from its markdown source &mdash; the same
+          text the hover-cards in Play and Learn draw from.</p>
+      </a>
+    </div>
+
+    <section class="card" style="margin-top:2.5rem;">
+      <h2 style="margin-top:0;">One graph, three faces</h2>
+      <p style="color:var(--ink-soft); margin-bottom:0;">
+        A capture in Play, a step in Learn, and the glossary entry for &ldquo;capture&rdquo; in Read
+        are the same concept seen three ways. The rules engine (<code>@red-cup-engineering/weiqi-engine</code>)
+        emits semantic events with a <code>termRef</code> pointing straight at this section's own
+        corpus; this app never hardcodes a definition &mdash; every hover-card and glossary entry is
+        compiled from <a href="glossary.html">the same markdown</a> at build time.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    weiqi-web &mdash; local games, study, and lessons without an account; every rule comes from <code>@red-cup-engineering/weiqi-engine</code>.
+    <p class="shelf-footer-line">
+      <svg class="shelf-mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+        <ellipse cx="24" cy="24" rx="18" ry="11"/>
+        <path d="M13 17q11-6 22 0" stroke-width="1.3" opacity="0.6"/>
+        <path d="M11 24 14.25 21.5 17.5 24 20.75 21.5 24 24 27.25 21.5 30.5 24 33.75 21.5 37 24"/>
+      </svg>
+      Part of the <a href="https://play.561.group">561 shelf</a>.
+    </p>
+  </footer>
+<script type="module" src="/js/pwa.mjs"></script>
+</body>
+</html>

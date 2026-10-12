@@ -1,0 +1,12 @@
+{
+  "date": "2026-08-19",
+  "moveLog": [
+    {
+      "move": {
+        "verb": "split",
+        "bondId": "bond-does-not-exist",
+        "mode": "clean"
+      }
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "name": "@red-cup-engineering/daleske",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "daleske — the PIXEL terminal framework, the raster analogue of arnold (the cell terminal). A pure RGBA framebuffer + encoders for the KITTY graphics protocol AND SIXEL (capability-detected, falling back gracefully), a DIFFED pixel blit (only changed tiles re-encode), raw-mode input, and a clean PROJECTOR seam — project(settledSection) -> a PIXEL frame (the pixel analogue of arnold's cell projector), painting ⊤ as CONTESTED (both faces shown, no winner) and ⊥ as pending. THE LAW: ⊤ shown, never hidden. The projector boundary is kept clean so it can later be PROMOTED into computer/ as the pixel terminal projector. Pure where possible; node builtins; deps only @561-group/computer.",
+  "keywords": [
+    "terminal",
+    "pixel",
+    "raster",
+    "kitty-graphics-protocol",
+    "sixel",
+    "projection",
+    "paraconsistent",
+    "settled-section",
+    "red-cup-engineering"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "daleske": "./scripts/daleske.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/prove-*.mjs",
+    "demo": "node scripts/daleske.mjs"
+  },
+  "exports": {
+    "./framebuffer": {
+      "default": "./src/framebuffer.mjs"
+    },
+    "./kitty": {
+      "default": "./src/kitty.mjs"
+    },
+    "./sixel": {
+      "default": "./src/sixel.mjs"
+    },
+    "./capability": {
+      "default": "./src/capability.mjs"
+    },
+    "./blit": {
+      "default": "./src/blit.mjs"
+    },
+    "./input": {
+      "default": "./src/input.mjs"
+    },
+    "./projector": {
+      "default": "./src/projector.mjs"
+    },
+    "./screen": {
+      "default": "./src/screen.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "scripts",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "dependencies": {
+    "@red-cup-engineering/eavt": "0.10.0"
+  }
+}

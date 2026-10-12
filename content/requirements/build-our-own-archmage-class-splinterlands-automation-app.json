@@ -1,0 +1,36 @@
+{
+  "id": "build-our-own-archmage-class-splinterlands-automation-app",
+  "name": "build our own ARCHMAGE-class splinterlands automation app",
+  "kind": "requirement",
+  "raised-by": "emsenn",
+  "asks": "there's this ARCHMAGE token on hive that lets people automate their splinterlands play but like we could probably do our own whole app of that, not to be too overwrought, but that's an exampple fo the class of the category of type of thing i want your fable-level imagination for. [emsenn, session of 2026-07-23, Fable web3-games session]",
+  "from-idea": "emsenn/idea/build-our-own-archmage-class-splinterlands-automation-app",
+  "met-when": [
+    {
+      "cell": "build-our-own-archmage-class-splinterlands-automation-app:conditions-stated",
+      "target": "held"
+    }
+  ],
+  "x-provenance": {
+    "recorded-by": "561-group capture session (claude session 017x7ZhpkZQAx5VZSv2Hz5Q9)",
+    "recorded-on": "2026-10-10",
+    "sources": [
+      {
+        "words": "there's this ARCHMAGE token on hive that lets people automate their splinterlands play but like we could probably do our own whole app of that, not to be too overwrought, but that's an exampple fo the class of the category of type of thing i want your fable-level imagination for. [emsenn, session of 2026-07-23, Fable web3-games session]",
+        "at": "2026-07-24",
+        "locator": "lib/emsenn/services/561-group/services/561-group-services-section/services/561-group-operations-services-section/lib/legacy/restored-from-main/2026-09-13-ccf2d7a/services/561-group-enterprise-services-section/services/561-group-board-of-directors/lib/legacy/2026-08-03-executive-office/data/records/ideas/2026/07/24/2026-07-24-executive-office-ideas.jsonl#build-our-own-archmage-class-splinterlands-automation-app"
+      }
+    ],
+    "carried-from-idea-record": "lib/emsenn/services/561-group/services/561-group-services-section/services/561-group-operations-services-section/lib/legacy/restored-from-main/2026-09-13-ccf2d7a/services/561-group-enterprise-services-section/services/561-group-board-of-directors/lib/legacy/2026-08-03-executive-office/data/records/ideas/2026/07/24/2026-07-24-executive-office-ideas.jsonl",
+    "pending-conditions": "Carried from the 2026-07 executive office's idea record under ideas-dispose-through-the-requirement-term; no met-when that exercises this idea's capability has been stated yet. The owning section states it.",
+    "linked-carriers": [],
+    "coverage": "lib/emsenn/services/561-group/services/public-services-section/services/personal-services-section/services/emsenn-services-section/data/records/leader-utterances/coverage/executive-office-ideas-2026-07.md",
+    "idea-record-fields": {
+      "opens": "Under what terms-of-service, custody, and pricing model could the existing aagaard game lanes be opened to external customers as a paid automation product?"
+    },
+    "sign-cell": {
+      "type": "emsenn/schema/requirement",
+      "mark": "ni:///sha-256;tZ7sGZQSRPIDf833-QTTvH6Yv9FFXEUiBaAlvbWLAR4"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "@red-cup-engineering/feltos-perception-frame-service",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "The agent-legible perception frame every feltos/qwzspace text game hands qwzspace as an entity's render state, declared once through computer-system-engine's type system: shared cell/subject/event/clock types, a per-game frame-type factory, buildPerceptionFrame/perceptionSnapEntry (the one perceive-settle-assemble-admit algorithm every such frame is built by), and the displayName/exitsOf world readers it's built from.",
+  "license": "UNLICENSED",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22.18"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "package.json"
+  ],
+  "scripts": {
+    "check": "for f in src/*.mjs; do node --check \"$f\" || exit 1; done",
+    "test": "node --test --experimental-test-module-mocks test/*.test.mjs",
+    "prepack": "npm run check && npm run test"
+  },
+  "dependencies": {
+    "@red-cup-engineering/computer-system-engine": "0.1.0",
+    "@red-cup-engineering/feltos": "0.18.3"
+  }
+}

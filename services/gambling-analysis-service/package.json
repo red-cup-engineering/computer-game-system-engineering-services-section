@@ -1,0 +1,29 @@
+{
+  "name": "@lenticule-science/gambling-analysis-service",
+  "version": "0.2.0",
+  "type": "module",
+  "description": "Lenticule Science support section: the firm's formal theory of advantage play — staking, odds, structure detection, and qualification algorithms, analysis only, no accounts or execution.",
+  "scripts": {
+    "check": "node --check src/kelly.mjs && node --check src/odds.mjs && node --check src/form.mjs && node --check test/kelly.test.mjs && node --check test/form.test.mjs && node --check src/confluence.mjs && node --check test/confluence.test.mjs",
+    "test": "node --test test/kelly.test.mjs test/form.test.mjs test/confluence.test.mjs"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "license": "UNLICENSED",
+  "files": [
+    "src",
+    "test",
+    "content"
+  ],
+  "exports": {
+    "./src/form.mjs": "./src/form.mjs",
+    "./src/confluence.mjs": "./src/confluence.mjs",
+    "./src/kelly.mjs": "./src/kelly.mjs",
+    "./src/odds.mjs": "./src/odds.mjs",
+    "./form": "./src/form.mjs",
+    "./confluence": "./src/confluence.mjs",
+    "./kelly": "./src/kelly.mjs",
+    "./odds": "./src/odds.mjs"
+  }
+}

@@ -1,0 +1,809 @@
+/* weiqi-web theme -- simple, clean, 561-group-style: warm neutral page,
+   generous whitespace, one accent color, restrained shadows. All board
+   colors are CSS custom properties (spec item 1: "theme via CSS custom
+   properties") so the <weiqi-board> component can be reskinned without
+   touching board.mjs. */
+
+:root {
+  /* Page palette */
+  --page-bg: #faf7f2;
+  --panel-bg: #ffffff;
+  --ink: #201c16;
+  --ink-soft: #57503f;
+  --ink-faint: #8a8271;
+  --rule: #e3ddce;
+  --accent: #8a5a2b;
+  --accent-soft: #f1e3d0;
+  --focus-ring: #2b6cb0;
+  --shadow: 0 1px 2px rgba(32, 28, 22, 0.06), 0 4px 16px rgba(32, 28, 22, 0.06);
+
+  /* Board theme -- the component's own contract (spec item 1) */
+  --board-wood: #dcb977;
+  --board-wood-line: #6b4a22;
+  --board-line: #3a2c15;
+  --board-star: #3a2c15;
+  --board-black: #17140f;
+  --board-black-highlight: #4c463b;
+  --board-white: #fbf8f1;
+  --board-white-stroke: #3a2c15;
+  --board-last-move: #2b6cb0;
+  --board-ko: #5a3d99;
+  --board-shadow: rgba(20, 14, 4, 0.4);
+  --board-white-shade: #eee7d6;
+  --board-ghost-alpha: 0.38;
+  --board-hover-ring: #2b6cb0;
+  --badge-atari: #a3352a;
+  --badge-capture: #8a5a2b;
+  --badge-ko: #5a3d99;
+  --badge-connection: #2f7a4f;
+  --badge-eye: #1f6f78;
+  --badge-killed: #6b1f1f;
+  --badge-pass: #57503f;
+  --badge-ink: #fffdf8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page-bg: #16140f;
+    --panel-bg: #1f1c15;
+    --ink: #f2ede1;
+    --ink-soft: #cfc6b2;
+    --ink-faint: #948b76;
+    --rule: #3a3527;
+    --accent: #dba86a;
+    --accent-soft: #33291a;
+    --focus-ring: #6fa8dc;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+
+    --board-wood: #b4854a;
+    --board-wood-line: #3a2c15;
+    --board-line: #241a0c;
+    --board-star: #241a0c;
+    --board-black: #0c0a07;
+    --board-black-highlight: #443d30;
+    --board-white: #fbf8f1;
+    --board-white-stroke: #241a0c;
+    --board-last-move: #6fa8dc;
+    --board-ko: #a888e8;
+    --board-shadow: rgba(0, 0, 0, 0.55);
+    --board-white-shade: #d8d2c2;
+    --board-hover-ring: #6fa8dc;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Georgia, "Times New Roman", serif;
+  line-height: 1.55;
+}
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--panel-bg);
+}
+
+.site-header a.brand {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.site-header nav {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.site-header nav a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.site-header nav a:hover,
+.site-header nav a:focus-visible {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+main {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+main.wide {
+  max-width: 78rem;
+}
+
+h1,
+h2,
+h3 {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: 1.9rem;
+  margin: 0 0 0.4rem;
+}
+
+.subtitle {
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  margin: 0 0 2rem;
+  max-width: 42rem;
+}
+
+.card {
+  background: var(--panel-bg);
+  border: 1px solid var(--rule);
+  border-radius: 0.6rem;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.face-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.face-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: var(--panel-bg);
+  border: 1px solid var(--rule);
+  border-radius: 0.7rem;
+  padding: 1.4rem 1.5rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+
+.face-card:hover,
+.face-card:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.face-card .glyph {
+  font-family: system-ui, sans-serif;
+  font-size: 1.6rem;
+  display: inline-block;
+  margin-bottom: 0.6rem;
+}
+
+.face-card h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.2rem;
+  color: var(--ink);
+}
+
+.face-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.pill {
+  display: inline-block;
+  font-family: system-ui, sans-serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+a {
+  color: var(--accent);
+}
+
+button {
+  font-family: system-ui, sans-serif;
+  font-size: 0.95rem;
+  background: var(--panel-bg);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 0.4rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  border-color: var(--accent);
+}
+
+button:focus-visible,
+a:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+button.primary {
+  background: var(--accent);
+  color: var(--badge-ink);
+  border-color: var(--accent);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Term hover-card, shared across play/learn/glossary pages --- */
+
+.term-hover {
+  border-bottom: 1px dashed var(--accent);
+  cursor: help;
+  position: relative;
+}
+
+.hover-card {
+  position: absolute;
+  z-index: 40;
+  max-width: 20rem;
+  background: var(--panel-bg);
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow);
+  padding: 0.85rem 1rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.hover-card h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+.hover-card p {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.hover-card a.read-more {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+}
+
+/* --- Board layout scaffolding shared by play/learn pages --- */
+
+.board-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 60rem) {
+  .board-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.board-wrap {
+  position: relative;
+  background: var(--panel-bg);
+  border: 1px solid var(--rule);
+  border-radius: 0.7rem;
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.status-line {
+  font-family: system-ui, sans-serif;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 0.4rem;
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.event-log {
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  max-height: 16rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.event-log .event-item {
+  border-left: 3px solid var(--accent);
+  padding: 0.3rem 0.6rem;
+  background: var(--accent-soft);
+  border-radius: 0.2rem;
+}
+
+.controls-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+footer.site-footer {
+  text-align: center;
+  color: var(--ink-faint);
+  font-family: system-ui, sans-serif;
+  font-size: 0.82rem;
+  padding: 2rem 1rem 3rem;
+}
+
+/* --- Board animation (task item 1: placement/capture, reduced-motion honored) --- */
+
+.wq-stone {
+  transform-box: fill-box;
+}
+
+.wq-stone-place {
+  animation: wq-stone-place 0.16s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+.wq-stone-capture {
+  animation: wq-stone-capture 0.32s ease-in forwards;
+}
+
+@keyframes wq-stone-place {
+  from {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes wq-stone-capture {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-9px) scale(0.7);
+  }
+}
+
+.wq-badge-in {
+  animation: wq-badge-in 0.18s ease-out both;
+}
+
+@keyframes wq-badge-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.wq-ko-pulse {
+  animation: wq-ko-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes wq-ko-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wq-stone-place,
+  .wq-stone-capture,
+  .wq-badge-in,
+  .wq-ko-pulse {
+    animation: none !important;
+  }
+}
+
+/* --- Touch controls row (task item 2): pending label, explicit Cancel, Reset zoom --- */
+
+.weiqi-board-touch-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+  min-height: 2.2rem;
+}
+
+.weiqi-board-pending-label {
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  flex: 1 1 auto;
+}
+
+.weiqi-board-cancel-btn,
+.weiqi-board-zoom-reset-btn {
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.4rem 0.9rem;
+  background: var(--panel-bg);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.weiqi-board-cancel-btn:hover,
+.weiqi-board-zoom-reset-btn:hover {
+  border-color: var(--accent);
+}
+
+/* --- Magnifier (task item 2's misclick fix): a magnified ghost preview
+   offset above the finger while dragging, so the fingertip never hides
+   the point it's about to place. --- */
+
+.weiqi-board-magnifier {
+  position: absolute;
+  width: 132px;
+  height: 132px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--panel-bg);
+  border: 2px solid var(--accent);
+  box-shadow: var(--shadow);
+  pointer-events: none;
+  z-index: 30;
+}
+
+.weiqi-board-magnifier svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Concept toast strip (task item 4): calm, non-blocking, dismissible --- */
+
+.concept-toast-strip {
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.4rem;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.concept-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  max-width: min(26rem, 100%);
+  background: var(--panel-bg);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 0.5rem;
+  box-shadow: var(--shadow);
+  padding: 0.5rem 0.75rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--ink);
+  cursor: help;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.concept-toast.concept-toast-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.concept-toast.concept-toast-static {
+  opacity: 1;
+  transform: none;
+}
+
+.concept-toast.concept-toast-out {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+.concept-toast-glyph {
+  font-family: system-ui, sans-serif;
+  font-weight: 700;
+  color: var(--accent);
+  flex: 0 0 auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .concept-toast {
+    transition: none;
+  }
+}
+
+/* --- Settings row (sound / concept tier / touch mode), shared by play/learn --- */
+
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.settings-row label {
+  color: var(--ink-soft);
+}
+
+.settings-row select,
+.settings-row button.toggle-btn {
+  font-family: system-ui, sans-serif;
+  font-size: 0.82rem;
+  min-height: 40px;
+  border: 1px solid var(--rule);
+  border-radius: 0.4rem;
+  background: var(--panel-bg);
+  color: var(--ink);
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+}
+
+.settings-row button.toggle-btn[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* --- Capture Go onboarding ladder (play.html): rung selector, intro quote, celebration --- */
+
+.ladder-panel {
+  margin-bottom: 1.5rem;
+}
+
+.ladder-rungs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ladder-rung-btn {
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  min-height: 40px;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--panel-bg);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.ladder-rung-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.ladder-rung-btn:not(:disabled):hover,
+.ladder-rung-btn:not(:disabled):focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.ladder-rung-btn.ladder-rung-active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.ladder-rung-btn.ladder-rung-cleared:not(.ladder-rung-active) {
+  color: var(--accent);
+}
+
+.ladder-intro h3 {
+  margin: 0 0 0.3rem;
+  font-size: 0.95rem;
+}
+
+.ladder-intro blockquote {
+  margin: 0 0 0.2rem;
+  padding-left: 0.8rem;
+  border-left: 3px solid var(--rule);
+  color: var(--ink-soft);
+  font-style: italic;
+  font-size: 0.92rem;
+}
+
+.ladder-intro-source {
+  margin: 0 0 0.6rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+}
+
+.ladder-intro-opponent {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.ladder-celebration {
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.5rem;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  color: var(--ink);
+  font-family: system-ui, sans-serif;
+  font-size: 0.9rem;
+}
+
+/* --- Tsumego trainer (tsumego.html): deck controls, feedback, grading --- */
+
+.deck-panel {
+  margin-bottom: 1.5rem;
+}
+
+.deck-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+}
+
+.deck-controls label {
+  color: var(--ink-soft);
+}
+
+.deck-controls select {
+  font-family: system-ui, sans-serif;
+  font-size: 0.82rem;
+  min-height: 38px;
+  border: 1px solid var(--rule);
+  border-radius: 0.4rem;
+  background: var(--panel-bg);
+  color: var(--ink);
+  padding: 0.25rem 0.5rem;
+}
+
+.deck-due-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.deck-count {
+  margin: 0.6rem 0 0;
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+}
+
+.problem-source {
+  font-family: system-ui, sans-serif;
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+.feedback-panel {
+  font-family: system-ui, sans-serif;
+  font-size: 0.88rem;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.feedback-correct {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.feedback-wrong {
+  background: color-mix(in srgb, var(--badge-atari) 12%, var(--panel-bg));
+  border-color: var(--badge-atari);
+  color: var(--ink);
+}
+
+.grade-panel {
+  font-family: system-ui, sans-serif;
+}
+
+.grade-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4rem;
+}
+
+.grade-btn {
+  min-height: 44px;
+  border: 1px solid var(--rule);
+  border-radius: 0.4rem;
+  background: var(--panel-bg);
+  color: var(--ink);
+  font-family: system-ui, sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.grade-btn:hover,
+.grade-btn:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.grade-btn[data-grade="1"]:hover,
+.grade-btn[data-grade="1"]:focus-visible {
+  border-color: var(--badge-atari);
+  color: var(--badge-atari);
+}
+
+.grade-btn[data-grade="4"]:hover,
+.grade-btn[data-grade="4"]:focus-visible {
+  border-color: var(--badge-connection);
+  color: var(--badge-connection);
+}
+
+/* Concept summary card (Play's game end, Study) */
+.concept-table { border-collapse: collapse; width: 100%; font-family: system-ui, sans-serif; font-size: 0.9rem; }
+.concept-table th, .concept-table td { text-align: left; padding: 0.25rem 0.5rem; border-bottom: 1px solid var(--rule); }
+.concept-table th:not(:first-child), .concept-table td:not(:first-child) { text-align: right; }
+.concept-next { font-family: system-ui, sans-serif; font-size: 0.9rem; color: var(--ink-soft); margin-bottom: 0; }

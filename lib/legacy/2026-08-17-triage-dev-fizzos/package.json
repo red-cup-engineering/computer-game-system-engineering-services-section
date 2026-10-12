@@ -1,0 +1,137 @@
+{
+  "name": "@emsenn/fizzos",
+  "version": "0.0.1",
+  "type": "module",
+  "keywords": [
+    "decommissioned",
+    "triage"
+  ],
+  "description": "MUD operating-system kernel built on the 561 Group stack: the world as a settled bilattice charge valuation, the sole-writer H^1 tick, per-fiber perception observed into polarized CGS arenas, exposed as thin stdin/stdout package-bin document morphisms.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emsenn/fizzos.git"
+  },
+  "scripts": {
+    "clean": "rm -rf dist .tmp/test-dist",
+    "check": "tsc --noEmit && tsc -p tsconfig.scripts.json --noEmit",
+    "test": "rm -rf .tmp/test-dist && tsc -p tsconfig.test.json && node --test --test-concurrency=1 '.tmp/test-dist/**/*.test.mjs'",
+    "build": "tsc -p tsconfig.build.json && tsc -p tsconfig.scripts.build.json && chmod +x dist/scripts/*.mjs",
+    "prepack": "pnpm run rebuild",
+    "rebuild": "pnpm run clean && pnpm run build"
+  },
+  "bin": {
+    "fizzos-serve": "./dist/scripts/fizzos-serve.mjs",
+    "fizzos-world": "./dist/scripts/fizzos-world.mjs",
+    "fizzos-tell": "./dist/scripts/fizzos-tell.mjs",
+    "fizzos-look": "./dist/scripts/fizzos-look.mjs",
+    "fizzos-tick": "./dist/scripts/fizzos-tick.mjs"
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist",
+    "README.md",
+    "docs",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./engine": {
+      "types": "./dist/engine.d.mts",
+      "import": "./dist/engine.mjs"
+    },
+    "./world": {
+      "types": "./dist/world.d.mts",
+      "import": "./dist/world.mjs"
+    },
+    "./running": {
+      "types": "./dist/running.d.mts",
+      "import": "./dist/running.mjs"
+    },
+    "./things": {
+      "types": "./dist/things.d.mts",
+      "import": "./dist/things.mjs"
+    },
+    "./concurrency": {
+      "types": "./dist/concurrency.d.mts",
+      "import": "./dist/concurrency.mjs"
+    },
+    "./encoding": {
+      "types": "./dist/encoding.d.mts",
+      "import": "./dist/encoding.mjs"
+    },
+    "./scene": {
+      "types": "./dist/scene.d.mts",
+      "import": "./dist/scene.mjs"
+    },
+    "./predication": {
+      "types": "./dist/predication.d.mts",
+      "import": "./dist/predication.mjs"
+    },
+    "./instancing": {
+      "types": "./dist/instancing.d.mts",
+      "import": "./dist/instancing.mjs"
+    },
+    "./lisp": {
+      "types": "./dist/lisp.d.mts",
+      "import": "./dist/lisp.mjs"
+    },
+    "./federation": {
+      "types": "./dist/federation.d.mts",
+      "import": "./dist/federation.mjs"
+    },
+    "./fields": {
+      "types": "./dist/fields.d.mts",
+      "import": "./dist/fields.mjs"
+    },
+    "./game": {
+      "types": "./dist/game.d.mts",
+      "import": "./dist/game.mjs"
+    },
+    "./farstone-game": {
+      "types": "./dist/farstone-game.d.mts",
+      "import": "./dist/farstone-game.mjs"
+    },
+    "./example-garden-game": {
+      "types": "./dist/example-garden-game.d.mts",
+      "import": "./dist/example-garden-game.mjs"
+    },
+    "./world-load": {
+      "types": "./dist/world-load.d.mts",
+      "import": "./dist/world-load.mjs"
+    },
+    "./starter-world": {
+      "types": "./dist/starter-world.d.mts",
+      "import": "./dist/starter-world.mjs"
+    },
+    "./persistence": {
+      "types": "./dist/persistence.d.mts",
+      "import": "./dist/persistence.mjs"
+    },
+    "./mud-server": {
+      "types": "./dist/mud-server.d.mts",
+      "import": "./dist/mud-server.mjs"
+    },
+    "./client": {
+      "types": "./dist/client.d.mts",
+      "import": "./dist/client.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@emsenn/relating": "workspace:*",
+    "@emsenn/animating": "workspace:*",
+    "@emsenn/gaming": "workspace:*",
+    "@emsenn/computing": "workspace:*",
+    "@emsenn/http-server": "workspace:*",
+    "@emsenn/organizing-with-the-web": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  },
+  "sideEffects": false
+}

@@ -1,0 +1,37 @@
+{
+  "id": "close-the-loop-from-game-play-records-to-retrained-strategy-dies",
+  "name": "close the loop from game play records to retrained strategy dies",
+  "kind": "requirement",
+  "raised-by": "claude-fable-5",
+  "asks": "The self-teaching game AI is a circuit of existing dies plus two missing ones. Existing: aagaard's per-game adapters, the Lean-verified Splinterlands strategy recommendation, the RWIL witness pipeline, the inference-work-lot market for cheap analysis. Missing: (1) a match-play die per game that actually queues and plays under a bounded budget, and (2) a strategy-refinement die that consumes the witnessed play records, contracts cheap inference to propose strategy revisions, re-proves the safety envelope in Lean, and redeploys. Each game lane then improves itself on a timer, and the Lean gate is what makes autonomous redeployment governable rather than reckless.",
+  "from-idea": "emsenn/idea/close-the-loop-from-game-play-records-to-retrained-strategy-dies",
+  "met-when": [
+    {
+      "cell": "close-the-loop-from-game-play-records-to-retrained-strategy-dies:conditions-stated",
+      "target": "held"
+    }
+  ],
+  "x-provenance": {
+    "recorded-by": "561-group capture session (claude session 017x7ZhpkZQAx5VZSv2Hz5Q9)",
+    "recorded-on": "2026-10-10",
+    "sources": [
+      {
+        "words": "The self-teaching game AI is a circuit of existing dies plus two missing ones. Existing: aagaard's per-game adapters, the Lean-verified Splinterlands strategy recommendation, the RWIL witness pipeline, the inference-work-lot market for cheap analysis. Missing: (1) a match-play die per game that actually queues and plays under a bounded budget, and (2) a strategy-refinement die that consumes the witnessed play records, contracts cheap inference to propose strategy revisions, re-proves the safety envelope in Lean, and redeploys. Each game lane then improves itself on a timer, and the Lean gate is what makes autonomous redeployment governable rather than reckless.",
+        "at": "2026-07-24",
+        "locator": "lib/emsenn/services/561-group/services/561-group-services-section/services/561-group-operations-services-section/lib/legacy/restored-from-main/2026-09-13-ccf2d7a/services/561-group-enterprise-services-section/services/561-group-board-of-directors/lib/legacy/2026-08-03-executive-office/data/records/ideas/2026/07/24/2026-07-24-executive-office-ideas.jsonl#close-the-loop-from-game-play-records-to-retrained-strategy-dies"
+      }
+    ],
+    "carried-from-idea-record": "lib/emsenn/services/561-group/services/561-group-services-section/services/561-group-operations-services-section/lib/legacy/restored-from-main/2026-09-13-ccf2d7a/services/561-group-enterprise-services-section/services/561-group-board-of-directors/lib/legacy/2026-08-03-executive-office/data/records/ideas/2026/07/24/2026-07-24-executive-office-ideas.jsonl",
+    "pending-conditions": "Carried from the 2026-07 executive office's idea record under ideas-dispose-through-the-requirement-term; no met-when that exercises this idea's capability has been stated yet. The owning section states it.",
+    "linked-carriers": [],
+    "coverage": "lib/emsenn/services/561-group/services/public-services-section/services/personal-services-section/services/emsenn-services-section/data/records/leader-utterances/coverage/executive-office-ideas-2026-07.md",
+    "idea-record-fields": {
+      "opens": "Which game first: Splinterlands ranked play (rich records, ToS-tolerant of bots at low leagues) or TerraCore (already broadcasting, simplest action space)?",
+      "prompted-by": "emsenn/idea/use-the-agent-swarm-to-create-an-ai-that-teaches-itself-web3-games"
+    },
+    "sign-cell": {
+      "type": "emsenn/schema/requirement",
+      "mark": "ni:///sha-256;TtqU6WgX1W1MU6sQ6-BjL9Ee4MH2zYOTml0L0OILTtI"
+    }
+  }
+}

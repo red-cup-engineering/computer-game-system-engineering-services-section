@@ -1,0 +1,25 @@
+{
+  "name": "@red-cup-engineering/qwzspace-room-interest-correlation-service",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A qwzspace Room.interest predicate factory for a game whose entities ARE per-actor perception frames: reverse-correlates the raw connection object qwzspace's create-server.mjs subscribes with against room.mjs's own members() map, so a subscriber sees only their own actorId's cache entry.",
+  "exports": {
+    ".": {
+      "types": "./src/interest-correlation.d.ts",
+      "default": "./src/interest-correlation.mjs"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "check": "node --check src/interest-correlation.mjs && node --check test/interest-correlation.test.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22.18"
+  },
+  "sideEffects": false,
+  "license": "UNLICENSED"
+}

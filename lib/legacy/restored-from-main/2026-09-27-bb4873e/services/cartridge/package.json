@@ -1,0 +1,49 @@
+{
+  "name": "@red-cup-engineering/cartridge",
+  "version": "0.3.1",
+  "type": "module",
+  "description": "The game manifest schema and intent-log/replay contract every 561 Group game implements: seed in, deterministic engine, intent log out, replay to verify. No external npm dependencies; depends only on the house's browser-safe portable SHA-256 (cryptographic-computer-data-engineering-services-section/portable-sha256). Subpath exports: @red-cup-engineering/cartridge/manifest (hand-rolled CartridgeManifest validation), @red-cup-engineering/cartridge/intent-log (append-only intent log, JSON encode/decode), @red-cup-engineering/cartridge/replay (generic replay harness + stable-hash verification), @red-cup-engineering/cartridge/seed (daily-UTC seed derivation, injected clock).",
+  "keywords": [
+    "561-group",
+    "cartridge",
+    "game-engine",
+    "replay",
+    "intent-log",
+    "deterministic",
+    "manifest"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "@red-cup-engineering/cryptographic-computer-data-engineering-services-section": "0.3.0",
+    "@red-cup-engineering/json-services-section": "1.0.0"
+  },
+  "exports": {
+    "./manifest": {
+      "default": "./src/manifest.mjs"
+    },
+    "./intent-log": {
+      "default": "./src/intent-log.mjs"
+    },
+    "./replay": {
+      "default": "./src/replay.mjs"
+    },
+    "./seed": {
+      "default": "./src/seed.mjs"
+    },
+    "./fixtures/toy-engine": {
+      "default": "./src/fixtures/toy-engine.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "check": "for f in src/*.mjs src/fixtures/*.mjs; do node --check \"$f\" || exit 1; done",
+    "test": "node --test src/*.test.mjs src/fixtures/*.test.mjs"
+  }
+}

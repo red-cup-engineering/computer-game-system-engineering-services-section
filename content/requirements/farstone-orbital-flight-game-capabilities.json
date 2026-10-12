@@ -1,0 +1,399 @@
+{
+  "id": "farstone-orbital-flight-game-capabilities",
+  "name": "Farstone orbital flight game: capabilities that meet then beat Kerbal Space Program",
+  "kind": "requirement",
+  "raised-by": "emsenn",
+  "asks": "Farstone, the Group's flagship MMORPG, gets an orbital spaceflight game that meets then beats Kerbal Space Program, using everything the field learned since KSP's design and the Group's own mathematics; it is also how Farstone grows sci-fi wings. (Named request debt-2026-10-09-farstone-beats-kerbal, carrying the Leader's words of 2026-10-08.)",
+  "met-when": [
+    {
+      "cell": "farstone-ksp-capabilities:spec",
+      "target": "held",
+      "command": "sh -c 'ls lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/computer-mud-engineering-services-section/content/text/documents/articles/specifications/2026-10-10-specification-of-farstone-orbital-flight.md >/dev/null 2>&1'",
+      "expected-exit": 0
+    },
+    {
+      "cell": "farstone-ksp-capabilities:hld",
+      "target": "held",
+      "command": "sh -c 'ls lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/computer-mud-engineering-services-section/content/text/documents/articles/specifications/2026-10-10-farstone-orbital-flight-high-level-design.md >/dev/null 2>&1'",
+      "expected-exit": 0
+    }
+  ],
+  "tier": "strategic",
+  "x-provenance": {
+    "recorded-by": "Red Cup Engineer Senior, pass farstone-ksp-1 of debt-2026-10-09-leader-words-held-in-corpus",
+    "recorded-on": "2026-10-10",
+    "section": "lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-game-system-services-section",
+    "class": "requirement",
+    "authority": "party:emsenn",
+    "sources": [
+      {
+        "session": "claude session 0fbf24cb-8855-48f1-9c7e-852e0b4fb748",
+        "at-utc": "2026-10-08T16:44:52",
+        "words": "I want us to start working toward Farstone having a full-on game like Kerbal Space Program in it, but obviously, we want to beat Kerbal Space Program using everything the world has learned between when it was designed and now, and critically, use our own math as much as we can to help us."
+      },
+      {
+        "address": "ni:///sha-256;lvGbN6ESQODBKSqfKeU1xnNBw0QJM7s7kIea5xbKJ68",
+        "at-utc": "2026-10-03T04:20:22Z",
+        "words": "giving users *and* agents a rich MMORPG/MUD experience"
+      },
+      {
+        "address": "ni:///sha-256;aPNzPkxbB3H0JP2jx5Tral6u9elBoBfbzyPq36Bj4U4",
+        "at-utc": "2026-10-02T19:14:34Z",
+        "words": "We don't want three.js we want our own 3d engine that is what qwzspace is meant to be"
+      },
+      {
+        "address": "ni:///sha-256;sDzm9B89oVD9HXiHG4mRVAJHrJJzP9tfJ9zd0nbxZrM",
+        "at-utc": "2026-10-03T00:16:06Z",
+        "words": "one game client on our own engine, qwzspace: 3D first, then 2D, then text as fallbacks. No three.js or any other third-party 3D library."
+      }
+    ],
+    "board-opening": {
+      "requirements": [
+        {
+          "class": "functional",
+          "id": "F1",
+          "moscow": "must",
+          "rationale": "Beat KSP on what it never had: a shared world. Leader: orbital launch platforms are 'one kind of ship that folk can build'.",
+          "says": "The Farstone orbital flight game shall hold every ship, station and orbital launch platform in Farstone's one shared persistent world, where other players can see, dock with and use it."
+        },
+        {
+          "class": "functional",
+          "id": "F2",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-08: 'I'm picturing orbital launch platforms being one kind of ship that folk can build'.",
+          "says": "The Farstone orbital flight game shall let a player build an orbital launch platform from parts and launch other ships from it."
+        },
+        {
+          "class": "functional",
+          "id": "F3",
+          "moscow": "must",
+          "rationale": "Comparison rows 1–2: KSP's wobble and autostrut; the house's rigidity cohomology reads mechanisms (H⁰ beyond six per piece) and self-stresses (H¹) exactly.",
+          "says": "The Farstone ship builder shall report, before launch, each unintended mechanism and each self-stress of the design as read from Holofoam's rigidity sheaf."
+        },
+        {
+          "class": "functional",
+          "id": "F4",
+          "moscow": "should",
+          "rationale": "Juno: New Origins' procedural parts, learned since KSP.",
+          "says": "The Farstone ship builder shall offer procedurally shaped tanks, wings and fairings as well as catalogue parts."
+        },
+        {
+          "class": "functional",
+          "id": "F5",
+          "moscow": "must",
+          "rationale": "Comparison row 3; FOUR-⊤ firing and the failure flow already exist.",
+          "says": "Holofoam shall derive a ship's structural failure from the loads on its members, by settlement, and never from joint drift."
+        },
+        {
+          "class": "functional",
+          "id": "F6",
+          "moscow": "must",
+          "rationale": "Astronomy note 2026-10-10: hybrid propagation; Lagrange points, halo orbits and resonances become playable.",
+          "says": "Holofoam shall propagate a coasting vessel under the restricted n-body gravitation of a precomputed ephemeris wherever the third-body acceleration ratio exceeds a declared threshold, and by the exact two-body conic elsewhere."
+        },
+        {
+          "class": "constraint",
+          "id": "F7",
+          "moscow": "must",
+          "rationale": "One integration of the bodies serves every player and every warp rate; determinism across nodes.",
+          "says": "Holofoam shall store the celestial ephemeris as content-addressed segments that every node reads identically."
+        },
+        {
+          "class": "functional",
+          "id": "F8",
+          "moscow": "must",
+          "rationale": "Law, not state: time warp and owed world time are paid by evaluation (orbit.mjs poseAt; Farstone's request-driven world clock).",
+          "says": "Holofoam shall derive any vessel's pose at any time from its segment laws, at a cost independent of the time elapsed since the segment's epoch for a coast."
+        },
+        {
+          "class": "constraint",
+          "id": "F9",
+          "moscow": "must",
+          "rationale": "Physics note 2026-10-10; bounded energy error; exact tick times.",
+          "says": "Holofoam shall integrate powered segments and rigid-body motion with a fixed-step symplectic method whose step is a power of two."
+        },
+        {
+          "class": "constraint",
+          "id": "F10",
+          "moscow": "must",
+          "rationale": "Determinism is comparison row 11, an existing lead to keep.",
+          "says": "Holofoam shall produce bit-identical poses and history heads for the same history on every node."
+        },
+        {
+          "class": "functional",
+          "id": "F11",
+          "moscow": "must",
+          "rationale": "Comparison row 14: today the rigid rocket flies under uniform gravity, uncoupled from orbit.",
+          "says": "Holofoam shall couple a rigid multi-part ship's motion, mass flow and staging to the orbital frame of the body whose gravity it is under."
+        },
+        {
+          "class": "constraint",
+          "id": "F12",
+          "moscow": "must",
+          "rationale": "Physics note 2026-10-10: floating-origin seams (the Kraken) come from mixed-precision domains.",
+          "says": "Holofoam shall express every pose as a frame cell and a local offset within a tree of body-fixed and vessel frames held in double precision."
+        },
+        {
+          "class": "functional",
+          "id": "F13",
+          "moscow": "must",
+          "rationale": "Existing mergePlans / seams; H¹ = 0 ⟺ order-independent merge.",
+          "says": "Holofoam shall merge the flight plans of different players as an order-independent history union and shall refuse, as a seam, a vessel whose plan holds two different laws at one epoch."
+        },
+        {
+          "class": "functional",
+          "id": "F14",
+          "moscow": "must",
+          "rationale": "Ludics note 2026-10-10: shared time warp; kinematic diamonds (Obsmetrologia Book VIII) give the causal check.",
+          "says": "When a player tells a new law for a vessel at an epoch inside the causal past another observer has already read, Holofoam shall refuse the law."
+        },
+        {
+          "class": "functional",
+          "id": "F15",
+          "moscow": "should",
+          "rationale": "Per-player clocks are cheap when trajectories are laws; KSP and its multiplayer mods never shipped this robustly.",
+          "says": "The Farstone orbital flight game shall let each player warp their own view of time without changing any other player's clock."
+        },
+        {
+          "class": "functional",
+          "id": "F16",
+          "moscow": "must",
+          "rationale": "Principia: players fly Lagrange-point missions when trajectories are drawn in the right frame.",
+          "says": "The Farstone orbital flight game shall provide maneuver planning over both conic and integrated segments, drawn in inertial, body-fixed and rotating frames."
+        },
+        {
+          "class": "functional",
+          "id": "F17",
+          "moscow": "should",
+          "rationale": "Comparison row 12; heating as a Laplacian flow (Obsmetrologia LawvereLaplacianSpectralGap).",
+          "says": "Holofoam shall compute aerodynamic drag and lift from a ship's current part geometry and re-entry heating as a diffusion over its part graph."
+        },
+        {
+          "class": "functional",
+          "id": "F18",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-02/03: 3D first, then 2D, then text as fallbacks; Spaceflight Simulator shows 2D orbital play reaches mass audiences.",
+          "says": "The Farstone orbital flight game shall render flight in three dimensions on QwzSpace, in two dimensions, and as a text flight console, from one client."
+        },
+        {
+          "class": "constraint",
+          "id": "F19",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-02: 'We don't want three.js we want our own 3d engine that is what qwzspace is meant to be'.",
+          "says": "The Farstone orbital flight game shall use no third-party 3D library."
+        },
+        {
+          "class": "functional",
+          "id": "F20",
+          "moscow": "should",
+          "rationale": "MetroPlat vision: 'agents doing routines are really going to work'.",
+          "says": "The Farstone orbital flight game shall let agents fly, crew and keep ships and stations under the same rules as human players."
+        },
+        {
+          "class": "functional",
+          "id": "F21",
+          "moscow": "should",
+          "rationale": "Farstone's civic arcs, progression and Director already exist; GTA Online's shared economy is the paired target.",
+          "says": "The Farstone orbital flight game shall join Farstone's existing progression, contracts and economy rather than a separate career."
+        },
+        {
+          "class": "functional",
+          "id": "F22",
+          "moscow": "could",
+          "rationale": "KSP's long tail lived in mods; here a mod is an admitted history fragment.",
+          "says": "The Farstone orbital flight game shall admit new parts, systems and laws as SignCell catalogue entries without code changes to the game."
+        },
+        {
+          "class": "functional",
+          "id": "F23",
+          "moscow": "could",
+          "rationale": "RSS/RO show demand for real scale; Holofoam's DEFAULT_SYSTEM is KSP scale.",
+          "says": "The Farstone orbital flight game shall let a server operator choose the celestial system's scale, including the KSP-like default and real scale."
+        }
+      ]
+    },
+    "customer": "urn:leader:emsenn",
+    "basis": "EARS rendering of the named request debt-2026-10-09-farstone-beats-kerbal and of the research notes of 2026-10-10 at astronomy, physics and game ludics. Each requirement's subject is the thing delivered.",
+    "research": [
+      "science-services-section/services/natural-science-services-section/services/physical-science-services-section/services/astronomy-services-section/content/text/documents/articles/notes/2026/10/10/2026-10-10-note-on-patched-conics-and-n-body-gravitation-for-a-shared-spaceflight-world.md",
+      "science-services-section/services/natural-science-services-section/services/physical-science-services-section/services/physics-services-section/content/text/documents/articles/notes/2026/10/10/2026-10-10-note-on-integrators-coordinates-and-joints-for-a-spaceflight-game.md",
+      "science-services-section/services/social-science-services-section/services/social-theory-science-services-section/services/ludics-science-services-section/services/game-ludics-services-section/content/text/documents/articles/notes/2026/10/10/2026-10-10-note-on-kerbal-space-program-its-successors-and-shared-time-warp.md"
+    ],
+    "after": [
+      "farstone-orbital-flight-game-beyond-kerbal-space-program",
+      "holofoam-as-physics-simulation-engine",
+      "farstone-3d-graphics-engine"
+    ],
+    "carried-fields": {
+      "refines": "farstone-orbital-flight-game-beyond-kerbal-space-program",
+      "requirements": [
+        {
+          "id": "F1",
+          "says": "The Farstone orbital flight game shall hold every ship, station and orbital launch platform in Farstone's one shared persistent world, where other players can see, dock with and use it.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Beat KSP on what it never had: a shared world. Leader: orbital launch platforms are 'one kind of ship that folk can build'."
+        },
+        {
+          "id": "F2",
+          "says": "The Farstone orbital flight game shall let a player build an orbital launch platform from parts and launch other ships from it.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-08: 'I'm picturing orbital launch platforms being one kind of ship that folk can build'."
+        },
+        {
+          "id": "F3",
+          "says": "The Farstone ship builder shall report, before launch, each unintended mechanism and each self-stress of the design as read from Holofoam's rigidity sheaf.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Comparison rows 1–2: KSP's wobble and autostrut; the house's rigidity cohomology reads mechanisms (H⁰ beyond six per piece) and self-stresses (H¹) exactly."
+        },
+        {
+          "id": "F4",
+          "says": "The Farstone ship builder shall offer procedurally shaped tanks, wings and fairings as well as catalogue parts.",
+          "class": "functional",
+          "moscow": "should",
+          "rationale": "Juno: New Origins' procedural parts, learned since KSP."
+        },
+        {
+          "id": "F5",
+          "says": "Holofoam shall derive a ship's structural failure from the loads on its members, by settlement, and never from joint drift.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Comparison row 3; FOUR-⊤ firing and the failure flow already exist."
+        },
+        {
+          "id": "F6",
+          "says": "Holofoam shall propagate a coasting vessel under the restricted n-body gravitation of a precomputed ephemeris wherever the third-body acceleration ratio exceeds a declared threshold, and by the exact two-body conic elsewhere.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Astronomy note 2026-10-10: hybrid propagation; Lagrange points, halo orbits and resonances become playable."
+        },
+        {
+          "id": "F7",
+          "says": "Holofoam shall store the celestial ephemeris as content-addressed segments that every node reads identically.",
+          "class": "constraint",
+          "moscow": "must",
+          "rationale": "One integration of the bodies serves every player and every warp rate; determinism across nodes."
+        },
+        {
+          "id": "F8",
+          "says": "Holofoam shall derive any vessel's pose at any time from its segment laws, at a cost independent of the time elapsed since the segment's epoch for a coast.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Law, not state: time warp and owed world time are paid by evaluation (orbit.mjs poseAt; Farstone's request-driven world clock)."
+        },
+        {
+          "id": "F9",
+          "says": "Holofoam shall integrate powered segments and rigid-body motion with a fixed-step symplectic method whose step is a power of two.",
+          "class": "constraint",
+          "moscow": "must",
+          "rationale": "Physics note 2026-10-10; bounded energy error; exact tick times."
+        },
+        {
+          "id": "F10",
+          "says": "Holofoam shall produce bit-identical poses and history heads for the same history on every node.",
+          "class": "constraint",
+          "moscow": "must",
+          "rationale": "Determinism is comparison row 11, an existing lead to keep."
+        },
+        {
+          "id": "F11",
+          "says": "Holofoam shall couple a rigid multi-part ship's motion, mass flow and staging to the orbital frame of the body whose gravity it is under.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Comparison row 14: today the rigid rocket flies under uniform gravity, uncoupled from orbit."
+        },
+        {
+          "id": "F12",
+          "says": "Holofoam shall express every pose as a frame cell and a local offset within a tree of body-fixed and vessel frames held in double precision.",
+          "class": "constraint",
+          "moscow": "must",
+          "rationale": "Physics note 2026-10-10: floating-origin seams (the Kraken) come from mixed-precision domains."
+        },
+        {
+          "id": "F13",
+          "says": "Holofoam shall merge the flight plans of different players as an order-independent history union and shall refuse, as a seam, a vessel whose plan holds two different laws at one epoch.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Existing mergePlans / seams; H¹ = 0 ⟺ order-independent merge."
+        },
+        {
+          "id": "F14",
+          "says": "When a player tells a new law for a vessel at an epoch inside the causal past another observer has already read, Holofoam shall refuse the law.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Ludics note 2026-10-10: shared time warp; kinematic diamonds (Obsmetrologia Book VIII) give the causal check."
+        },
+        {
+          "id": "F15",
+          "says": "The Farstone orbital flight game shall let each player warp their own view of time without changing any other player's clock.",
+          "class": "functional",
+          "moscow": "should",
+          "rationale": "Per-player clocks are cheap when trajectories are laws; KSP and its multiplayer mods never shipped this robustly."
+        },
+        {
+          "id": "F16",
+          "says": "The Farstone orbital flight game shall provide maneuver planning over both conic and integrated segments, drawn in inertial, body-fixed and rotating frames.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Principia: players fly Lagrange-point missions when trajectories are drawn in the right frame."
+        },
+        {
+          "id": "F17",
+          "says": "Holofoam shall compute aerodynamic drag and lift from a ship's current part geometry and re-entry heating as a diffusion over its part graph.",
+          "class": "functional",
+          "moscow": "should",
+          "rationale": "Comparison row 12; heating as a Laplacian flow (Obsmetrologia LawvereLaplacianSpectralGap)."
+        },
+        {
+          "id": "F18",
+          "says": "The Farstone orbital flight game shall render flight in three dimensions on QwzSpace, in two dimensions, and as a text flight console, from one client.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-02/03: 3D first, then 2D, then text as fallbacks; Spaceflight Simulator shows 2D orbital play reaches mass audiences."
+        },
+        {
+          "id": "F19",
+          "says": "The Farstone orbital flight game shall use no third-party 3D library.",
+          "class": "constraint",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-02: 'We don't want three.js we want our own 3d engine that is what qwzspace is meant to be'."
+        },
+        {
+          "id": "F20",
+          "says": "The Farstone orbital flight game shall let agents fly, crew and keep ships and stations under the same rules as human players.",
+          "class": "functional",
+          "moscow": "should",
+          "rationale": "MetroPlat vision: 'agents doing routines are really going to work'."
+        },
+        {
+          "id": "F21",
+          "says": "The Farstone orbital flight game shall join Farstone's existing progression, contracts and economy rather than a separate career.",
+          "class": "functional",
+          "moscow": "should",
+          "rationale": "Farstone's civic arcs, progression and Director already exist; GTA Online's shared economy is the paired target."
+        },
+        {
+          "id": "F22",
+          "says": "The Farstone orbital flight game shall admit new parts, systems and laws as SignCell catalogue entries without code changes to the game.",
+          "class": "functional",
+          "moscow": "could",
+          "rationale": "KSP's long tail lived in mods; here a mod is an admitted history fragment."
+        },
+        {
+          "id": "F23",
+          "says": "The Farstone orbital flight game shall let a server operator choose the celestial system's scale, including the KSP-like default and real scale.",
+          "class": "functional",
+          "moscow": "could",
+          "rationale": "RSS/RO show demand for real scale; Holofoam's DEFAULT_SYSTEM is KSP scale."
+        }
+      ]
+    },
+    "sign-cell": {
+      "type": "emsenn/schema/requirement",
+      "mark": "ni:///sha-256;Z1yDDKdRrkkEveYM-a3q6SXv5vK0sA9yBj4sgVZRzb8",
+      "cell": "ni:///sha-256;TkXqP0RWO8wgl2HTOOKmxY5pugZ2JC3FEOO3mOyFeyw"
+    }
+  }
+}

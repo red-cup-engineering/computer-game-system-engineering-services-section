@@ -1,0 +1,13 @@
+{"e":"sol-iii","a":"at-position","v":[0,0,0],"t":1}
+{"e":"sol-iii","a":"has-station","v":"port-zarya","t":1}
+{"e":"sol-iii","a":"hull","v":"star","t":1}
+{"e":"port-zarya","a":"at-position","v":[3,1,-2],"t":1}
+{"e":"port-zarya","a":"buys","v":"water@4cr","t":1}
+{"e":"port-zarya","a":"controlled-by","v":"federation","t":1}
+{"e":"belt-7","a":"at-position","v":[-4,-1,-3],"t":1}
+{"e":"belt-7","a":"hazard","v":"pirates","t":1}
+{"e":"belt-7","a":"hull","v":"star","t":1}
+{"e":"vega-prime","a":"at-position","v":[2,-3,-6],"t":1}
+{"e":"vega-prime","a":"controlled-by","v":"federation","t":2}
+{"e":"vega-prime","a":"not-controlled-by","v":"federation","t":3}
+{"e":"vega-prime","a":"hull","v":"star","t":1}

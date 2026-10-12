@@ -1,0 +1,107 @@
+{
+  "id": "games-pressure-upstream-and-the-sports-weiqi-lines",
+  "name": "Game engines and Weiqi improve first, smart sports betting is speedrun, and web3 games include an on-chain Weiqi",
+  "kind": "requirement",
+  "raised-by": "emsenn",
+  "asks": "\"I want to invest more attention from you into our game engines and upstream software, focused on improving our Weiqi application.\" \"Do more to improve the game itself\" (2026-09-16/17) \"I want you basically speedrunning trying to get us doing smart sports betting\" (2026-10-03) \"a FOCG weiqi/go ... AI agents play go for money, people can bet on that\" (2026-10-03). The full statements are in the cited utterances; the note of 2026-10-10 beside this requirement states them with the house's holdings.",
+  "met-when": [
+    {
+      "cell": "games-pressure-upstream-and-the-sports-weiqi-lines:note",
+      "target": "held",
+      "command": "sh -c 'ls lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/notes/2026/10/10/2026-10-10-note-on-the-game-engines-weiqi-sports-and-the-chat-game.md >/dev/null 2>&1'",
+      "expected-exit": 0
+    }
+  ],
+  "tier": "routine",
+  "x-provenance": {
+    "recorded-by": "games-engines pass of debt-2026-10-09-leader-words-held-in-corpus (Red Cup Engineer Senior)",
+    "recorded-on": "2026-10-10",
+    "customer": "urn:leader:emsenn",
+    "utterances": [
+      "ni:///sha-256;ipsaP8Hja7q8tpI7omqNw3DF8t9kTNfSimQSAPdSqAk",
+      "ni:///sha-256;qh0yHvbMFJW0dfPHH3YWW4LB7o7gVqfKKXgS3fHXB4o",
+      "ni:///sha-256;OiTaokwvBrBzhbKeQLV4aKXo4kczbZxcpnWxKpZfdE8",
+      "ni:///sha-256;LsYluRjgge1y7u5RfQQcU_Fx-CVmFsRAk8Prnz6e7rM",
+      "ni:///sha-256;N6Dk9aGT8ZdzWtdgsSQwfHdnEHFcvwSkqygMZvos_Ag",
+      "ni:///sha-256;ElP0Lh2-kUSYKPe85Mj5oV0GiTuNoq6dCMrMLwt_kLY"
+    ],
+    "basis": "Leader utterances cited by address; the requirements are an EARS rendering of what those words state and carry no scope the words do not.",
+    "board-opening": {
+      "speech-act": "request",
+      "need": "The Group's game engines, Weiqi application, sports-betting line and on-chain games each have a written requirement that carries what the Leader said.",
+      "scope": [
+        "section:services/engineering-services-section"
+      ],
+      "requirements": [
+        {
+          "id": "R1",
+          "says": "The Group's engineering attention shall be invested in its game engines and the upstream software beneath them, with the Weiqi application as the focus of the improvement.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Leader, 2026-09-16 21:41: \"I want to invest more attention from you into our game engines and upstream software, focused on improving our Weiqi application.\""
+        },
+        {
+          "id": "R2",
+          "says": "The Weiqi application shall improve as a game, in what is played and how it plays, and not only in its supporting software.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Leader, 2026-09-17 00:51: \"Do more to improve the game itself\"."
+        },
+        {
+          "id": "R3",
+          "says": "The sports-betting system shall be brought into operation as quickly as the research allows, so that the Group places well-founded bets on live sports games.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-03 20:39: \"I want you basically speedrunning trying to get us doing smart sports betting as fast as we can, because there are SOOOOO many live sports games.\""
+        },
+        {
+          "id": "R4",
+          "says": "The research that ChatGPT Web produced on sports betting shall be located and ingested into the corpus at its owning section.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-03 20:39: \"A ChatGPT Web is doing some work to provide you with more research on this but TBH I don't know where that information is landing.\""
+        },
+        {
+          "id": "R5",
+          "says": "The Group's web3 games shall include fully on-chain games (FOCG), with an on-chain Weiqi among them.",
+          "class": "functional",
+          "moscow": "should",
+          "rationale": "Leader, 2026-10-03 22:29: \"we could also DO web3 games, focg, I think also especially a FOCG weiqi/go, I don't think anyone is doing that\"."
+        },
+        {
+          "id": "R6",
+          "says": "The on-chain Weiqi arena shall host matches played by AI agents for stakes, with outcome betting offered by others, and the Group shall build everything short of operating a regulated wagering business.",
+          "class": "functional",
+          "moscow": "should",
+          "rationale": "Leader, 2026-10-03 22:29: \"AI agents play go for money, people can bet on that ... rules might prohibit us from doing the product ourself as a real business but we can do everything short.\""
+        },
+        {
+          "id": "R7",
+          "says": "The chat game shall be fun for the Leader and shall improve the ecosystem in a meaningful way each time it is played.",
+          "class": "functional",
+          "moscow": "should",
+          "rationale": "Leader, 2026-09-26 01:21: \"come up with some sort of game we can play here in chat that is fun for me and lets you improve our ecosystem in some meaningful way.\""
+        },
+        {
+          "id": "R8",
+          "says": "The chat game shall be directed at making the Leader's daily work on the 561 Group something he can show up to and do in a fulfilling way.",
+          "class": "functional",
+          "moscow": "should",
+          "rationale": "Leader, 2026-09-26 01:21: \"help: but in a way that centers improving MY relation to the work, making it something I can show up to and do in a fulfilling way each day.\""
+        },
+        {
+          "id": "R9",
+          "says": "The Group's Sunday work on its games shall follow the guidelines of the software ecosystem note of 2026-09-23.",
+          "class": "quality",
+          "moscow": "must",
+          "rationale": "Leader, 2026-09-27: \"As it is Sunday Funday today, we want to work on our gamestuff, but in doing so want to ensure that we are following the guidelines I wrote here\" (the software ecosystem note)."
+        }
+      ]
+    },
+    "sign-cell": {
+      "type": "emsenn/schema/requirement",
+      "mark": "ni:///sha-256;xb6MFvfwkmScITMLZwBQZL8KDkBXkIjkZT_esQb79ic",
+      "cell": "ni:///sha-256;mkXkGtk1KVs7QpQost545LN9tEyVlooBCduhBAAjLWY"
+    }
+  }
+}

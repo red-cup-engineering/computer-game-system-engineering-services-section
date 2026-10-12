@@ -1,0 +1,65 @@
+{
+  "name": "@red-cup-engineering/arnold",
+  "version": "0.2.0",
+  "type": "module",
+  "description": "arnold — a generic, composable TUI framework over pure node (builtins only, no heavy deps). It lights up a SETTLED SECTION in the terminal: the terminal analogue of shp (the HTML projector at computer/L8). A screen/cell buffer with a DIFFED render (only changed cells repaint), box/flex layout, core widgets (text, list, table, input, status line), raw-mode keyboard input + an event loop, and ANSI styling. CRITICAL: a clean PROJECTOR seam — a pure project(settledSection) -> terminal frame mapping a @561-group/computer settled section {affirmed,denied,contradicted} to a renderable frame, rendering ⊤ as CONTESTED (both sides + both witnesses shown, no winner picked), ⊥ as pending. THE LAW: ⊤ shown, never hidden. The projector boundary is kept clean so it can later be PROMOTED into computer/ as the terminal projector.",
+  "keywords": [
+    "tui",
+    "terminal",
+    "ansi",
+    "projection",
+    "paraconsistent",
+    "settled-section",
+    "bilattice",
+    "red-cup-engineering"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "arnold": "./scripts/arnold.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/prove-*.mjs",
+    "demo": "node scripts/arnold.mjs"
+  },
+  "exports": {
+    "./ansi": {
+      "default": "./src/ansi.mjs"
+    },
+    "./buffer": {
+      "default": "./src/buffer.mjs"
+    },
+    "./render": {
+      "default": "./src/render.mjs"
+    },
+    "./layout": {
+      "default": "./src/layout.mjs"
+    },
+    "./widgets": {
+      "default": "./src/widgets.mjs"
+    },
+    "./input": {
+      "default": "./src/input.mjs"
+    },
+    "./focus": {
+      "default": "./src/focus.mjs"
+    },
+    "./projector": {
+      "default": "./src/projector.mjs"
+    },
+    "./app": {
+      "default": "./src/app.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "scripts",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "dependencies": {
+    "@red-cup-engineering/eavt": "0.10.0"
+  }
+}

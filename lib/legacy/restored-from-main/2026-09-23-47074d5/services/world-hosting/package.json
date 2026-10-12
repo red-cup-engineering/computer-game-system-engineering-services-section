@@ -1,0 +1,21 @@
+{
+  "name": "@red-cup-engineering/world-hosting",
+  "version": "0.3.1",
+  "private": true,
+  "type": "module",
+  "description": "Persistent local FeltOS world hosting, request catch-up and HTTP transport.",
+  "exports": {
+    "./serve": "./apps/serve-world-host.mjs",
+    "./world-store": "./src/world-store.mjs",
+    "./clock-store": "./src/clock-store.mjs",
+    "./world-runtime": "./src/world-runtime.mjs",
+    "./http-wiring": "./src/http-wiring.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/feltos": "0.18.3",
+    "@red-cup-engineering/http-services-section": "0.1.0"
+  }
+}

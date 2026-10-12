@@ -1,0 +1,37 @@
+{
+  "name": "@red-cup-engineering/replay-spectacle",
+  "version": "0.1.0",
+  "description": "Ashlar Fabrication's render family: turns a verified game replay into one self-contained HTML page (no server, no CDN) via TUFTE. Domain-neutral rendering lives in TUFTE; this package is the adapter that supplies the game vocabulary TUFTE's own README says must live outside it.",
+  "type": "module",
+  "keywords": [
+    "brand:ashlar-fabrication",
+    "replay",
+    "spectacle",
+    "tufte",
+    "render-family"
+  ],
+  "imports": {
+    "#engine/*": "./adapters/vendor/ruinfold/engine/*",
+    "#crucible/*": "./adapters/vendor/crucible/*"
+  },
+  "exports": {
+    ".": "./src/render-replay-page.mjs",
+    "./ruinfold": "./adapters/ruinfold.mjs",
+    "./crucible": "./adapters/crucible.mjs"
+  },
+  "bin": {
+    "replay-spectacle": "./scripts/replay-spectacle.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/web-page-tiling-engine": "0.6.0",
+    "@lenticule-science/metrologic": "file:../../../computer-math-system-services-section/apps/metrologic"
+  },
+  "scripts": {
+    "check": "for f in src/*.mjs adapters/*.mjs adapters/vendor/ruinfold/engine/*.mts adapters/vendor/crucible/*.mts scripts/*.mjs test/*.test.mjs scripts/*.mjs; do node --check \"$f\" || exit 1; done",
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "sideEffects": false
+}

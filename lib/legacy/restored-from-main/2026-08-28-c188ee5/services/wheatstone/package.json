@@ -1,0 +1,84 @@
+{
+  "name": "@red-cup-engineering/wheatstone",
+  "version": "0.2.0",
+  "type": "module",
+  "description": "wheatstone — a MUD CLIENT, over @red-cup-engineering/arnold's diffed cell buffer. Named for Charles Wheatstone, telegraph pioneer. It speaks the telnet CLIENT side (IAC option negotiation; GMCP / MSDP / MXP handling, COMPRESS2 explicitly refused) via a small local wire-alphabet shim (no @561-group/tab dependency — see README), and renders a scrolling ANSI-colored world pane, a GMCP/MSDP-fed status line, an optional side panel (who/room/audit), and a command line (history, aliases, triggers, local slash-commands). The WORLD/CARRIER is PLUGGABLE: a world is {connect, send, onLine, onGMCP, close}; telnet is one carrier, farstone-world.mjs's REST/JSON carrier (against the live farstone.561.group MUD, no telnet involved) is another, proving the pluggability for real. THE LAW where it surfaces world state: CALM by default with audit-on-demand (the side panel's audit view), never flaunting the contradiction.",
+  "keywords": [
+    "mud",
+    "mud-client",
+    "telnet",
+    "gmcp",
+    "msdp",
+    "tui",
+    "arnold",
+    "red-cup-engineering"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "wheatstone": "./scripts/wheatstone.mjs",
+    "farstone": "./scripts/farstone.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/prove-*.mjs",
+    "start": "node scripts/wheatstone.mjs",
+    "demo": "node scripts/demo-telnet.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.mjs"
+    },
+    "./telnet": {
+      "types": "./src/telnet.d.ts",
+      "default": "./src/telnet.mjs"
+    },
+    "./tab-wire": {
+      "types": "./src/tab-wire.d.ts",
+      "default": "./src/tab-wire.mjs"
+    },
+    "./world": {
+      "types": "./src/world.d.ts",
+      "default": "./src/world.mjs"
+    },
+    "./farstone-world": {
+      "types": "./src/farstone-world.d.ts",
+      "default": "./src/farstone-world.mjs"
+    },
+    "./ansi-text": {
+      "types": "./src/ansi-text.d.ts",
+      "default": "./src/ansi-text.mjs"
+    },
+    "./scrollback": {
+      "types": "./src/scrollback.d.ts",
+      "default": "./src/scrollback.mjs"
+    },
+    "./worldstate": {
+      "types": "./src/worldstate.d.ts",
+      "default": "./src/worldstate.mjs"
+    },
+    "./commands": {
+      "types": "./src/commands.d.ts",
+      "default": "./src/commands.mjs"
+    },
+    "./render": {
+      "types": "./src/render.d.ts",
+      "default": "./src/render.mjs"
+    },
+    "./app": {
+      "types": "./src/app.d.ts",
+      "default": "./src/app.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "scripts",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "dependencies": {
+    "@red-cup-engineering/arnold": "^0.2.0"
+  }
+}

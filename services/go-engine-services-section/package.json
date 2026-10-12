@@ -1,0 +1,44 @@
+{
+  "name": "@red-cup-engineering/go-engine-services-section",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "GTP (Go Text Protocol version 2) and KataGo JSON analysis-engine client sessions over a child process's stdio, plus the derivation of the house readout envelope (a per-point ownership reading carried as a FOUR charge, content-identified through cbor-ni-service) from a KataGo analysis response.",
+  "keywords": [
+    "561-group",
+    "go",
+    "weiqi",
+    "gtp",
+    "katago",
+    "game-systems",
+    "red-cup-engineering"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "@red-cup-engineering/metrologic": "workspace:*",
+    "@red-cup-engineering/cbor-services-section": "workspace:*",
+    "@red-cup-engineering/javascript-node-services-section": "workspace:*"
+  },
+  "exports": {
+    ".": "./src/go-engine.mjs",
+    "./scripts/play-gtp-move.mjs": "./scripts/play-gtp-move.mjs",
+    "./scripts/query-analysis.mjs": "./scripts/query-analysis.mjs",
+    "./scripts/derive-readout-envelope.mjs": "./scripts/derive-readout-envelope.mjs",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "go-engine-cli": "./apps/go-engine-cli.mjs"
+  },
+  "files": [
+    "src",
+    "scripts",
+    "apps",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "check": "for f in src/*.mjs scripts/*.mjs apps/*.mjs; do node --check \"$f\" || exit 1; done",
+    "test": "node --test test/*.test.mjs"
+  }
+}

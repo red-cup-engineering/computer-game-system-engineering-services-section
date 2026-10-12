@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="weiqi-web">
+  <rect x="2" y="2" width="60" height="60" rx="8" fill="#dcb977" stroke="#6b4a22" stroke-width="2"/>
+  <g stroke="#3a2c15" stroke-width="1.4">
+    <path d="M14 14H50M14 23H50M14 32H50M14 41H50M14 50H50"/>
+    <path d="M14 14V50M23 14V50M32 14V50M41 14V50M50 14V50"/>
+  </g>
+  <circle cx="23" cy="23" r="6.4" fill="#17140f"/>
+  <circle cx="41" cy="41" r="6.4" fill="#f6f2ea" stroke="#9b9384" stroke-width="0.8"/>
+</svg>

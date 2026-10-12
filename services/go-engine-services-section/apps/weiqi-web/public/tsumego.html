@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tsumego &mdash; weiqi-web</title>
+  <meta name="description" content="A graded tsumego (life-and-death problem) trainer: every answer checked by the real rules kernel, reviews scheduled by spaced repetition." />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/shelf-chrome.css" />
+<link rel="manifest" href="/manifest.webmanifest" /><meta name="theme-color" content="#8a5a2b" />
+</head>
+<body>
+  <header class="site-header">
+    <svg class="shelf-mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+      <ellipse cx="24" cy="24" rx="18" ry="11"/>
+      <path d="M13 17q11-6 22 0" stroke-width="1.3" opacity="0.6"/>
+      <path d="M11 24 14.25 21.5 17.5 24 20.75 21.5 24 24 27.25 21.5 30.5 24 33.75 21.5 37 24"/>
+    </svg>
+    <a class="brand" href="index.html">weiqi-web</a>
+    <nav>
+      <a href="play.html">Play</a>
+      <a href="learn.html">Learn</a>
+      <a href="tsumego.html" aria-current="page">Tsumego</a>
+      <a href="glossary.html">Glossary</a>
+    </nav>
+  </header>
+
+  <main class="wide">
+    <h1>Tsumego trainer</h1>
+    <p class="subtitle">
+      Every problem here is checked against the real rules kernel &mdash; your answer is only
+      accepted once it's actually replayed and legal, and reaching the stated goal (capture,
+      escape, life, or a kill) is verified the same way, not just pattern-matched against a
+      pixel-coordinate. Reviews are scheduled with a spaced-repetition algorithm (see the README
+      for provenance): grade yourself honestly after each problem and the trainer will bring it
+      back right around when you're about to forget it.
+    </p>
+
+    <section class="card deck-panel">
+      <h2 style="margin-top:0; font-size:1rem;">Deck</h2>
+      <div class="deck-controls">
+        <label for="category-select">Category</label>
+        <select id="category-select">
+          <option value="all">All categories</option>
+          <option value="capture-go-basics">Capture Go Basics</option>
+          <option value="ladders-and-nets">Ladders &amp; Nets</option>
+          <option value="life-and-death-fundamentals">Life &amp; Death Fundamentals</option>
+          <option value="endgame-and-scoring">Endgame &amp; Scoring</option>
+        </select>
+        <label for="band-select">Band</label>
+        <select id="band-select">
+          <option value="all">All bands</option>
+          <option value="introductory">Introductory</option>
+          <option value="developing">Developing</option>
+          <option value="challenging">Challenging</option>
+        </select>
+        <label class="deck-due-toggle">
+          <input type="checkbox" id="due-only-toggle" checked />
+          Due for review only
+        </label>
+      </div>
+      <p id="deck-count" class="deck-count"></p>
+    </section>
+
+    <div class="board-layout">
+      <div class="board-wrap" id="board-wrap">
+        <div id="board-host"></div>
+      </div>
+      <aside class="side-panel">
+        <div class="card">
+          <p id="problem-meta" style="font-family:system-ui,sans-serif; font-size:0.78rem; color:var(--ink-faint); margin:0 0 0.4rem;"></p>
+          <h2 id="problem-title" style="margin:0 0 0.4rem; font-size:1.1rem;"></h2>
+          <p id="problem-prompt" style="margin:0 0 0.6rem;"></p>
+          <div id="problem-source" class="problem-source"></div>
+        </div>
+
+        <div id="feedback-panel" class="card feedback-panel" hidden></div>
+
+        <div id="grade-panel" class="card grade-panel" hidden>
+          <p style="margin:0 0 0.5rem; font-family:system-ui,sans-serif; font-size:0.85rem; color:var(--ink-soft);">
+            How did that go?
+          </p>
+          <div class="grade-buttons">
+            <button type="button" class="grade-btn" data-grade="1">Again</button>
+            <button type="button" class="grade-btn" data-grade="2">Hard</button>
+            <button type="button" class="grade-btn" data-grade="3">Good</button>
+            <button type="button" class="grade-btn" data-grade="4">Easy</button>
+          </div>
+        </div>
+
+        <div class="controls-row">
+          <button id="reset-problem-btn">Reset problem</button>
+          <button id="skip-problem-btn">Skip &rarr;</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    weiqi-web &mdash; every problem verified against <code>@red-cup-engineering/weiqi-engine</code>,
+    reviews scheduled by a vendored FSRS-lite (see README for provenance).
+    <p class="shelf-footer-line">
+      <svg class="shelf-mark" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+        <ellipse cx="24" cy="24" rx="18" ry="11"/>
+        <path d="M13 17q11-6 22 0" stroke-width="1.3" opacity="0.6"/>
+        <path d="M11 24 14.25 21.5 17.5 24 20.75 21.5 24 24 27.25 21.5 30.5 24 33.75 21.5 37 24"/>
+      </svg>
+      Part of the <a href="https://play.561.group">561 shelf</a>.
+    </p>
+  </footer>
+
+  <script type="module" src="js/tsumego-app.mjs"></script>
+<script type="module" src="/js/pwa.mjs"></script>
+</body>
+</html>

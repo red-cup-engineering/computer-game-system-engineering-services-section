@@ -1,0 +1,18 @@
+{
+  "name": "@red-cup-engineering/weiqi-content-validation-service",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Executable validation and derivation tools over the scientific Weiqi corpus.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "check-links": "node scripts/check-links.mjs",
+    "test": "node --test 'test/*.test.mjs'"
+  },
+  "dependencies": {
+    "@red-cup-engineering/metrologic": "workspace:*",
+    "@red-cup-engineering/computer-code-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/computer-networking-engineering-services-section": "workspace:*",
+    "@red-cup-engineering/weiqi-engine": "workspace:*",
+    "@red-cup-engineering/signgraph": "workspace:*"
+  }
+}

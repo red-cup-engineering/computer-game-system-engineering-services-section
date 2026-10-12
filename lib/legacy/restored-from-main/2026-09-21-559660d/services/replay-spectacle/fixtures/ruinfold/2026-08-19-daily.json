@@ -1,0 +1,158 @@
+{
+  "date": "2026-08-19",
+  "log": {
+    "schema": "ruinfold-run/1",
+    "date": "2026-08-19",
+    "seed": 2341132700,
+    "actor": "wanderer-daily01",
+    "mode": "scored",
+    "moves": [
+      {
+        "tick": 0,
+        "seq": 0,
+        "intent": {
+          "kind": "join",
+          "actor": "wanderer-daily01"
+        }
+      },
+      {
+        "tick": 1,
+        "seq": 0,
+        "intent": {
+          "kind": "portal",
+          "actor": "wanderer-daily01",
+          "dir": "north"
+        }
+      },
+      {
+        "tick": 2,
+        "seq": 0,
+        "intent": {
+          "kind": "ability",
+          "actor": "wanderer-daily01",
+          "ability": "heavy",
+          "target": "wraith-4"
+        }
+      },
+      {
+        "tick": 3,
+        "seq": 0,
+        "intent": {
+          "kind": "attack",
+          "actor": "wanderer-daily01",
+          "target": "wraith-4"
+        }
+      },
+      {
+        "tick": 4,
+        "seq": 0,
+        "intent": {
+          "kind": "ability",
+          "actor": "wanderer-daily01",
+          "ability": "second-wind",
+          "target": null
+        }
+      },
+      {
+        "tick": 5,
+        "seq": 0,
+        "intent": {
+          "kind": "attack",
+          "actor": "wanderer-daily01",
+          "target": "wraith-4"
+        }
+      },
+      {
+        "tick": 6,
+        "seq": 0,
+        "intent": {
+          "kind": "ability",
+          "actor": "wanderer-daily01",
+          "ability": "heavy",
+          "target": "wraith-2"
+        }
+      },
+      {
+        "tick": 7,
+        "seq": 0,
+        "intent": {
+          "kind": "attack",
+          "actor": "wanderer-daily01",
+          "target": "wraith-2"
+        }
+      },
+      {
+        "tick": 8,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-daily01",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 9,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-daily01",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 10,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-daily01",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 11,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-daily01",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 12,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-daily01",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 13,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-daily01",
+          "dir": "s"
+        }
+      },
+      {
+        "tick": 14,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-daily01",
+          "dir": "w"
+        }
+      },
+      {
+        "tick": 15,
+        "seq": 0,
+        "intent": {
+          "kind": "attack",
+          "actor": "wanderer-daily01",
+          "target": "moon-stalker-6"
+        }
+      }
+    ]
+  }
+}

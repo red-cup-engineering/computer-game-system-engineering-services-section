@@ -1,0 +1,2 @@
+{:name "trivial thing."
+ :trivia []}

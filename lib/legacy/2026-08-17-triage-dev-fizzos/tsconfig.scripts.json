@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "paths": {
+      "@emsenn/fizzos": ["src/index.mts"],
+      "@emsenn/fizzos/engine": ["src/engine.mts"],
+      "@emsenn/fizzos/world": ["src/world.mts"],
+      "@emsenn/fizzos/running": ["src/running.mts"],
+      "@emsenn/fizzos/concurrency": ["src/concurrency.mts"],
+      "@emsenn/fizzos/things": ["src/things.mts"],
+      "@emsenn/fizzos/encoding": ["src/encoding.mts"],
+      "@emsenn/fizzos/scene": ["src/scene.mts"],
+      "@emsenn/fizzos/world-load": ["src/world-load.mts"],
+      "@emsenn/fizzos/starter-world": ["src/starter-world.mts"],
+      "@emsenn/fizzos/persistence": ["src/persistence.mts"],
+      "@emsenn/fizzos/mud-server": ["src/mud-server.mts"],
+      "@emsenn/fizzos/client": ["src/client.mts"]
+    }
+  },
+  "include": ["scripts/**/*.mts"]
+}

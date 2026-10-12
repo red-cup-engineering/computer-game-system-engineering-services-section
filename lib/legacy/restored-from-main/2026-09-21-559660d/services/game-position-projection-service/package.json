@@ -1,0 +1,34 @@
+{
+  "name": "@red-cup-engineering/game-position-projection-service",
+  "version": "0.1.2",
+  "type": "module",
+  "description": "Projects open work and operation evidence into a concurrent-game position and flow reading.",
+  "exports": {
+    ".": "./src/game-position.mjs",
+    "./site-play": "./src/site-play.mjs",
+    "./status-line": "./src/status-line.mjs",
+    "./orchestration": "./src/orchestration.mjs",
+    "./scripts/read-game-position.mjs": "./scripts/read-game-position.mjs"
+  },
+  "bin": {
+    "read-game-position": "./scripts/read-game-position.mjs",
+    "project-site-play": "./scripts/project-site-play.mjs",
+    "project-game-status-line": "./scripts/project-game-status-line.mjs",
+    "project-orchestration": "./scripts/project-orchestration.mjs"
+  },
+  "files": [
+    "src",
+    "scripts"
+  ],
+  "scripts": {
+    "check": "node --check src/*.mjs && node --check scripts/*.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@red-cup-engineering/gaming": "0.1.0"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "sideEffects": false
+}

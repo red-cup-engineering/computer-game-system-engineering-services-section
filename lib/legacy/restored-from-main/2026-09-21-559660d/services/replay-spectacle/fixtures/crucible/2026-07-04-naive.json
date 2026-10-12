@@ -1,0 +1,54 @@
+{
+  "date": "2026-07-04",
+  "moveLog": [
+    {
+      "move": {
+        "verb": "merge",
+        "a": "claim-1",
+        "b": "claim-2"
+      }
+    },
+    {
+      "move": {
+        "verb": "split",
+        "bondId": "bond-10",
+        "mode": "clean"
+      }
+    },
+    {
+      "move": {
+        "verb": "split",
+        "bondId": "bond-11",
+        "mode": "clean"
+      }
+    },
+    {
+      "move": {
+        "verb": "split",
+        "bondId": "bond-12",
+        "mode": "clean"
+      }
+    },
+    {
+      "move": {
+        "verb": "split",
+        "bondId": "bond-13",
+        "mode": "clean"
+      }
+    },
+    {
+      "move": {
+        "verb": "split",
+        "bondId": "bond-14",
+        "mode": "clean"
+      }
+    },
+    {
+      "move": {
+        "verb": "split",
+        "bondId": "bond-15",
+        "mode": "forced"
+      }
+    }
+  ]
+}

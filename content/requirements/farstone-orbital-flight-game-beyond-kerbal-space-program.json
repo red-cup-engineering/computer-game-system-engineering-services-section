@@ -1,0 +1,155 @@
+{
+  "id": "farstone-orbital-flight-game-beyond-kerbal-space-program",
+  "name": "Farstone: a Kerbal Space Program-class game that beats it, on the Group's own mathematics",
+  "kind": "requirement",
+  "raised-by": "emsenn",
+  "asks": "Specifically we want to do this by working hard today on Farstone, which is meant to be our browser-based MMORPG/MUD/whatever-else-I-want-in-a-game.\n\n1) I want to start making it so folk can download and run Farstone. Like we need to think much more like \"okay this is a game we can like, sell, sell server access to.\"\n2) Here's the weirdest part: I want us to start working toward Farstone having a full-on game like Kerbal Space Program in it, but obviously, we want to beat Kerbal Space Program using everything the world has learned between when it was designed and now, and critically, use our own math as much as we can to help us.\n3) That puts hellllla pressure on our bespoke 3d graphics engine we're supposed to be building, which is great\n4) All this should put pressure upstream into the code we already have and\n5) it should also put pressure into our agentic orchestration stuff, so that this happens more orchestrated: agents work on research, then specs, then SAS, HLD, LLD, actual engineering, as part of a rich endeavor, a fleet or swarm, using-and-improving our best science and engineering on agentic work and governance\n6) this also should put pressure on how we store data (like, write it, the format) and addressing, to normalize those around best practices and how we store data like, keep it persisted on somenoe's harddrive, preferable at as little cost to us as possible\n7) same for CPU, networking, ram: better profiling and autonomous RSI is great\n8) find our theories on EDA, protein folding, and those forms of software design, and go \"there's probably equally weird and deep theory for everything and it's my job as ringleader to coordinate finding that information and getting it to the folk who need it\"\n\nI know that was a lot: the goal you should aim toward is beating Kerbal Space Program with Farstone (I'm picturing orbital launch platforms being one kind of ship that folk can build)?\n\nALong the way you should do everything I mentioned, while making sure that you improve Holofoam to be able to use it as our physics simulation engine (right now it's kind of biased toward web browser toy), then we have like i think durante, abrash, so many other engines for games, we need to start actually using them, and having them be in proper repo, using proper upstream software (everything should be SignCells, at the end of the day, that's what lets this foam and semiotics stuff happen everywhere).\n\nWe should also make sure that the MetroPlat servers run on Bare Cedar Fog and Cold Red Gate also continue to earn any improvements other software work gets us, i.e. I would love richer graphical representations of the 561 Group Semioverse (the content addressed foam of semiotic cells the 561 Group has constructed/recorded.)\n\nAll this is early alpha vibeslop and my prompt talks about code in the way it SHOULD be, even if it currently isn't that way; you align.",
+  "met-when": [
+    {
+      "cell": "farstone-ksp:ship-builder",
+      "target": "held",
+      "command": "sh -c 'ls lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/computer-mud-engineering-services-section/test/*ship* >/dev/null 2>&1'",
+      "expected-exit": 0
+    },
+    {
+      "cell": "farstone-ksp:math-named",
+      "target": "held",
+      "command": "sh -c 'grep -l -i \"obsmetrologia\\|relational\" lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/computer-mud-engineering-services-section/content/text/documents/articles/specifications/*flight*.md'",
+      "expected-exit": 0
+    },
+    {
+      "cell": "farstone-ksp:comparison-record",
+      "target": "held",
+      "command": "sh -c 'ls lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/computer-mud-engineering-services-section/content/text/documents/articles/notes/*/*/*/*kerbal*.md >/dev/null 2>&1'",
+      "expected-exit": 0
+    }
+  ],
+  "tier": "strategic",
+  "x-provenance": {
+    "recorded-by": "program-manager (bare-cedar-fog-claude, dispatched under the Leader standing direction of 2026-10-09)",
+    "recorded-on": "2026-10-09",
+    "customer": "urn:leader:emsenn",
+    "basis": "Opening prompt of the Leader on Bare Cedar Fog, carried as a requirement record by the board-requirement-intake skill. The raised-by field and asks are the Leader's own words; the requirements below are the program manager's EARS rendering of what those words ask, and carry no scope the words do not.",
+    "board-opening": {
+      "speech-act": "request",
+      "need": "Farstone holds a full spaceflight-building game that beats Kerbal Space Program on what the world has learned since its design, built on the Group's own mathematics.",
+      "scope": [
+        "section:services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/computer-mud-engineering-services-section"
+      ],
+      "requirements": [
+        {
+          "id": "R1",
+          "says": "The Farstone spaceflight game shall let a player build a ship, including an orbital launch platform, from parts.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "The Leader: \"orbital launch platforms being one kind of ship that folk can build\"."
+        },
+        {
+          "id": "R2",
+          "says": "The Farstone spaceflight game shall compute flight with the Group's own mathematics wherever the Group has a result for the quantity.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "The Leader: \"use our own math as much as we can to help us\"."
+        },
+        {
+          "id": "R5",
+          "says": "The Farstone flight specification shall name the Group's result that each computation uses.",
+          "class": "functional",
+          "moscow": "should",
+          "rationale": "A claim to use the Group's math is checkable only if each use is named."
+        },
+        {
+          "id": "R3",
+          "says": "The Farstone spaceflight game's design record shall compare it with Kerbal Space Program capability by capability, stating where Farstone is ahead, equal or behind and citing what has been learned since Kerbal Space Program was designed.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "The Leader: \"beat Kerbal Space Program using everything the world has learned between when it was designed and now\"."
+        },
+        {
+          "id": "R4",
+          "says": "The Farstone spaceflight game shall run in the browser as Farstone does.",
+          "class": "constraint",
+          "moscow": "should",
+          "rationale": "The Leader: Farstone \"is meant to be our browser-based MMORPG/MUD\"."
+        }
+      ],
+      "conditions": [
+        {
+          "id": "farstone-ksp:ship-builder",
+          "says": "A ship-builder test exists.",
+          "method": "assay",
+          "verifies": [
+            "R1"
+          ]
+        },
+        {
+          "id": "farstone-ksp:math-named",
+          "says": "The flight specification names the mathematics it uses.",
+          "method": "assay",
+          "verifies": [
+            "R2",
+            "R5"
+          ]
+        },
+        {
+          "id": "farstone-ksp:comparison-record",
+          "says": "A dated comparison note exists.",
+          "method": "assay",
+          "verifies": [
+            "R3"
+          ]
+        }
+      ],
+      "context": "The prompt has eight numbered wishes and a closing goal. Items 1 and 2 and the closing goal are the product (download, sell, beat Kerbal Space Program). Item 3 and the engines paragraph are the graphics engine and Holofoam. Items 4 to 8 are pressure on the Group's own methods and are carried by one request in the 561 Group section. The Leader's last paragraph: \"All this is early alpha vibeslop and my prompt talks about code in the way it SHOULD be, even if it currently isn't that way; you align.\" The first workflow run on this prompt was judged a \"pretty bad interpretation\": the session ran its subagents concurrently so \"they can't learn from each other\", and the Leader asked for research first, reasoning second, engineering third.",
+      "sources": [
+        {
+          "session": "claude session 0fbf24cb-8855-48f1-9c7e-852e0b4fb748",
+          "at-utc": "2026-10-08T16:44:52",
+          "words": "I want us to start working toward Farstone having a full-on game like Kerbal Space Program in it, but obviously, we want to beat Kerbal Space Program using everything the world has learned between when it was designed and now, and critically, use our own math as much as we can to help us.",
+          "address": "ni:///sha-256;nX48bLCnuNp5CmJtvTkkWMiGVq0Qx4iE3B0bKTQvRVc"
+        },
+        {
+          "session": "claude session 0fbf24cb-8855-48f1-9c7e-852e0b4fb748",
+          "at-utc": "2026-10-08T16:44:52",
+          "words": "the goal you should aim toward is beating Kerbal Space Program with Farstone (I'm picturing orbital launch platforms being one kind of ship that folk can build)",
+          "address": "ni:///sha-256;nX48bLCnuNp5CmJtvTkkWMiGVq0Qx4iE3B0bKTQvRVc"
+        }
+      ],
+      "serves": [],
+      "after": [
+        "farstone-3d-graphics-engine",
+        "holofoam-as-physics-simulation-engine"
+      ],
+      "traces": []
+    },
+    "held-research": [
+      "science-services-section/services/social-science-services-section/services/social-theory-science-services-section/services/ludics-science-services-section/services/game-ludics-services-section/content/text/documents/articles/notes/recovered/2026-08-19-note-on-farstone-qbn-design.md",
+      "science-services-section/services/social-science-services-section/services/social-theory-science-services-section/services/ludics-science-services-section/services/game-ludics-services-section/content/text/documents/articles/notes/recovered/planned/2026-08-19-note-on-farstone-legacy-status.md",
+      "engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/computer-mud-engineering-services-section",
+      "public-services-section/services/public-media-services-section/services/public-games-services-section/services/public-web-games-services-section/sites/farstone.561.group",
+      "engineering-services-section/content/text/documents/articles/notes/2026/10/09/2026-10-09-note-on-receiving-the-open-pull-requests.md",
+      "repo:causeway-services/farstone (farstone #7, \"data gate defaulting to do-not-place\", is cited in the 2026-10-09 receiving note, line 132, as a good form)"
+    ],
+    "not-held": "No Kerbal Space Program comparison and no flight specification for Farstone is held; the held Farstone notes are the 2026-08-19 QBN design and legacy status.",
+    "unresolved-authority": "None. The outcome is the owning section's to realize; acceptance is the assayer's.",
+    "held-since-2026-10-10": {
+      "by": "pass farstone-ksp-1",
+      "comparison": "computer-mud-engineering-services-section/content/text/documents/articles/notes/2026/10/10/2026-10-10-note-on-farstone-orbital-flight-against-kerbal-space-program.md",
+      "specification": "computer-mud-engineering-services-section/content/text/documents/articles/specifications/2026-10-10-specification-of-farstone-orbital-flight.md",
+      "high-level-design": "computer-mud-engineering-services-section/content/text/documents/articles/specifications/2026-10-10-farstone-orbital-flight-high-level-design.md",
+      "refined-by": "farstone-orbital-flight-game-capabilities.json",
+      "note": "The not-held statement above was true when recorded; the comparison and flight specification are now held."
+    },
+    "utterances": [
+      "ni:///sha-256;nX48bLCnuNp5CmJtvTkkWMiGVq0Qx4iE3B0bKTQvRVc"
+    ],
+    "related": [
+      "farstone-flagship-world"
+    ],
+    "sign-cell": {
+      "type": "emsenn/schema/requirement",
+      "mark": "ni:///sha-256;Zif5SGQvOMk0ghj-F-WnBTm1d6UpSh_ivMN_axXxVM8",
+      "cell": "ni:///sha-256;QL4Wxp6Rt9GbdH2fOQkoIUg1GGzU1nwCMxdbnitfOGA"
+    }
+  }
+}

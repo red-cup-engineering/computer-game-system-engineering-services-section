@@ -1,0 +1,38 @@
+{
+  "date": "2026-08-19",
+  "log": {
+    "schema": "ruinfold-run/1",
+    "date": "2026-08-19",
+    "seed": 0,
+    "actor": "wanderer-tamper",
+    "mode": "scored",
+    "moves": [
+      {
+        "tick": 0,
+        "seq": 0,
+        "intent": {
+          "kind": "join",
+          "actor": "wanderer-tamper"
+        }
+      },
+      {
+        "tick": 3,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-tamper",
+          "dir": "n"
+        }
+      },
+      {
+        "tick": 2,
+        "seq": 0,
+        "intent": {
+          "kind": "move",
+          "actor": "wanderer-tamper",
+          "dir": "n"
+        }
+      }
+    ]
+  }
+}
