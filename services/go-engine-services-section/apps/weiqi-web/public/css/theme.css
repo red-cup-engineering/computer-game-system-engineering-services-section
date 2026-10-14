@@ -807,3 +807,27 @@ footer.site-footer {
 .concept-table th, .concept-table td { text-align: left; padding: 0.25rem 0.5rem; border-bottom: 1px solid var(--rule); }
 .concept-table th:not(:first-child), .concept-table td:not(:first-child) { text-align: right; }
 .concept-next { font-family: system-ui, sans-serif; font-size: 0.9rem; color: var(--ink-soft); margin-bottom: 0; }
+
+/* Source-derived Weiqi glossary: usable by keyboard and on narrow displays. */
+#glossary-search {
+  flex: 1 1 16rem;
+  min-width: min(100%, 12rem);
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.4rem;
+  background: var(--panel-bg);
+  color: var(--ink);
+  font: inherit;
+}
+#glossary-search:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+#glossary-status {
+  color: var(--ink-soft);
+  font: 0.87rem system-ui, sans-serif;
+  margin-bottom: 0;
+}
+#glossary-list article[hidden], #glossary-clear[hidden], #glossary-empty[hidden] {
+  display: none;
+}
