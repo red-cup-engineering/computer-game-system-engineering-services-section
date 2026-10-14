@@ -58,3 +58,24 @@ export function buildQueue(problems, srsStates, { category = "all", band = "all"
       return ob - oa; // most-overdue (largest) first
     });
 }
+
+/** Reproducible daily puzzle order, reusing the source-authored problems. */
+export function rushDeck(problems, day, { limit = 30 } = {}) {
+  if (!Number.isSafeInteger(day) || !Number.isSafeInteger(limit) || limit < 1) throw new TypeError("Invalid rush day or limit");
+  const unique = new Map(problems.map(p => [p.id, p]));
+  if (unique.size !== problems.length) throw new TypeError("Duplicate puzzle IDs");
+  const seed = [...String(day)].reduce((a, c) => Math.imul(a ^ c.charCodeAt(0), 16777619) >>> 0, 2166136261);
+  const hash = id => [...id].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0, seed);
+  return [...unique.values()].sort((a, b) => (hash(a.id) - hash(b.id)) || a.id.localeCompare(b.id)).slice(0, limit);
+}
+/** Score only outcomes already judged by the authoritative rules game. */
+export function rushResult(state, correct) {
+  if (state.lives <= 0) return state;
+  const streak = correct ? state.streak + 1 : 0;
+  return Object.freeze({
+    ...state, answered: state.answered + 1, solved: state.solved + Number(correct),
+    streak, bestStreak: Math.max(state.bestStreak, streak),
+    lives: Math.max(0, state.lives - Number(!correct)),
+    score: state.score + (correct ? 100 + Math.min(400, (streak - 1) * 25) : 0),
+  });
+}
