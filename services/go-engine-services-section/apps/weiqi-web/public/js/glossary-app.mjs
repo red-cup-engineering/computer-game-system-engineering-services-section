@@ -5,13 +5,18 @@
 // learn page's inline terms are three views of one graph, per the plan's
 // "three faces, one graph" thesis.
 
-import { GlossaryHoverCard, loadGlossary } from "./hover-card.mjs";
+import { GlossaryHoverCard, loadGlossary, searchGlossary } from "./hover-card.mjs";
 
 const listEl = document.getElementById("glossary-list");
+const searchEl = document.getElementById("glossary-search");
+const clearEl = document.getElementById("glossary-clear");
+const statusEl = document.getElementById("glossary-status");
+const emptyEl = document.getElementById("glossary-empty");
 const glossary = await loadGlossary();
 const hoverCard = new GlossaryHoverCard(glossary);
 
-const entries = Object.values(glossary).sort((a, b) => a.title.localeCompare(b.title));
+const entries = searchGlossary(glossary, "");
+const entryNodes = new Map();
 
 for (const entry of entries) {
   const article = document.createElement("article");
@@ -61,17 +66,39 @@ for (const entry of entries) {
   }
 
   listEl.appendChild(article);
+  entryNodes.set(entry.slug, article);
 }
 
 hoverCard.attachTermSpans(listEl);
 
+function updateSearch() {
+  const matches = new Set(searchGlossary(glossary, searchEl.value).map((entry) => entry.slug));
+  for (const [slug, element] of entryNodes) element.hidden = !matches.has(slug);
+  statusEl.textContent = `${matches.size} of ${entries.length} glossary terms`;
+  emptyEl.hidden = matches.size !== 0;
+  clearEl.hidden = searchEl.value === "";
+}
+
+searchEl.addEventListener("input", updateSearch);
+clearEl.addEventListener("click", () => {
+  searchEl.value = "";
+  updateSearch();
+  searchEl.focus();
+});
+updateSearch();
+
 // Deep-link support: if the page loads (or the hash changes) with a
 // #term-slug fragment, scroll that entry into view.
 function focusHash() {
-  const slug = location.hash.slice(1);
-  if (!slug) return;
-  const el = document.getElementById(slug);
-  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  const slug = decodeURIComponent(location.hash.slice(1));
+  const el = entryNodes.get(slug);
+  if (!el) return;
+  // Links from Play, Learn, or another term must remain reachable during filtering.
+  if (el.hidden) {
+    searchEl.value = "";
+    updateSearch();
+  }
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 window.addEventListener("hashchange", focusHash);
 focusHash();
