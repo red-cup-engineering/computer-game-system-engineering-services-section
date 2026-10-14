@@ -3,13 +3,23 @@
   "name": "Game engines and Weiqi improve first, smart sports betting is speedrun, and web3 games include an on-chain Weiqi",
   "kind": "requirement",
   "raised-by": "emsenn",
-  "asks": "\"I want to invest more attention from you into our game engines and upstream software, focused on improving our Weiqi application.\" \"Do more to improve the game itself\" (2026-09-16/17) \"I want you basically speedrunning trying to get us doing smart sports betting\" (2026-10-03) \"a FOCG weiqi/go ... AI agents play go for money, people can bet on that\" (2026-10-03). The full statements are in the cited utterances; the note of 2026-10-10 beside this requirement states them with the house's holdings.",
+  "asks": "\"I want to invest more attention from you into our game engines and upstream software, focused on improving our Weiqi application.\" \"Do more to improve the game itself\" (2026-09-16/17) \"I want you basically speedrunning trying to get us doing smart sports betting\" (2026-10-03) \"a FOCG weiqi/go ... AI agents play go for money, people can bet on that\" (2026-10-03). The full statements are in the cited utterances; the note of 2026-10-10 beside this requirement states them with the house's holdings. Current Leader demand (2026-10-14): a profitable contemporary game, not a 2004-era educational demo; deeply use the Group’s existing game engines, audio, agent actors, game records, native Stripe/commerce, Lightning/ZBD and release technology; retire approximant packages, shims and note-existence certification.",
   "met-when": [
     {
-      "cell": "games-pressure-upstream-and-the-sports-weiqi-lines:note",
-      "target": "held",
-      "command": "sh -c 'ls lib/emsenn/services/561-group/services/engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/notes/2026/10/10/2026-10-10-note-on-the-game-engines-weiqi-sports-and-the-chat-game.md >/dev/null 2>&1'",
-      "expected-exit": 0
+      "cell": "games-pressure-upstream-and-the-sports-weiqi-lines:modern-player-experience-received",
+      "target": "held"
+    },
+    {
+      "cell": "games-pressure-upstream-and-the-sports-weiqi-lines:shared-suppliers-received-in-game",
+      "target": "held"
+    },
+    {
+      "cell": "games-pressure-upstream-and-the-sports-weiqi-lines:source-to-public-release-received",
+      "target": "held"
+    },
+    {
+      "cell": "games-pressure-upstream-and-the-sports-weiqi-lines:paying-customer-profit-received",
+      "target": "held"
     }
   ],
   "tier": "routine",
@@ -95,6 +105,83 @@
           "class": "quality",
           "moscow": "must",
           "rationale": "Leader, 2026-09-27: \"As it is Sunday Funday today, we want to work on our gamestuff, but in doing so want to ensure that we are following the guidelines I wrote here\" (the software ecosystem note)."
+        },
+        {
+          "id": "R10",
+          "says": "The public Weiqi game shall let a new player enter an actual challenging game or timed competitive problem session directly from its storefront without requiring documentation as the entry experience.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: an unfamiliar player starts legal meaningful play in at most two intentional actions, finishes a real game/run, and can immediately replay or challenge again; compare the complete interaction with the current Go alternatives."
+        },
+        {
+          "id": "R11",
+          "says": "The game shall deliver responsive, coherent audio-visual and tactile feedback across gameplay, decisions, resolution, and progression on contemporary mobile and desktop browsers instead of isolated decorative effects.",
+          "class": "quality",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: device/session trials cover actionable input, piece movement, responses, anticipation, success/failure, sound/mute, 60 Hz-capable animation where supported, and recovery; performance and perceived game feel are evaluated against a named current competitor."
+        },
+        {
+          "id": "R12",
+          "says": "A Weiqi player shall be able to face meaningfully distinct, recognizable opponents and choose a genuine difficulty or competitive challenge rather than merely differently labeled weak random heuristics.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: repeated full matches display persistent opponent identity, materially differing measured policy and strength, believable reactions, legal play and honest bot disclosure; include adversarial match replays."
+        },
+        {
+          "id": "R13",
+          "says": "The Group's score-based or asynchronous games shall provide a trustworthy cross-session competition and player-history experience when ranking, seasons, or transferable rewards are advertised.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: a player completes a scored run, later retrieves that run and its rank on another authorized session, and a forged, replayed or duplicated score is refused; a local-only personal best is insufficient."
+        },
+        {
+          "id": "R14",
+          "says": "Public Games shall expose at least one attractive purchasable game entitlement or piece of game content with a real price, confirmed rights, independently received payment and actually usable postpurchase delivery.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: one eligible buyer purchases a selected game entitlement through the Group's legitimate existing payment services; merchant settlement, entitled account, game benefit, refund/revocation and customer receipt reconcile. An unarmed buy button, API mock or separately written game checkout cannot satisfy this."
+        },
+        {
+          "id": "R15",
+          "says": "The Public Games business shall judge commercial candidates by net contribution and actual willingness to pay, alongside game starts, completions, repeat play and retention, instead of optimizing primarily for safety commentary or source feature counts.",
+          "class": "quality",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: source-identifiable buyer cohorts and completed sessions support an out-of-time forecast, measured prices and actual fully costed income/expense, including platform fees, rights, hosting, provider charges, support and prizes; profit is not inferred from traffic."
+        },
+        {
+          "id": "R16",
+          "says": "Where a lawful provider contract exists, a Weiqi or other game may award funded BTC Lightning/ZBD value only from a unique verified earning event and a reconcilable reserved obligation.",
+          "class": "functional",
+          "moscow": "should",
+          "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: actual participating actor, distinct verifiable game result, funded obligation, provider status, settled transfer, beneficiary receipt and treasury reconciliation agree; adverse duplicate, fraud, funding exhaustion and regional ineligibility cases refuse. A test wallet or arcade score is not a payout."
+        },
+        {
+          "id": "R17",
+          "says": "Any cross-game capability needed by Weiqi shall be supplied from its competent existing shared game, media, commerce, networking, or data owner rather than reimplemented as a thin client-specific copy.",
+          "class": "quality",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: for each shared contract, a source-level provider implements and passes independent consumer checks in Weiqi and a representative second real game; the old duplicate and compatibility shim are retired once unique behavior and rights have been reconciled."
+        },
+        {
+          "id": "R18",
+          "says": "The delivered public Weiqi release shall remain bound to its actual engineering source, generated game engine, installed provider and consumer revisions and shall undergo native integrated tests and independent play receiving.",
+          "class": "quality",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: native game/build tests run on a qualified machine with actual steps; released artifacts are served on the requested HTTPS hostname at their source-addressed bytes; a tester completes legal play on the public receiver and can replay its record. A green source test or note does not discharge the release."
+        },
+        {
+          "id": "R19",
+          "says": "The game shall offer strategically consequential play and rich review using warranted Go competence rather than treating menu variety or a list of weak local bots as competitive parity.",
+          "class": "quality",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: full-game difficulty tiers and review outputs are measured against independently recorded human or accepted Go-engine matches, with ruleset, search/resource budget, player-relevant feedback and known failure cases; superiority requires outside comparison."
+        },
+        {
+          "id": "R20",
+          "says": "The games portfolio shall evaluate attractive paid content, competitive participation, creator economics, and idle progression as distinct commercially testable product lines, without inventing a new storefront, ledger or reward-accounting service for each title.",
+          "class": "functional",
+          "moscow": "must",
+          "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: each admitted line has a priced deliverable/offer, actual supplier/economic authority and a falsifiable pay-versus-delivery test; costed gross and net receiving determine continuation. Neither idle ticks nor cosmetic badges count as earned money."
         }
       ]
     },
@@ -102,6 +189,15 @@
       "type": "emsenn/schema/requirement",
       "mark": "ni:///sha-256;xb6MFvfwkmScITMLZwBQZL8KDkBXkIjkZT_esQb79ic",
       "cell": "ni:///sha-256;mkXkGtk1KVs7QpQost545LN9tEyVlooBCduhBAAjLWY"
+    },
+    "revision-2026-10-14": {
+      "basis": "Leader's repeated CEO Weiqisday demand on 2026-10-14, including explicit rejection of hand-coded thin capabilities and of treating source documents as market/product acceptance",
+      "stage": "requirements-admission-only",
+      "distinction": "Each met-when names an independent receiving obligation, not a status claim. The former source-note existence check was only capture evidence; it cannot discharge any product obligation.",
+      "commercialReceiver": "Causeway Public Games",
+      "reusableEngineeringReceiver": "Red Cup shared Game and Web/Commerce capabilities, not a new Weiqi-local payment or leaderboard service",
+      "independentReceiving": "Coesite installed release; Group public game; legitimate buyer/payment provider and customer",
+      "preservedEarlierDuties": "R3-R9 include separate sports, FOCG and leader working-game obligations unaffected by this Weiqi-focused revision"
     }
   }
 }
