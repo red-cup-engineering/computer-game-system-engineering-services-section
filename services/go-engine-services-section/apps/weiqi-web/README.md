@@ -48,11 +48,20 @@ identified, without adding a single dependency.
 
 ## Running it
 
+The education-platform-service `src/srs.test.mjs` owns FSRS-lite equations,
+review transitions, epoch boundaries, monotonicity and stage definitions. The
+Weiqi client's `test/srs-parity.test.mjs` checks the exact projected browser
+artifact and running API across inputs; it does not copy the mathematical
+suite. `npm run test:upstream` is the focused consumer boundary test, while
+`npm test` runs the app's full suite.
+
+
 ```
 npm run build          # project the upstream engine and SRS -> public/js; build glossary/icons/service worker
 npm run check          # Node syntax checks for app, projected kernel, scripts, and tests
 npm run serve          # serve public/ on http://localhost:8080/
-npm test               # syntax gate and Node test suite against the projected browser modules
+npm test               # syntax gate and complete Node suite
+npm run test:upstream  # browser-engine and education SRS projection conformance
 npm run verify:release # build FIRST, then test the exact generated modules, then exercise normal play
 ```
 
