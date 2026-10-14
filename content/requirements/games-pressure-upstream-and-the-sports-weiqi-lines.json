@@ -192,7 +192,7 @@
     },
     "revision-2026-10-14": {
       "basis": "Leader's repeated CEO Weiqisday demand on 2026-10-14, including explicit rejection of hand-coded thin capabilities and of treating source documents as market/product acceptance",
-      "stage": "requirements-admission-only",
+      "stage": "original-requirements-owned; SRS/HLD/LLD each exist as unadmitted candidates; user-visible integration, native qualification and independently received release remain open",
       "distinction": "Each met-when names an independent receiving obligation, not a status claim. The former source-note existence check was only capture evidence; it cannot discharge any product obligation.",
       "commercialReceiver": "Causeway Public Games",
       "reusableEngineeringReceiver": "Red Cup shared Game and Web/Commerce capabilities, not a new Weiqi-local payment or leaderboard service",
@@ -201,11 +201,49 @@
     },
     "current-weiqi-srs": {
       "source": "https://github.com/red-cup-engineering/computer-engineering-services-section/blob/main/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
-      "sourceBlob": "4f73e83ea3e99d7a46e70e3ee05d353b8efb26b0",
+      "sourceBlob": "6bc7eede1ef3aa4a36e34ebcd87fd357ffe47d34",
       "admission": "candidate-unreviewed",
       "originRequirement": "games-pressure-upstream-and-the-sports-weiqi-lines",
       "scope": "Weiqi player/game/commercial R1,R2,R10-R20; R3-R9 remain separate",
-      "nextQualifiedStep": "independent SRS ownership/recipient review, then 42010 HLD; no software source fabrication until admitted by native Data/Code mechanism"
+      "nextQualifiedStep": "Use current source-owned SRS/HLD/LLD and incumbent supplier implementations; independently admit/refuse each stage with the real consumer. Do NOT restart requirements or reconstruct candidate design, hand-author code, or fire retired GH workflows. Next actual effects: Red Cup native source-bound qualified fabrication/producer-consumer integration; complete game build and Cloudflare public release; independent complete game, rematch, and paid buyer receiving."
+    },
+    "current-weiqi-architecture": {
+      "specificationSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
+      "specificationBlob": "6bc7eede1ef3aa4a36e34ebcd87fd357ffe47d34",
+      "architectureSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-hld.md",
+      "architectureBlob": "85e0ca0c498f25c7f70c6147bf47bcab520df78a",
+      "detailedDesignSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-lld.md",
+      "detailedDesignBlob": "5524a6d32200e327612637196ab8f42444e3a11d",
+      "admission": "candidate-only; native Data/Code fabrication and executed full-source tests not established",
+      "oneGameAuthority": "Red Cup weiqi-engine, single versioned match/SGF history; no browser or QwzSpace competing legality/ledger",
+      "commercialReceiver": "Causeway Public Games $2.99 single Deep Review test SKU, conditional and not yet a live purchase",
+      "moneyBoundary": "existing Stripe/Digital Goods fixed-release supplier lacks buyer-unique commissioned-work runtime; actual ZBD provider, reserve and beneficiary confirmation not established"
+    },
+    "current-player-supplier-selection": {
+      "observedDate": "2026-10-14",
+      "sourceMain": "red-cup-engineering/computer-engineering-services-section",
+      "gameApplication": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/go-engine-services-section/apps/weiqi-web",
+      "newPlayerSourceMilestones": [
+        {
+          "commit": "23464c97a66ef943ba76001a273cb52e6696ef04",
+          "effectInSource": "game-first arcade lobby"
+        },
+        {
+          "commit": "6dd4aa968c3c14aa6911ce96b572ea70ec07f9e9",
+          "effectInSource": "graded Puzzle Rush"
+        },
+        {
+          "commit": "b608589a97c6b075b45ed3eea4c5481a4ae33b09",
+          "effectInSource": "engine-owned interactive Study variations"
+        },
+        {
+          "commit": "106e6b42dc7d1309996e7b9d071905c8590d2813",
+          "effectInSource": "Go opponent background search and player-facing progress test"
+        }
+      ],
+      "receiving": "committed source; game package CI, Cloudflare installation, live player and paid buyer acceptance not observed in this execution",
+      "repeatFailureDoNotRetry": "Former GitHub Weiqi public receiver workflow failed before any job steps on run 38625413178, and its obsolete workflow was retired in commit 5a869da80f2b6972f428cd78f7f7b5fb20d6c0c9. Use the existing game package's native verify:release and deploy/verify-public-release operations on an actually capable, authenticated executor instead of recreating that workflow.",
+      "installedOperationSource": "apps/weiqi-web/package.json npm run deploy -> native verify:release, Wrangler Cloudflare publish and independent public receiver byte checks"
     }
   }
 }
