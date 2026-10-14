@@ -2,12 +2,9 @@ import { readdir, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import {
-  decidePublicRelease,
-  observePublicRelease,
-} from "@red-cup-engineering/web-release-candidate-service";
+import { observePublicRelease } from "@red-cup-engineering/web-release-candidate-service";
 
-import { createWeiqiPublicRelease, WEIQI_PUBLIC_ORIGINS } from "./public-release-contract.mjs";
+import { createWeiqiPublicRelease, publicWeiqiOrigins, receivedWeiqiRelease } from "./public-release-contract.mjs";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const requiredEnvironment = ["SOURCE_REPOSITORY", "SOURCE_REVISION", "BASELINE_PROVIDER_VERSION", "DEPLOYED_PROVIDER_VERSION"];
@@ -16,9 +13,9 @@ if (missing.length) throw new Error(`public receiver verification requires ${mis
 const publicRoot = resolve(ROOT, "public");
 const artifactFiles = await publicArtifacts(publicRoot);
 const wrangler = JSON.parse(await readFile(resolve(ROOT, "wrangler.jsonc"), "utf8"));
-// The old public host and the play-shelf host are two distinct customer receivers.
-// Observing one is not evidence that Cloudflare admitted or served the other.
-const receipts = await Promise.all(WEIQI_PUBLIC_ORIGINS.map(async (origin) => {
+// Observe every host in the real Worker configuration. No locally constructed
+// "active receipt" is a substitute for Cloudflare state or live customer bytes.
+const checked = await Promise.all(publicWeiqiOrigins(wrangler).map(async (origin) => {
   const release = createWeiqiPublicRelease({
     artifacts: artifactFiles,
     repository: process.env.SOURCE_REPOSITORY,
@@ -33,30 +30,23 @@ const receipts = await Promise.all(WEIQI_PUBLIC_ORIGINS.map(async (origin) => {
     observedAt: new Date().toISOString(),
     fetch: globalThis.fetch,
   });
-  const receipt = observation.kind === "public-release-observation" ? {
-    kind: "public-release-receipt",
-    version: 1,
+  return {
+    origin,
+    received: receivedWeiqiRelease(release, observation),
     releaseDigest: release.digest,
-    provider: release.target.provider,
-    receiver: release.target.receiver,
-    artifactManifestDigest: release.artifact.manifestDigest,
-    configDigest: release.target.configDigest,
-    bindingDigest: release.target.bindingDigest,
-    providerVersion: process.env.DEPLOYED_PROVIDER_VERSION,
-    routeDigest: release.snapshot.routeDigest,
-    baselineProviderVersion: release.snapshot.providerVersion,
-    baselineRouteDigest: release.snapshot.routeDigest,
-    canonicalOrigin: release.channel.canonicalOrigin,
-  } : null;
-  const decision = receipt === null ? null : decidePublicRelease({ release, activeReceipt: receipt, receiverObservation: observation });
-  return { release, receipt, observation, decision };
+    observation,
+  };
 }));
-// Keep the historical primary output shape for any existing release consumer.
-const [primary, ...aliases] = receipts;
-process.stdout.write(`${JSON.stringify({ ...primary, aliases }, null, 2)}\n`);
-if (receipts.some(({ observation, decision }) =>
-  observation.kind === "public-release-observation-refusal" || decision?.disposition !== "no-op")) process.exitCode = 1;
-
+const received = checked.every((host) => host.received);
+process.stdout.write(`${JSON.stringify({
+  kind: "weiqi-public-http-receiving",
+  received,
+  // This version comes from Wrangler's independent deployment listing.
+  // It is NOT a fabricated provider receipt or proof of the host's DNS binding.
+  providerReportedVersion: process.env.DEPLOYED_PROVIDER_VERSION,
+  hosts: checked,
+}, null, 2)}\n`);
+if (!received) process.exitCode = 1;
 async function publicArtifacts(root, relative = "") {
   const entries = await readdir(resolve(root, relative), { withFileTypes: true });
   const nested = await Promise.all(entries.sort((left, right) => left.name.localeCompare(right.name)).map(async (entry) => {
