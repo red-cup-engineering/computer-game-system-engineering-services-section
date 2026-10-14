@@ -299,8 +299,8 @@ treats the one signal it has as covering both until the user explicitly toggles 
 
 ## Live concept recognition (`public/js/concept-toast.mjs` + `concept-tiers.mjs`) — item 4
 
-The confirmed, still-unclaimed differentiator (market teardown finding #1): as `Game.play()`
-fires real semantic events, a calm, non-blocking toast strip names the concept — same wording as
+Our source-backed candidate differentiator, which still needs dated competitor and real
+learner comparison: as `Game.play()` fires semantic events, a calm, non-blocking toast strip names the concept — same wording as
 the event log, same hoverable glossary term (`[data-term]`, wired through the shared
 `GlossaryHoverCard`) — near the board, auto-dismissing after ~4.8s or on hover/focus pause. Three
 settings tiers, persisted in `localStorage`:
@@ -314,7 +314,7 @@ settings tiers, persisted in `localStorage`:
 `pass`/`game-ended` are never toasted at any tier (too frequent to be a "concept moment"), and
 `group-killed` is folded into its accompanying `capture` toast rather than doubling up on the same
 move. The tier rule itself is pure, DOM-free logic (`concept-tiers.mjs`), tested directly in
-`test/concept-tiers.test.mts` against the kernel's real `SemanticEventType` union — a regression
+`test/concept-tiers.test.mjs` against the kernel's real `SemanticEventType` union — a regression
 test fails loudly if the kernel ever adds an event type this module hasn't made a deliberate
 toast/no-toast decision about.
 
@@ -590,31 +590,44 @@ not code.
   category/band filtering, which composes with it rather than replacing it.
 - **Content-scale honesty**: 44 problems is a real, fully-verified starting set across the graded
   progression the task specified, not a token handful — but competitors named in the market
-  teardown ship thousands (BadukPop 4,000–5,000+, GoMagic 5,877, PlayGo.gg 20,000+). This trainer
-  is built to scale — adding problem #45 is "append a verified JSON object," not new engineering —
-  and growing the content set is real authoring work tracked as its own backlog item, the same way
-  the lesson corpus's remaining three documents are, not something this build claims to have closed.
+  teardown ship thousands (August 2026 source observations, not guaranteed current). This trainer
+  is built to scale — adding another problem means admitting a source-backed and engine-verified
+  new JSON entry, not new game mechanics. Growing its number and breadth is distinct authoring
+  work. Four existing interactive lesson datasets are a separate delivered source capability;
+  neither their presence nor a problem count proves user comprehension.
 
 ## The lesson player (`public/js/learn-app.mjs`)
 
-Renders `public/data/lesson-weiqi-overview.json`, hand-authored from
-[`weiqi-overview.md`](../../../../../../../../../../../science-services-section/services/philosophy-services-section/services/relationality-services-section/services/agency-services-section/services/being-services-section/services/doing-services-section/services/playing-services-section/services/gaming-services-section/services/board-games-services-section/services/weiqi-services-section/content/text/documents/articles/teaching-articles/tutorials/weiqi-overview.md) per the house
-lesson template ported to an interactive widget. Unchanged by this build's own code, but a direct
-beneficiary of it: because `board.mjs`'s `setPosition` now diffs and animates rather than hard-
-cutting, stepping forward/backward through the lesson now animates stones appearing/disappearing
-between steps for free — closing a gap the Experience Brief noted (`renderStep` used to be a hard
-cut) without any change to `learn-app.mjs` itself. `{{term}}` / `{{term:custom label}}` tokens
-still expand into the same hoverable glossary spans used everywhere else in the app. One lesson,
-hand-authored to prove the pattern — scaling to the section's other three lesson documents
-(`living-groups-and-eyes.md`, `komi-and-handicap.md`, `weiqi-history.md`) is real authoring work,
-not a wiring gap, and is not part of this build.
+The Read and Learn consumers use the actual Weiqi science vocabulary and
+source-attributed interactive lesson data, without copying game rules into UI
+code. The four current source-owned lesson projections are:
+`public/data/lesson-weiqi-overview.json`,
+`lesson-living-groups-and-eyes.json`, `lesson-weiqi-history.json`,
+and `lesson-komi-and-handicap.json`. Each carries a `sourcePath` to its
+original Science teaching article. The existing `public/js/learn-app.mjs`
+selects the lesson by `learn.html?lesson=<id>`, reuses the kernel board
+renderer, and resolves `{{term}}` tokens through the same glossary as Play.
+`test/learn-curriculum.test.mjs` checks the migrated follow-ons, worked
+positions, actual exercise presence and provenance. A new lesson must have
+an admitted source, legal/meaningful example, meaningful exercise, reachable
+curriculum link and learner receiving test; adding prose to a menu is not
+itself a completed learning outcome.
 
 ## The glossary (`public/js/glossary-app.mjs` + `scripts/build-glossary.mjs`)
 
-Unchanged by this build. Every term in `content/text/glossary/terms/*.md` (20 files) compiles to
-`public/data/glossary.json` and renders as one page, cross-linked by `#slug` anchors and reusing
-the same hover-card component every other face uses. No definition text is hardcoded anywhere in
-this app.
+The live `content/text/glossary/terms/*.md` Science corpus currently
+projects **40 glossary terms** through `scripts/build-glossary.mjs` into the
+single generated `public/data/glossary.json`. The Read face exposes
+case-insensitive, Unicode-insensitive multiword search of original names,
+definitions, elaborations and related terms, with a real empty state and
+accessible status/control labels. `#slug` links from Play, Learn and
+other terms remain reachable after filtering. Its optional controls fail
+safely when an offline PWA update temporarily combines a previous HTML
+shell with a newly loaded module. `test/glossary-search.test.mjs`
+tests discoverability of every compiled concept, definition presence,
+cross-reference closure, untrusted text, and shell compatibility. No
+definition is hardcoded into the view, and no second glossary or analytics
+service is installed.
 
 ## Rendering performance — honest numbers
 
