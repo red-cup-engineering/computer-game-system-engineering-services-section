@@ -19,7 +19,8 @@
     "verify:public": "node scripts/verify-public-release.mjs",
     "serve": "node scripts/serve.mjs",
     "deploy": "npm run verify:release && node scripts/deploy-public-release.mjs",
-    "dev": "wrangler dev"
+    "dev": "wrangler dev",
+    "test:upstream": "node --test test/browser-projection-parity.test.mjs test/srs-parity.test.mjs"
   },
   "dependencies": {
     "@red-cup-engineering/education-platform-service": "workspace:*",
