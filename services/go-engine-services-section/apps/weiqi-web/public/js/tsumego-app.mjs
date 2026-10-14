@@ -33,6 +33,7 @@ const rushClock = document.getElementById("rush-clock");
 const rushScore = document.getElementById("rush-score");
 const rushLives = document.getElementById("rush-lives");
 const rushBest = document.getElementById("rush-best");
+const rushFeedback = document.getElementById("rush-feedback");
 let rush = null;
 let rushTimer = null;
 const RULESET = "chinese"; // arbitrary but fixed, matching test/tsumego-data.test.mts -- none of these problems turn on ko regime or komi
@@ -108,6 +109,8 @@ let currentProblem = null;
 let currentGame = null;
 let solved = false; // true once the accept move (or, after a wrong try, the solution replay) has been shown for this problem
 let awaitingRetry = false; // true right after a wrong move, before the player has seen the solution
+let problemEpoch = 0; // every new diagram invalidates every pending async playback
+let transitionBusy = false;
 
 function colorOf(name) {
   return name === "black" ? kernel.BLACK : kernel.WHITE;
@@ -121,38 +124,56 @@ function startingPositionFor(problem) {
   return kernel.createPositionFromCells(problem.size, problem.size, cells, colorOf(problem.toPlay));
 }
 
+function rushMessage(text, kind = "neutral") {
+  rushFeedback.textContent = text;
+  rushFeedback.dataset.result = kind;
+}
 function showRush() {
   if (!rush) return;
   const seconds = Math.max(0, Math.ceil((rush.endsAt - performance.now()) / 1000));
   rushClock.textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
   rushScore.textContent = `${rush.score} pts · ${rush.streak} streak`;
   rushLives.textContent = "♥ ".repeat(rush.lives).trim() || "No lives";
-  if (seconds === 0) finishRush();
+  if (seconds === 0) finishRush("time");
 }
-function finishRush() {
+function finishRush(reason = "stopped") {
   if (!rush) return;
-  const score = rush.score;
+  const { score, solved, answered, bestStreak } = rush;
   let prior = 0;
-  try { prior = Number(localStorage.getItem(RUSH_BEST_KEY) || 0) || 0;
+  try {
+    prior = Math.max(0, Number(localStorage.getItem(RUSH_BEST_KEY) || 0) || 0);
     if (score > prior) localStorage.setItem(RUSH_BEST_KEY, String(score));
   } catch { /* local records are optional */ }
-  rushBest.textContent = `Personal best: ${Math.max(score, prior)} · Last run: ${score}`;
+  const personalBest = Math.max(score, prior);
+  rushBest.textContent = `Personal best: ${personalBest} · Last run: ${score}`;
   clearInterval(rushTimer); rushTimer = null; rush = null;
+  problemEpoch++; // timeout or stop cannot let an old solution animate over another game
+  transitionBusy = false;
   rushStart.hidden = false; rushStop.hidden = true;
   dueOnlyToggle.disabled = false; categorySelect.disabled = false; bandSelect.disabled = false;
-  showFeedback("correct", `Run complete — ${score} points. Play again to beat your best.`);
+  rushClock.textContent = "0:00";
+  rushScore.textContent = `${score} pts · ${bestStreak} best streak`;
+  rushLives.textContent = `${solved}/${answered} solved`;
+  rebuildQueue();
+  loadProblemAt(0);
+  const ending = reason === "time" ? "Time!" : reason === "lives" ? "Out of lives!" : reason === "complete" ? "Deck cleared!" : "Run ended.";
+  rushMessage(`${ending} ${score} points · ${solved} solved · best streak ${bestStreak}. Beat ${personalBest} to set a new record.`, "finished");
+  board.announce(`${ending} ${score} points.`);
 }
 function startRush() {
   clearInterval(rushTimer);
+  problemEpoch++; // cancel any solution animation from normal training
   rush = { endsAt: performance.now() + RUSH_SECONDS * 1000, score: 0, streak: 0, bestStreak: 0, solved: 0, answered: 0, lives: 3 };
   queue = rushDeck(allProblems, epochDay()); queueIndex = 0;
   dueOnlyToggle.disabled = true; categorySelect.disabled = true; bandSelect.disabled = true;
   rushStart.hidden = true; rushStop.hidden = false;
+  rushMessage("Find the strongest move. Three misses end the run.");
   rushTimer = setInterval(showRush, 200);
-  showRush(); loadProblemAt(0);
+  loadProblemAt(0);
+  showRush();
 }
 rushStart.addEventListener("click", startRush);
-rushStop.addEventListener("click", finishRush);
+rushStop.addEventListener("click", () => finishRush("stopped"));
 try { rushBest.textContent = `Personal best: ${Number(localStorage.getItem(RUSH_BEST_KEY) || 0) || 0}`; } catch {}
 function rebuildQueue() {
   queue = buildQueue(allProblems, srsStates, {
@@ -176,7 +197,12 @@ function sourceLine(problem) {
 }
 
 function loadProblemAt(index) {
-  if (rush && (rush.lives === 0 || performance.now() >= rush.endsAt || index >= queue.length)) { finishRush(); return; }
+  problemEpoch++;
+  transitionBusy = false;
+  if (rush && (rush.lives === 0 || performance.now() >= rush.endsAt || index >= queue.length)) {
+    finishRush(rush.lives === 0 ? "lives" : index >= queue.length ? "complete" : "time");
+    return;
+  }
   if (index >= queue.length) {
     currentProblem = null;
     board.setLegalityChecker(() => false);
@@ -194,6 +220,8 @@ function loadProblemAt(index) {
   currentGame = new kernel.Game(problem.size, RULESET, startingPositionFor(problem));
   solved = false;
   awaitingRetry = false;
+  resetBtn.disabled = Boolean(rush);
+  skipBtn.disabled = false;
 
   board.setSize(problem.size);
   board.setLastMove(null);
@@ -234,13 +262,18 @@ async function playMoveOnBoard(coord) {
 }
 
 /** Replay `problem.lines[acceptMove]` (the {move, reply} continuation) after `acceptMove` has already been played. */
-async function playLine(problem, acceptMove) {
+async function playLine(problem, acceptMove, ticket) {
   for (const step of problem.lines[acceptMove] ?? []) {
     await wait(420);
-    await playMoveOnBoard(step.move);
+    if (ticket !== problemEpoch) return false;
+    const opponent = await playMoveOnBoard(step.move);
+    if (!opponent.ok) throw new Error(`Authored opponent move ${step.move} is not legal`);
     await wait(420);
-    await playMoveOnBoard(step.reply);
+    if (ticket !== problemEpoch) return false;
+    const reply = await playMoveOnBoard(step.reply);
+    if (!reply.ok) throw new Error(`Authored response ${step.reply} is not legal`);
   }
+  return true;
 }
 
 function showFeedback(kind, text) {
@@ -249,61 +282,94 @@ function showFeedback(kind, text) {
   feedbackPanel.textContent = text;
 }
 
+// Both training and arcade play use the SAME verified starting Game and
+// authored accepting line. Only presentation pacing differs.
 async function onCorrect(acceptMove) {
-  const wasRush = Boolean(rush);
-  if (wasRush) { rush = rushResult(rush, true); showRush(); }
+  if (transitionBusy) return;
+  const ticket = problemEpoch;
+  const problem = currentProblem;
+  transitionBusy = true;
   solved = true;
   board.setLegalityChecker(() => false);
-  await playMoveOnBoard(acceptMove);
-  await playLine(currentProblem, acceptMove);
+  skipBtn.disabled = true; resetBtn.disabled = true;
+  const admitted = await playMoveOnBoard(acceptMove);
+  if (ticket !== problemEpoch) return;
+  if (!admitted.ok) throw new Error(`Accepted answer ${acceptMove} is illegal: ${admitted.reason}`);
+  if (rush) {
+    if (performance.now() >= rush.endsAt) { finishRush("time"); return; }
+    const before = rush.score;
+    rush = rushResult(rush, true);
+    showRush();
+    if (!rush) return;
+    const gained = rush.score - before;
+    rushMessage(`+ ${gained} points · ${rush.streak} combo · ${problem.title}`, "correct");
+    board.announce(`Correct. Plus ${gained} points. ${rush.streak} in a row.`);
+    // No multi-second solution playback on the clock: show the actual
+    // admitted move briefly, then offer the next real position.
+    await wait(300);
+    if (ticket !== problemEpoch || !rush) return;
+    queueIndex++;
+    loadProblemAt(queueIndex);
+    return;
+  }
+  if (!await playLine(problem, acceptMove, ticket)) return;
+  if (ticket !== problemEpoch) return;
   sound.playGameEnd();
-  showFeedback("correct", `Correct! ${currentProblem.prompt}`);
+  showFeedback("correct", `Solved ${problem.title}. ${problem.prompt}`);
   board.announce("Correct.");
-  gradePanel.hidden = wasRush;
-  if (wasRush && rush) { queueIndex += 1; loadProblemAt(queueIndex); }
+  gradePanel.hidden = false;
+  transitionBusy = false;
+  skipBtn.disabled = false; resetBtn.disabled = false;
 }
 
 async function onWrong(triedCoord) {
-  if (rush) {
-    rush = rushResult(rush, false); showRush();
-    if (!rush || rush.lives === 0) { finishRush(); return; }
-    queueIndex += 1; loadProblemAt(queueIndex); return;
-  }
+  if (transitionBusy) return;
+  const ticket = problemEpoch;
+  const problem = currentProblem;
+  transitionBusy = true;
   awaitingRetry = true;
   board.setLegalityChecker(() => false);
-  await playMoveOnBoard(triedCoord);
-  showFeedback("wrong", currentProblem.failNote + " Showing the solution…");
-  board.announce("Not the answer. Showing the correct line.");
+  skipBtn.disabled = true; resetBtn.disabled = true;
+  const admitted = await playMoveOnBoard(triedCoord);
+  if (ticket !== problemEpoch) return;
+  if (!admitted.ok) throw new Error(`Submitted move ${triedCoord} is illegal: ${admitted.reason}`);
+  if (rush) {
+    if (performance.now() >= rush.endsAt) { finishRush("time"); return; }
+    rush = rushResult(rush, false);
+    showRush();
+    if (!rush) return;
+    rushMessage(`Not ${triedCoord} · −1 life · the solution starts ${problem.accept[0]}.`, "wrong");
+    board.announce(`Wrong move. Correct move starts at ${problem.accept[0]}.`);
+    await wait(550);
+    if (ticket !== problemEpoch || !rush) return;
+    if (rush.lives === 0) { finishRush("lives"); return; }
+    queueIndex++;
+    loadProblemAt(queueIndex);
+    return;
+  }
+  showFeedback("wrong", problem.failNote + " Showing the source-authored solution…");
+  board.announce("Not the answer. Showing the accepted line.");
   await wait(650);
-
-  // Reset to the starting diagram and replay the real solution -- the exact
-  // same verified line the trainer would have played had the player found
-  // it. Honesty note (found during the polish-pass verification session):
-  // this is the SOLUTION line, not a refutation of `triedCoord` specifically
-  // -- tsumego.json has no authored per-wrong-move punishment line, so
-  // whatever the player tried, the board resets and shows the one correct
-  // answer with the same failNote every time. Calling this a "refutation" in
-  // the UI copy overclaimed a specific-to-your-mistake explanation this
-  // trainer does not yet compute; a real refutation (playing out why
-  // `triedCoord` itself loses) is real, uncompleted future work, not
-  // something to fake here. See the README's "Tsumego trainer" section.
-  currentGame = new kernel.Game(currentProblem.size, RULESET, startingPositionFor(currentProblem));
-  board.setLastMove(null);
-  board.setAnnotations([]);
-  board.setKoPoint(null);
+  if (ticket !== problemEpoch) return;
+  currentGame = new kernel.Game(problem.size, RULESET, startingPositionFor(problem));
+  board.setLastMove(null); board.setAnnotations([]); board.setKoPoint(null);
   board.setPosition(currentGame.current.board, { toMove: currentGame.current.toMove });
-
-  const acceptMove = currentProblem.accept[0];
+  const first = problem.accept[0];
   await wait(300);
-  await playMoveOnBoard(acceptMove);
-  await playLine(currentProblem, acceptMove);
+  if (ticket !== problemEpoch) return;
+  const solution = await playMoveOnBoard(first);
+  if (!solution.ok) throw new Error(`Authored solution ${first} is invalid`);
+  if (!await playLine(problem, first, ticket)) return;
+  if (ticket !== problemEpoch) return;
   solved = true;
-  showFeedback("wrong", `${currentProblem.failNote} The line above (starting at ${acceptMove}) is the solution.`);
+  showFeedback("wrong", `${problem.failNote} The accepted line begins at ${first}.`);
   gradePanel.hidden = false;
+  transitionBusy = false; awaitingRetry = false;
+  skipBtn.disabled = false; resetBtn.disabled = false;
 }
 
 board.addEventListener("weiqi-move", async (evt) => {
-  if (!currentProblem || solved || awaitingRetry) return;
+  if (!currentProblem || solved || awaitingRetry || transitionBusy) return;
   const coord = evt.detail.coord;
   if (coord === "pass") return; // no tsumego problem here is solved by passing
   if (currentProblem.accept.includes(coord)) {
@@ -317,7 +383,7 @@ board.addEventListener("weiqi-move", async (evt) => {
 
 document.querySelectorAll(".grade-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
-    if (!currentProblem) return;
+    if (!currentProblem || rush || transitionBusy || gradePanel.hidden) return;
     const grade = Number(btn.dataset.grade);
     const today = epochDay();
     const prior = srsStates[currentProblem.id] ?? { stability: 0, difficulty: 0 };
@@ -342,8 +408,16 @@ dueOnlyToggle.addEventListener("change", onDeckControlsChanged);
 
 resetBtn.addEventListener("click", () => { if (!rush) loadProblemAt(queueIndex); });
 skipBtn.addEventListener("click", () => {
-  if (rush) { rush = rushResult(rush, false); if (rush.lives === 0) { finishRush(); return; } showRush(); }
-  queueIndex += 1;
+  if (transitionBusy) return;
+  if (rush) {
+    if (performance.now() >= rush.endsAt) { finishRush("time"); return; }
+    rush = rushResult(rush, false);
+    showRush();
+    if (!rush) return;
+    rushMessage("Skipped · −1 life", "wrong");
+    if (rush.lives === 0) { finishRush("lives"); return; }
+  }
+  queueIndex++;
   loadProblemAt(queueIndex);
 });
 
