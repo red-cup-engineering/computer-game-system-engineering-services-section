@@ -37,7 +37,7 @@ test("the actual Worker config selects the player origin and all distinct static
   assert.ok(releases.every((candidate) => candidate.channel.stateClass === "edge-static"));
   assert.ok(releases.every((candidate) => candidate.target.receiver === `worker:${wrangler.name}`));
   assert.ok(releases.every((candidate) => candidate.artifact.manifest.artifactCount === artifacts.size));
-  assert.ok(releases.every((candidate) => candidate.channel.probes === WEIQI_PUBLIC_PROBES));
+  for (const candidate of releases) assert.deepEqual(candidate.channel.probes, WEIQI_PUBLIC_PROBES);
   assert.equal(new Set(releases.map((candidate) => candidate.digest)).size, origins.length);
 });
 
