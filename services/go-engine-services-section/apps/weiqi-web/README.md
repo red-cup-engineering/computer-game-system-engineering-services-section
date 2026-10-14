@@ -85,7 +85,11 @@ npm run deploy    # source gates, build, deploy, then independent public artifac
 The deploy wrapper records the prior and newly-active Worker versions, then binds the exact
 `public/` artifact manifest to independent probes of the canonical receiver. It fails unless
 the shared release decision accepts the receiver readback. `custom_domain: true` in
-`wrangler.jsonc` attaches `weiqi.561.group` and provisions its DNS record. `npm run dev` runs `wrangler dev` for a local preview of the deployed shape.
+`wrangler.jsonc` attaches both `weiqi.561.group` and `weiqi.play.561.group` to the same
+static-assets Worker, retaining the old hostname while admitting the play-shelf URL.
+The release observer now checks each hostname's complete artifact-hash probes separately;
+passing on one hostname never certifies the other. Both bindings need an active
+Cloudflare zone and must be deployed and independently received before claiming the new URL works. `npm run dev` runs `wrangler dev` for a local preview of the deployed shape.
 `npm run serve` (`scripts/serve.mjs`) remains a plain `node:http` dev/test convenience
 only; it is never what production serves.
 
