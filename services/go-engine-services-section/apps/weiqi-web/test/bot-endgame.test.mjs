@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import * as kernel from "@red-cup-engineering/weiqi-engine";
-import { BOT_TIERS, candidateMoveCoords, chooseMonteCarloMove, isSelfHarmingMove, monteCarloBudget, randomPlayout } from "../public/js/bot.mjs";
+import { BOT_TIERS, candidateMoveCoords, chooseMonteCarloMove, isSelfHarmingMove, monteCarloBudget, randomPlayout, searchCandidateWidth } from "../public/js/bot.mjs";
 
 const first = () => 0;
 
@@ -202,4 +202,49 @@ test("Monte Carlo playout scores with the upstream ruleset, not unconditional ar
   assert.equal(randomPlayout(japanese, kernel, first, 0), kernel.WHITE);
   assert.equal(chinese.history.length, 19);
   assert.equal(japanese.history.length, 19);
+});
+
+test("19x19 Pondering spends enough visits to examine actual opponent responses", () => {
+  const game = new kernel.Game(19, "chinese");
+  const legal = candidateMoveCoords(game, kernel);
+  const budget = monteCarloBudget(19);
+  assert.ok(legal.length > budget, "full 19x19 opening is wider than the playout budget");
+  const width = searchCandidateWidth(legal.length, budget);
+  assert.ok(width < budget / 2, "cap must reserve repeated visits and replies");
+
+  const simulations = [];
+  const originalFork = game.fork.bind(game);
+  game.fork = () => {
+    const branch = originalFork();
+    let moves = 0;
+    const originalPlay = branch.play.bind(branch);
+    branch.play = (coord) => {
+      const accepted = originalPlay(coord);
+      if (accepted.ok) moves++;
+      return accepted;
+    };
+    simulations.push(() => moves);
+    return branch;
+  };
+  const move = chooseMonteCarloMove(game, kernel, () => 0.37,
+    { playouts: budget, maxPlayoutMoves: 0 });
+  assert.equal(simulations.length, budget);
+  assert.ok(simulations.some((count) => count() >= 2),
+    "UCT must explore a second ply, not spend all 40 simulations on distinct first moves");
+  assert.equal(game.history.length, 1);
+  assert.equal(game.isLegal(move), true);
+});
+
+test("large-board opening shortlist considers genuine kernel-owned 4-4 corner stars", () => {
+  for (const size of [13, 19]) {
+    const game = new kernel.Game(size, "chinese");
+    const stars = kernel.handicapPoints(size, 4);
+    const chosen = chooseMonteCarloMove(game, kernel, () => 0.37,
+      { playouts: 4, maxPlayoutMoves: 0 });
+    assert.ok(stars.includes(chosen),
+      `${size}x${size} opener ${chosen} should prefer an empty 4-4 star to unsupported center bias`);
+  }
+  assert.equal(searchCandidateWidth(361, 40), 6);
+  assert.equal(searchCandidateWidth(81, 400), 20);
+  assert.throws(() => searchCandidateWidth(100, 0), /positive integer/);
 });
