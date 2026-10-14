@@ -201,7 +201,7 @@
     },
     "current-weiqi-srs": {
       "source": "https://github.com/red-cup-engineering/computer-engineering-services-section/blob/main/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
-      "sourceBlob": "cfe31d844fe80cc190b849a465abfb3afcae381f",
+      "sourceBlob": "4f73e83ea3e99d7a46e70e3ee05d353b8efb26b0",
       "admission": "candidate-unreviewed",
       "originRequirement": "games-pressure-upstream-and-the-sports-weiqi-lines",
       "scope": "Weiqi player/game/commercial R1,R2,R10-R20; R3-R9 remain separate",
