@@ -40,6 +40,7 @@ const resignBtn = document.getElementById("resign-btn");
 const acceptCountBtn = document.getElementById("accept-count-btn");
 const undoBtn = document.getElementById("undo-btn");
 const studyGameBtn = document.getElementById("study-game-btn");
+const watchReelBtn = document.getElementById("watch-reel-btn");
 const downloadSgfBtn = document.getElementById("download-sgf-btn");
 const botSelect = document.getElementById("bot-select");
 const boardSizeSelect = document.getElementById("board-size-select");
@@ -239,6 +240,10 @@ function render() {
     acceptCountBtn.disabled = CAPTURE_GO || !finished || botThinking || !marking || session.state.result !== null || Boolean(openingError);
   }
   if (undoBtn) undoBtn.disabled = botThinking || session.state.result !== null || undoLastExchange(session, humanColor, kernel) === null;
+  if (watchReelBtn) {
+    watchReelBtn.hidden = !finished || session.version === 0;
+    watchReelBtn.disabled = !finished || session.version === 0;
+  }
   const inProgress = session.version > 0 && !finished;
   botSelect.disabled = inProgress;
   if (boardSizeSelect) boardSizeSelect.disabled = inProgress;
@@ -482,6 +487,17 @@ if (studyGameBtn) {
     // Study receives the engine-admitted commands in a share link; it owns
     // no parser, persistence, or second game model, and the link is durable.
     location.href = studyLink(session, location.href);
+  });
+}
+if (watchReelBtn) {
+  watchReelBtn.addEventListener("click", () => {
+    if (!finished || session.version === 0) return;
+    // The entire legal match travels intact; moment=0 is presentation only.
+    const link = new URL(studyLink(session, location.href));
+    const params = new URLSearchParams(link.hash.slice(1));
+    params.set("moment", "0");
+    link.hash = params.toString();
+    location.href = link.href;
   });
 }
 

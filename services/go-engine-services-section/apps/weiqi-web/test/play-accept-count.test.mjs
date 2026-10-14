@@ -154,7 +154,7 @@ function renderedCountButton(session, {
 } = {}) {
   const acceptCountBtn = { hidden: true, disabled: true };
   const dependencies = {
-    acceptCountBtn, session, marking, finished, botThinking, CAPTURE_GO,
+    acceptCountBtn, session, marking, finished, botThinking, CAPTURE_GO, watchReelBtn: null,
     kernel, openingError: null, humanColor: kernel.BLACK,
     keepGameLink() {},
     board: { setPosition() {}, setLegalityChecker() {} },
@@ -196,4 +196,21 @@ test("normal Play alone exposes a hidden-by-default Accept count control", async
   ]);
   assert.match(play, /id="accept-count-btn"[^>]*\bhidden\b[^>]*\bdisabled\b/);
   assert.doesNotMatch(capture, /id="accept-count-btn"/);
+});
+
+test("a settled local Go game offers the playable source-verified spectator reel", async () => {
+  const html = await readFile(new URL("../public/play.html", import.meta.url), "utf8");
+  assert.match(html, /id="watch-reel-btn"[^>]*hidden[^>]*disabled/);
+  assert.match(source, /if \(watchReelBtn\) \{/);
+  assert.match(source, /watchReelBtn\.hidden = !finished \|\| session\.version === 0/);
+  assert.match(source, /watchReelBtn\.addEventListener\("click"/);
+  assert.match(source, /params\.set\("moment", "0"\)/);
+  const finishedGame = liveFixture();
+  const accepted = kernel.admitWeiqiGameCommand(finishedGame, finishedGame.version,
+    { kind: "settle", dead: [] });
+  assert.equal(accepted.ok, true);
+  if (!accepted.ok) return;
+  const watched = studyLink(accepted.session, "https://weiqi.play.561.group/play.html");
+  assert.equal(sessionFromStudyHash(new URL(watched).hash).ok, true);
+  assert.equal(buildStudyReplay(accepted.session).frames.at(-1).command.kind, "settle");
 });
