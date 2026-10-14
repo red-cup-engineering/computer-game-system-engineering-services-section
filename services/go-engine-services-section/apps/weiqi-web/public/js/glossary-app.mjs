@@ -72,6 +72,9 @@ for (const entry of entries) {
 hoverCard.attachTermSpans(listEl);
 
 function updateSearch() {
+  // Offline PWA updates can temporarily combine an old HTML shell with new JS.
+  // Keep the original Read face usable when the newer search controls are absent.
+  if (!searchEl || !clearEl || !statusEl || !emptyEl) return;
   const matches = new Set(searchGlossary(glossary, searchEl.value).map((entry) => entry.slug));
   for (const [slug, element] of entryNodes) element.hidden = !matches.has(slug);
   statusEl.textContent = `${matches.size} of ${entries.length} glossary terms`;
@@ -79,13 +82,15 @@ function updateSearch() {
   clearEl.hidden = searchEl.value === "";
 }
 
-searchEl.addEventListener("input", updateSearch);
-clearEl.addEventListener("click", () => {
-  searchEl.value = "";
+if (searchEl && clearEl && statusEl && emptyEl) {
+  searchEl.addEventListener("input", updateSearch);
+  clearEl.addEventListener("click", () => {
+    searchEl.value = "";
+    updateSearch();
+    searchEl.focus();
+  });
   updateSearch();
-  searchEl.focus();
-});
-updateSearch();
+}
 
 // Deep-link support: if the page loads (or the hash changes) with a
 // #term-slug fragment, scroll that entry into view.
@@ -101,8 +106,10 @@ function focusHash() {
   if (!el) return;
   // Links from Play, Learn, or another term must remain reachable during filtering.
   if (el.hidden) {
-    searchEl.value = "";
+    if (searchEl) searchEl.value = "";
     updateSearch();
+    // Never strand a board/lesson deep link behind a mixed offline shell.
+    el.hidden = false;
   }
   el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
