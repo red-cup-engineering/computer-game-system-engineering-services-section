@@ -338,9 +338,18 @@ async function onWrong(triedCoord) {
     rush = rushResult(rush, false);
     showRush();
     if (!rush) return;
-    rushMessage(`Not ${triedCoord} · −1 life · the solution starts ${problem.accept[0]}.`, "wrong");
+    rushMessage(`Not ${triedCoord} · −1 life · watch the solution at ${problem.accept[0]}.`, "wrong");
     board.announce(`Wrong move. Correct move starts at ${problem.accept[0]}.`);
-    await wait(550);
+    await wait(190);
+    if (ticket !== problemEpoch || !rush) return;
+    // Show the first actual kernel-accepted solution move on the board.
+    // We do not charge the player for several seconds of scripted replay.
+    currentGame = new kernel.Game(problem.size, RULESET, startingPositionFor(problem));
+    board.setLastMove(null); board.setAnnotations([]); board.setKoPoint(null);
+    board.setPosition(currentGame.current.board, { toMove: currentGame.current.toMove });
+    const suggested = await playMoveOnBoard(problem.accept[0]);
+    if (!suggested.ok) throw new Error(`Authored solution ${problem.accept[0]} is invalid`);
+    await wait(340);
     if (ticket !== problemEpoch || !rush) return;
     if (rush.lives === 0) { finishRush("lives"); return; }
     queueIndex++;
