@@ -168,3 +168,38 @@ test("variation controls belong to the currently loaded game and do not resurrec
   assert.match(app, /scrubber\.oninput =/);
   assert.match(app, /activeStudy\.selectedSession\(\)/);
 });
+
+test("the accepted game drives the spectator's selected moments in the same generated engine", () => {
+  const session = admittedSession([
+    { kind: "play", move: "C3" }, { kind: "play", move: "C4" },
+    { kind: "play", move: "B4" }, { kind: "play", move: "A1" },
+    { kind: "play", move: "D4" }, { kind: "play", move: "A2" },
+    { kind: "play", move: "C5" },
+  ]);
+  const source = buildStudyReplay(session);
+  const moments = kernel.planReplayMoments(source.frames);
+  assert.equal(moments[0].version, 0);
+  assert.ok(moments.some(moment => moment.kind === "capture"));
+  assert.equal(moments.at(-1).version, session.version);
+  for (const moment of moments) {
+    assert.deepEqual(source.frames[moment.version].board,
+      buildStudyReplay(session).frames[moment.version].board);
+  }
+});
+
+test("cinematic replay controls reuse Study's original engine/timeline and clean up on import", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const app = await readFile(new URL("../public/js/review-app.mjs", import.meta.url), "utf8");
+  const html = await readFile(new URL("../public/review.html", import.meta.url), "utf8");
+  for (const id of ["reel-play-btn", "reel-stop-btn", "reel-audio-btn", "reel-share-btn",
+    "reel-speed", "reel-progress", "reel-status", "reel-beats"]) {
+    assert.ok(html.includes(`id="${id}"`), id);
+  }
+  assert.match(app, /kernel\.planReplayMoments\(study\.frames/);
+  assert.match(app, /select\(beat\.version, \{ fromReel: true \}\)/);
+  assert.match(app, /new WeiqiSound\(\)/);
+  assert.match(app, /stopReel\(\)/);
+  assert.match(app, /board\.destroy\(\)/);
+  assert.match(app, /params\.set\("moment", String\(currentVersion\)\)/);
+  assert.match(app, /document\.addEventListener\("visibilitychange"/);
+});

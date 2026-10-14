@@ -7,6 +7,7 @@
 
 import * as kernel from "./kernel/index.mjs";
 import { WeiqiBoard } from "./board.mjs";
+import { WeiqiSound } from "./sound.mjs";
 import { GlossaryHoverCard, loadGlossary } from "./hover-card.mjs";
 import { renderConceptSummaryCard } from "./concept-summary-card.mjs";
 import { buildStudyReplay, commandLabel, describeRulesObservation, studyBranchAt, sessionFromSgf, sessionFromStudyHash, studyLink } from "./study-replay.mjs";
@@ -19,7 +20,7 @@ function element(id) {
   return found;
 }
 
-function renderStudyReplay(study, hoverCard, recordedSession) {
+function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = study.version) {
   // Importing a second SGF replaces the previous game, not a second board
   // and second timeline layered over the original.
   const host = element("board-host");
@@ -38,12 +39,85 @@ function renderStudyReplay(study, hoverCard, recordedSession) {
   const passBtn = element("variation-pass");
   const undoBtn = element("variation-undo");
   const returnBtn = element("variation-return");
+  const reelStart = element("reel-play-btn");
+  const reelStop = element("reel-stop-btn");
+  const reelAudio = element("reel-audio-btn");
+  const reelShare = element("reel-share-btn");
+  const reelSpeed = element("reel-speed");
+  const reelBeats = element("reel-beats");
+  const reelStatus = element("reel-status");
+  const reelProgress = element("reel-progress");
+  const reelStage = element("board-wrap");
+  // The same rules events drive the current replay, its reel and the original
+  // match feed. The producer is exported by the upstream Weiqi engine.
+  const reel = kernel.planReplayMoments(study.frames, { limit: 10 });
+  const sound = new WeiqiSound();
   timeline.replaceChildren();
+  reelBeats.replaceChildren();
+  reelProgress.max = String(reel.length);
+  reelProgress.value = "0";
+  reelAudio.textContent = sound.muted ? "Enable sound" : "Mute sound";
 
   scrubber.max = String(study.version);
   let currentVersion = study.version;
   let branch = null;
   let branchBase = 0;
+  let reelRunning = false;
+  let reelTimer = null;
+  let reelBeatIndex = 0;
+
+  function stopReel(message = "Reel paused. Inspect any move or replay the highlights.") {
+    if (reelTimer !== null) clearTimeout(reelTimer);
+    reelTimer = null;
+    if (!reelRunning) return;
+    reelRunning = false;
+    reelStart.disabled = false;
+    reelStop.disabled = true;
+    reelStage.classList.remove("reel-playing");
+    reelStatus.textContent = message;
+  }
+
+  function soundForBeat(beat) {
+    const frame = study.frames[beat.version];
+    if (beat.kind === "capture" || beat.kind === "group-killed") {
+      const capture = frame.events.find((event) => event.type === "capture");
+      sound.playCapture(capture?.detail?.stonesCaptured ?? 1);
+    } else if (beat.kind === "atari-given" || beat.kind === "ko-started") {
+      sound.playAtari();
+    } else if (["game-ended", "resignation", "settlement"].includes(beat.kind)) {
+      sound.playGameEnd();
+    } else if (frame.command?.kind === "play") {
+      sound.playStoneClick(frame.version, frame.version % study.config.size);
+    }
+  }
+
+  function presentReelBeat(beat) {
+    // Selection reuses the same board, accepted command and glossary-linked
+    // observations as manual Study; there is no duplicate replay renderer.
+    select(beat.version, { fromReel: true });
+    soundForBeat(beat);
+    reelProgress.value = String(reelBeatIndex + 1);
+    reelStatus.textContent =
+      `Scene ${reelBeatIndex + 1} of ${reel.length}: ${beat.title}. Based on recorded rules events, not AI move judgment.`;
+  }
+
+  function advanceReel() {
+    if (!reelRunning) return;
+    const beat = reel[reelBeatIndex];
+    presentReelBeat(beat);
+    const speed = Number(reelSpeed.value);
+    const delayMs = Math.round(beat.holdMs / (Number.isFinite(speed) && speed > 0 ? speed : 1));
+    reelTimer = setTimeout(() => {
+      reelTimer = null;
+      if (!reelRunning) return;
+      if (reelBeatIndex === reel.length - 1) {
+        stopReel(`Reel finished. ${reel.length} verified scenes. Explore a move or share this game.`);
+        return;
+      }
+      reelBeatIndex += 1;
+      advanceReel();
+    }, delayMs);
+  }
 
   function displayEvents(events) {
     selectedEvents.replaceChildren(...events.map((event) => {
@@ -62,7 +136,8 @@ function renderStudyReplay(study, hoverCard, recordedSession) {
     }));
   }
 
-  function select(version) {
+  function select(version, { fromReel = false } = {}) {
+    if (!fromReel) stopReel();
     branch = null; // timeline navigation returns to the immutable recording
     currentVersion = Math.max(0, Math.min(study.version, version));
     const frame = study.frames[currentVersion];
@@ -87,6 +162,10 @@ function renderStudyReplay(study, hoverCard, recordedSession) {
     for (const button of timeline.querySelectorAll("button")) {
       button.setAttribute("aria-current", String(Number(button.dataset.version) === currentVersion));
     }
+    for (const button of reelBeats.querySelectorAll("button")) {
+      button.setAttribute("aria-current", String(Number(button.dataset.version) === currentVersion));
+    }
+    reelShare.disabled = false;
     exploreBtn.disabled = false;
     passBtn.disabled = true;
     undoBtn.disabled = true;
@@ -96,6 +175,8 @@ function renderStudyReplay(study, hoverCard, recordedSession) {
 
   function renderBranch() {
     if (!branch) return;
+    stopReel();
+    reelShare.disabled = true;
     const game = kernel.materializeWeiqiGame(branch);
     const last = branch.commands.at(-1);
     const latestEvents = branch.version > branchBase ? (game.moveEvents.at(-1) ?? []) : [];
@@ -135,6 +216,7 @@ function renderStudyReplay(study, hoverCard, recordedSession) {
   }
 
   exploreBtn.onclick = () => {
+    stopReel();
     branch = studyBranchAt(recordedSession, currentVersion);
     if (branch.state.result !== null) {
       branch = null;
@@ -174,6 +256,48 @@ function renderStudyReplay(study, hoverCard, recordedSession) {
     timeline.append(item);
   }
 
+  for (const beat of reel) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "reel-beat";
+    button.dataset.version = String(beat.version);
+    button.textContent = `${beat.version === 0 ? "Opening" : `Move ${beat.version}`} · ${beat.title}`;
+    button.addEventListener("click", () => select(beat.version));
+    reelBeats.append(button);
+  }
+  reelStatus.textContent =
+    `${reel.length} source-derived scenes. Watch the game or select a dramatic moment.`;
+  reelAudio.onclick = () => {
+    const muted = sound.toggleMuted();
+    reelAudio.textContent = muted ? "Enable sound" : "Mute sound";
+  };
+  reelStart.onclick = () => {
+    stopReel();
+    reelBeatIndex = 0;
+    reelRunning = true;
+    reelStart.disabled = true;
+    reelStop.disabled = false;
+    reelStage.classList.add("reel-playing");
+    // Start audio inside the user gesture before scheduled scene changes.
+    sound.playTick();
+    advanceReel();
+  };
+  reelStop.onclick = () => stopReel();
+  reelShare.onclick = async () => {
+    if (branch) return;
+    const url = new URL(studyLink(recordedSession, location.href));
+    const params = new URLSearchParams(url.hash.slice(1));
+    params.set("moment", String(currentVersion));
+    url.hash = params.toString();
+    try {
+      await navigator.clipboard.writeText(url.href);
+      element("share-status").textContent =
+        `Moment ${currentVersion} copied with the complete verifiable match history.`;
+    } catch {
+      element("share-status").textContent = url.href;
+    }
+  };
+
   scrubber.oninput = () => select(Number(scrubber.value));
   previous.onclick = () => select(currentVersion - 1);
   next.onclick = () => select(currentVersion + 1);
@@ -182,11 +306,20 @@ function renderStudyReplay(study, hoverCard, recordedSession) {
     if (event.key === "ArrowLeft") select(currentVersion - 1);
     if (event.key === "ArrowRight") select(currentVersion + 1);
   };
+  const onVisibilityChange = () => {
+    if (document.hidden) stopReel("Reel paused while the page is in the background.");
+  };
   window.addEventListener("keydown", onKeydown);
-  select(currentVersion);
+  document.addEventListener("visibilitychange", onVisibilityChange);
+  select(initialVersion);
   return {
     selectedSession: () => branch ?? recordedSession,
-    dispose: () => window.removeEventListener("keydown", onKeydown),
+    dispose: () => {
+      stopReel();
+      window.removeEventListener("keydown", onKeydown);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      board.destroy();
+    },
   };
 }
 
@@ -200,12 +333,19 @@ let activeStudy = null;
 
 function openStudy(session, notes, hoverCard) {
   activeStudy?.dispose();
+  // A moment bookmark is an address into the SAME recorded game; it never
+  // admits an alternate game state or bypasses the rules engine.
+  const momentText = new URLSearchParams(location.hash.replace(/^#/, "")).get("moment");
+  const requestedMoment = momentText === null ? session.version : Number(momentText);
+  const firstMoment = Number.isSafeInteger(requestedMoment) &&
+    requestedMoment >= 0 && requestedMoment <= session.version
+    ? requestedMoment : session.version;
   const link = studyLink(session, location.href);
   history.replaceState(null, "", link);
   element("review-empty").hidden = true;
   element("review-app").hidden = false;
   const study = buildStudyReplay(session);
-  activeStudy = renderStudyReplay(study, hoverCard, session);
+  activeStudy = renderStudyReplay(study, hoverCard, session, firstMoment);
   const summary = element("concept-summary");
   summary.replaceChildren();
   renderConceptSummaryCard(summary, study, kernel, { hoverCard });
