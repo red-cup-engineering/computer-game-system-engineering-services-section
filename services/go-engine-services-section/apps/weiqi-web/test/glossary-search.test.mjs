@@ -30,7 +30,7 @@ test("case, combining marks, spaced words, explanations and related terms are di
   assert.deepEqual(slugs("neighbor"), ["atari"]);
   assert.deepEqual(slugs("mutual ko"), ["seki"]);
   assert.deepEqual(slugs("Kō"), ["seki"]);
-  assert.deepEqual(slugs("K O"), [], "each word must match, not arbitrary characters");
+  assert.deepEqual(slugs("mutual capture"), [], "all query words must match the same concept");
 });
 test("invalid and script-like search terms are plain text and never broaden or execute a search", () => {
   assert.deepEqual(slugs("^(.*)$"), []);
