@@ -20,7 +20,7 @@
     <p class="subtitle">Every real match can become a highlight reel. Watch and share captures, ko fights and escapes, or branch the engine-verified game and explore an alternative. Highlights are rules observations, not AI judgments of good or bad moves.</p>
     <div id="review-empty" class="card" hidden>
       <h2 style="margin-top:0;">Open a game</h2>
-      <p>Paste SGF text or choose an <code>.sgf</code> file. It is read through the engine's own parser and replayed move by move; setup stones and handicap records are not supported yet.</p>
+      <p>Paste SGF text or choose an <code>.sgf</code> file. It is read through the engine's own parser and replayed move by move. Standard fixed-star handicap SGF is supported; arbitrary setup-stone arrangements are refused.</p>
       <div class="settings-row"><label for="sgf-file">SGF file</label><input id="sgf-file" type="file" accept=".sgf,text/plain,application/x-go-sgf" /></div>
       <textarea id="sgf-text" rows="6" style="width:100%; font-family: ui-monospace, monospace;" placeholder="(;GM[1]FF[4]SZ[9];B[cc];W[gg]...)" aria-label="SGF text"></textarea>
       <div class="controls-row" style="margin-top:0.6rem;"><button id="load-sgf-btn" class="primary" type="button">Replay this SGF</button><a href="play.html">or play a game first</a></div>
