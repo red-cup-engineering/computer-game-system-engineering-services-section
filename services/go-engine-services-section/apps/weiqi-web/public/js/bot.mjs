@@ -76,20 +76,43 @@ export function isSelfHarmingMove(game, kernel, coord) {
  * reach two passes and a count:
  *   - a bot never fills its own eyes or self-ataris for nothing, and passes
  *     once those are the only legal placements left;
- *   - once the opponent has passed (`game.passStreak > 0` on the bot's
- *     turn), a bot plays on only to capture -- the count treats every stone
- *     on the board as alive, so an available capture is real points -- and
- *     with no capture available it passes and accepts the end of the main
- *     phase.
+ *   - an opponent's early pass is not automatically a concession of every
+ *     unclaimed point. After a pass, a bot keeps a capture available and can
+ *     contest neutral points when the engine's own score actually improves.
+ *     Territory rules allow non-self-harming development in unowned points
+ *     even before it changes the immediate territory count. Already-owned
+ *     empty territory stays untouched. When no useful contest remains,
+ *     the bot passes and accepts a count.
  * Returns [] exactly when the tier should pass; "pass" itself is always
- * legal but is never listed here.
+ * legal but is never listed here. A provisional score is NOT a terminal
+ * adjudication: after a pass the player can still fight for an unowned point.
  */
 export function candidateMoveCoords(game, kernel) {
   const useful = emptyPointCoords(game, kernel).filter(
     (coord) => game.isLegal(coord) && !isSelfHarmingMove(game, kernel, coord),
   );
   if (game.passStreak === 0) return useful;
-  return useful.filter((coord) => previewCaptureCount(game, kernel, coord) > 0);
+
+  // Passing is a scoring decision, not a signal to give up all unclaimed
+  // intersections. Read the ONE Go engine's provisional count and legal
+  // continuations; do not invent another territory or capture calculator.
+  const before = kernel.countPosition(game);
+  const mover = game.current.toMove;
+  const advantage = (score) => mover === kernel.BLACK
+    ? score.blackScore - score.whiteScore
+    : score.whiteScore - score.blackScore;
+  const initialAdvantage = advantage(before.score);
+  return useful.filter((coord) => {
+    if (previewCaptureCount(game, kernel, coord) > 0) return true;
+    const point = kernel.coordToPoint(game.size, game.size, coord);
+    if (before.ownership[point] === mover) return false; // own territory: don't waste a move
+    // A territory-scored group may require several moves to secure a region
+    // and need not gain an immediate point from its first legal extension.
+    if (before.mode === "territory") return true;
+    const trial = game.fork(); // preserve ko history, leave live game untouched
+    if (!trial.play(coord).ok) return false;
+    return advantage(kernel.countPosition(trial).score) > initialAdvantage;
+  });
 }
 
 /**

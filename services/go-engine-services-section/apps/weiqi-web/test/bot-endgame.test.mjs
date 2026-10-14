@@ -43,16 +43,56 @@ test("a self-atari that captures nothing is never a candidate, while a capturing
   assert.ok(candidateMoveCoords(capture, kernel).includes("E4"));
 });
 
-test("once the opponent has passed, every tier passes unless it can capture", () => {
+test("an early human pass does not make any opponent abandon useful Go territory", () => {
   const quiet = gameAfter(["E5", "E4", "pass"]);
   assert.equal(quiet.passStreak, 1);
-  assert.deepEqual(candidateMoveCoords(quiet, kernel), []);
-  for (const tier of BOT_TIERS) assert.equal(tier.chooser(quiet, kernel, first), "pass", `${tier.label} must accept the end`);
+  const before = kernel.countPosition(quiet).score;
+  const initialMargin = before.whiteScore - before.blackScore;
+  const candidates = candidateMoveCoords(quiet, kernel);
+  assert.ok(candidates.length > 0, "a pass on an unsettled board must leave real point gains to play");
+  for (const tier of BOT_TIERS) {
+    const selected = tier.chooser(quiet, kernel, first, { playouts: 6, maxPlayoutMoves: 0 });
+    assert.notEqual(selected, "pass", `${tier.label} must keep fighting for valuable intersections`);
+    assert.ok(candidates.includes(selected), `${tier.label} must choose from the rules-authorized contest`);
+    const branch = quiet.fork();
+    assert.equal(branch.play(selected).ok, true);
+    const after = kernel.countPosition(branch).score;
+    assert.ok(after.whiteScore - after.blackScore > initialMargin,
+      `${tier.label} must not waste a stone in territory already owned`);
+  }
+  assert.equal(quiet.passStreak, 1, "candidate evaluation never mutates the real game");
+  assert.equal(quiet.history.length, 4);
 
   const capture = gameAfter(["E5", "D5", "pass", "F5", "pass", "E6", "pass"]);
   assert.equal(capture.passStreak, 1);
   assert.deepEqual(candidateMoveCoords(capture, kernel), ["E4"]);
-  for (const tier of BOT_TIERS) assert.equal(tier.chooser(capture, kernel, first), "E4", `${tier.label} must take the capture`);
+  for (const tier of BOT_TIERS) assert.equal(tier.chooser(capture, kernel, first), "E4",
+    `${tier.label} must still take the real available capture`);
+});
+
+test("an opponent pass cannot trick bots into filling their own territory or a legal eye", () => {
+  const cells = new Array(25).fill(kernel.BLACK);
+  cells[kernel.coordToPoint(5, 5, "B2")] = kernel.EMPTY;
+  cells[kernel.coordToPoint(5, 5, "D4")] = kernel.EMPTY;
+  const game = new kernel.Game(5, "chinese",
+    kernel.createPositionFromCells(5, 5, cells, kernel.WHITE));
+  assert.equal(game.play("pass").ok, true);
+  assert.equal(game.passStreak, 1);
+  assert.deepEqual(candidateMoveCoords(game, kernel), []);
+  for (const tier of BOT_TIERS) assert.equal(tier.chooser(game, kernel, first), "pass",
+    `${tier.label} must not damage a finished position`);
+});
+
+test("Japanese territory rules allow a multi-move development after an early pass", () => {
+  const game = gameAfter(["E5", "E4", "pass"], 9, "japanese");
+  const before = kernel.countPosition(game);
+  assert.equal(before.mode, "territory");
+  assert.ok(candidateMoveCoords(game, kernel).length > 0,
+    "territory-play must not demand an immediate score gain for every useful step");
+  const move = BOT_TIERS.find((tier) => tier.id === "liberty").chooser(game, kernel, first);
+  assert.ok(game.isLegal(move));
+  assert.notEqual(move, "pass");
+  assert.equal(game.passStreak, 1);
 });
 
 test("with no eye fill or self-atari at stake, the opening candidate set is the whole legal set", () => {
