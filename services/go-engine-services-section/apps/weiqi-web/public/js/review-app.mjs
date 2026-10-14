@@ -249,17 +249,23 @@ function loadSgfText(text, hoverCard) {
 
 if (typeof document !== "undefined") {
   const hoverCard = new GlossaryHoverCard(await loadGlossary());
+  // SGF intake belongs to the page, even when its first game was opened
+  // from a share link. Importing another game replaces the old Study board.
+  element("load-sgf-btn").onclick = () => loadSgfText(element("sgf-text").value, hoverCard);
+  element("sgf-file").onchange = async (event) => {
+    const file = event.target.files?.[0];
+    if (file) loadSgfText(await file.text(), hoverCard);
+  };
+  element("review-import-btn").onclick = () => {
+    element("review-empty").hidden = false;
+    element("sgf-text").focus();
+  };
   const fromHash = sessionFromStudyHash(location.hash);
   if (fromHash?.ok) {
     openStudy(fromHash.session, [], hoverCard);
   } else {
     element("review-empty").hidden = false;
-    if (fromHash && !fromHash.ok) showImportError(`This link could not be replayed by the shared rules engine: ${fromHash.reason}.`);
-    element("load-sgf-btn").addEventListener("click", () => loadSgfText(element("sgf-text").value, hoverCard));
-    element("sgf-file").addEventListener("change", async (event) => {
-      const file = event.target.files?.[0];
-      if (!file) return;
-      loadSgfText(await file.text(), hoverCard);
-    });
+    if (fromHash && !fromHash.ok)
+      showImportError(`This link could not be replayed by the shared rules engine: ${fromHash.reason}.`);
   }
 }
