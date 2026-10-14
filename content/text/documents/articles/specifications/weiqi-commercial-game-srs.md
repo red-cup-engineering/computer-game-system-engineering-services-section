@@ -121,6 +121,9 @@ The next HLD must compare **(A) continue a standalone client-specific Go app** a
 
 ## 6. Acceptance and next legitimate source stage
 
+**Stage 3 source consumer:** The adjacent [Weiqi commercial architecture candidate](weiqi-commercial-game-hld.md) compares the retained standalone client, the existing shared Game/Web/Commerce composition, and the on-chain alternative against this SRS. It identifies the actual non-networked ZBD backend, fixed-goods versus commissioned-work commerce gap, and a distinct match-log revision needed for dead-stone proposal concurrency. This is a **candidate HLD** pending independent SRS/HLD admission, not an authorized LLD, new Game engine, generated software or customer release.
+
+
 **Recipient acceptance:** Red Cup's competent Game Systems spec authority and Causeway's real Public Games product owner independently assess the selected customer, payable benefit, trade-offs and observable cases against the original Work's R10–R20. Require named source revision and returned acceptance/refusal with actual unresolved terms. This SRS is a candidate until that happens.
 
 **Then and only then:** Red Cup admits the complete architecture context, component responsibilities, quality scenarios, failure/cost domains and actual selected Gitlink/registry/Guix provider graph. A distinct LLD and native Data/Code fabrication plan follow under the established [Correctness by Construction procedure](https://github.com/561-group/561-group-services-section/blob/main/lib/agency/skills/assess-code-family/references/development-intake.md). No hand-coded Weiqi UI, new payment adapter, fabricated native test or extra static storefront may be created merely to satisfy a checkbox in this document. A commercial imperative defines the smallest **coherent saleable game**, not permission to omit its real reusable suppliers.
