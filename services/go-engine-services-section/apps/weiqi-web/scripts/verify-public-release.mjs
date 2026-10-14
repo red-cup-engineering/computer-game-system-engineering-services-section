@@ -53,7 +53,7 @@ const receipts = await Promise.all(WEIQI_PUBLIC_ORIGINS.map(async (origin) => {
 }));
 // Keep the historical primary output shape for any existing release consumer.
 const [primary, ...aliases] = receipts;
-process.stdout.write(`${JSON.stringify({ ...primary, aliases }, null, 2)}\\n`);
+process.stdout.write(`${JSON.stringify({ ...primary, aliases }, null, 2)}\n`);
 if (receipts.some(({ observation, decision }) =>
   observation.kind === "public-release-observation-refusal" || decision?.disposition !== "no-op")) process.exitCode = 1;
 
