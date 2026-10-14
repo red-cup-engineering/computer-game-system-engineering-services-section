@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import * as kernel from "../public/js/kernel/index.mjs";
 import { buildStudyReplay, describeRulesObservation } from "../public/js/review-app.mjs";
-import { commandLabel } from "../public/js/study-replay.mjs";
+import { commandLabel, studyBranchAt, studyLink, sessionFromStudyHash } from "../public/js/study-replay.mjs";
 
 function admittedSession(commands) {
   let session = kernel.createWeiqiGameSession({ size: 9, ruleset: "chinese" });
@@ -108,4 +108,63 @@ test("Study names resignations and settlement instead of saying played undefined
   assert.equal(commandLabel({ kind: "settle", dead: [] }, kernel.WHITE), "Dead-stone count settled");
   assert.equal(commandLabel({ kind: "pass" }, kernel.BLACK), "Black passed");
   assert.equal(commandLabel({ kind: "play", move: "E5" }, kernel.WHITE), "White played E5");
+});
+
+test("Study can branch at any recorded move and play a distinct kernel-legal continuation", () => {
+  const original = admittedSession([
+    { kind: "play", move: "C3" }, { kind: "play", move: "G7" },
+    { kind: "play", move: "D3" }, { kind: "play", move: "F7" },
+  ]);
+  const base = studyBranchAt(original, 2);
+  assert.equal(base.version, 2);
+  assert.deepEqual(base.commands, original.commands.slice(0, 2));
+  const moved = kernel.admitWeiqiGameCommand(base, base.version, { kind: "play", move: "E4" });
+  assert.equal(moved.ok, true);
+  const variation = moved.session;
+  assert.equal(variation.version, 3);
+  assert.deepEqual(original.state.moves, ["C3", "G7", "D3", "F7"],
+    "studying a different move cannot rewrite the recorded game");
+  assert.notDeepEqual(variation.state.board, original.state.board);
+
+  const replayed = kernel.createWeiqiGameSession(original.config, [
+    ...original.commands.slice(0, 2), { kind: "play", move: "E4" },
+  ]);
+  assert.deepEqual(variation, replayed);
+  const link = studyLink(variation, "https://weiqi.play.561.group/review.html");
+  const opened = sessionFromStudyHash(new URL(link).hash);
+  assert.equal(opened.ok, true);
+  assert.deepEqual(opened.session.state.board, variation.state.board);
+  assert.deepEqual(opened.session.commands, variation.commands);
+  assert.throws(() => studyBranchAt(original, original.version + 1), /outside/);
+  assert.throws(() => studyBranchAt(original, -1), /outside/);
+});
+
+test("Study branching preserves handicap and ko/superko history under the real selected rules", () => {
+  const handicapped = kernel.createWeiqiGameSession({ size: 9, ruleset: "japanese", handicap: 2 }, [
+    { kind: "play", move: "E5" }, { kind: "play", move: "D4" },
+  ]);
+  const branch = studyBranchAt(handicapped, 1);
+  const before = kernel.materializeWeiqiGame(branch);
+  assert.equal(before.current.toMove, kernel.BLACK);
+  assert.equal(branch.config.handicap, 2);
+  assert.equal(before.current.board.filter(v => v === kernel.BLACK).length, 2,
+    "the original handicap setup remains in the accepted rules state");
+  assert.deepEqual(kernel.materializeWeiqiGame(branch).current.board,
+    kernel.materializeWeiqiGame(kernel.createWeiqiGameSession(handicapped.config, handicapped.commands.slice(0, 1))).current.board);
+});
+
+test("variation controls belong to the currently loaded game and do not resurrect old events", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const app = await readFile(new URL("../public/js/review-app.mjs", import.meta.url), "utf8");
+  const html = await readFile(new URL("../public/review.html", import.meta.url), "utf8");
+  for (const id of ["variation-explore", "variation-pass", "variation-undo", "variation-return", "variation-status"]) {
+    assert.ok(html.includes(`id="${id}"`), id);
+  }
+  assert.match(app, /studyBranchAt\(recordedSession, currentVersion\)/);
+  assert.match(app, /admitWeiqiGameCommand\(branch, branch.version, command\)/);
+  assert.match(app, /branch.version > branchBase/);
+  assert.match(app, /activeStudy\?\.dispose\(\)/);
+  assert.match(app, /previous\.onclick =/);
+  assert.match(app, /scrubber\.oninput =/);
+  assert.match(app, /activeStudy\.selectedSession\(\)/);
 });
