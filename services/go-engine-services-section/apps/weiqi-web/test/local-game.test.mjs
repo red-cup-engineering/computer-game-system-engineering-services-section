@@ -1,16 +1,13 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import * as kernel from "@red-cup-engineering/weiqi-engine";
+import { WALL_WITH_INVADER, sessionAfterMoves } from "@red-cup-engineering/weiqi-engine/testing";
 import { describeLocalCount, isUnsettledTwoPassPosition, localCount, toggleDeadGroup, undoLastExchange } from "../public/js/local-game.mjs";
 
 function sessionAfter(moves, size = 9) {
-  let session = kernel.createWeiqiGameSession({ size, ruleset: "chinese" });
-  for (const move of moves) {
-    const admitted = kernel.admitWeiqiGameCommand(session, session.version, move === "pass" ? { kind: "pass" } : { kind: "play", move });
-    assert.equal(admitted.ok, true, `${move} must be admitted`);
-    if (admitted.ok) session = admitted.session;
-  }
-  return session;
+  // Exercise the generated browser engine via the shared upstream test
+  // fixture. The fixture owns command formation, not legality.
+  return sessionAfterMoves({ size, ruleset: "chinese" }, moves, kernel);
 }
 
 test("undo as Black takes back the human's move and the bot's reply", () => {
@@ -56,7 +53,7 @@ test("marking toggles a whole group at once and ignores empty points", () => {
 test("the count removes marked stones as prisoners before the engine counts", () => {
   // Black walls column B, White walls column D on 5x5, White drops a stone
   // at A3 inside Black's side, then both pass.
-  const session = sessionAfter(["B1", "D1", "B2", "D2", "B3", "D3", "B4", "D4", "B5", "D5", "pass", "A3", "pass", "pass"], 5);
+  const session = sessionAfter(WALL_WITH_INVADER, 5);
   const game = kernel.materializeWeiqiGame(session);
   const alive = localCount(session, new Set(), kernel);
   assert.equal(alive.score.blackTerritory, 0);
@@ -140,10 +137,7 @@ test("restoring play distinguishes provisional two passes from later resumed pla
 });
 
 test("agreed counts are explicitly final and agree with upstream settlement scoring", () => {
-  const session = sessionAfter([
-    "B1", "D1", "B2", "D2", "B3", "D3", "B4", "D4", "B5", "D5",
-    "pass", "A3", "pass", "pass",
-  ], 5);
+  const session = sessionAfter(WALL_WITH_INVADER, 5);
   const accepted = kernel.admitWeiqiGameCommand(session, session.version,
     { kind: "settle", dead: ["A3"] });
   assert.equal(accepted.ok, true);
