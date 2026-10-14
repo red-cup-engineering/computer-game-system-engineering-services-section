@@ -198,6 +198,14 @@
       "reusableEngineeringReceiver": "Red Cup shared Game and Web/Commerce capabilities, not a new Weiqi-local payment or leaderboard service",
       "independentReceiving": "Coesite installed release; Group public game; legitimate buyer/payment provider and customer",
       "preservedEarlierDuties": "R3-R9 include separate sports, FOCG and leader working-game obligations unaffected by this Weiqi-focused revision"
+    },
+    "current-weiqi-srs": {
+      "source": "https://github.com/red-cup-engineering/computer-engineering-services-section/blob/main/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
+      "sourceBlob": "cfe31d844fe80cc190b849a465abfb3afcae381f",
+      "admission": "candidate-unreviewed",
+      "originRequirement": "games-pressure-upstream-and-the-sports-weiqi-lines",
+      "scope": "Weiqi player/game/commercial R1,R2,R10-R20; R3-R9 remain separate",
+      "nextQualifiedStep": "independent SRS ownership/recipient review, then 42010 HLD; no software source fabrication until admitted by native Data/Code mechanism"
     }
   }
 }
