@@ -90,7 +90,13 @@ updateSearch();
 // Deep-link support: if the page loads (or the hash changes) with a
 // #term-slug fragment, scroll that entry into view.
 function focusHash() {
-  const slug = decodeURIComponent(location.hash.slice(1));
+  let slug;
+  try {
+    slug = decodeURIComponent(location.hash.slice(1));
+  } catch {
+    // An invalid external fragment must not break the glossary or its search.
+    return;
+  }
   const el = entryNodes.get(slug);
   if (!el) return;
   // Links from Play, Learn, or another term must remain reachable during filtering.
