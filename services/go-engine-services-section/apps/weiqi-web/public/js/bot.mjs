@@ -110,9 +110,11 @@ export function candidateMoveCoords(game, kernel) {
     // A territory-scored group may require several moves to secure a region
     // and need not gain an immediate point from its first legal extension.
     if (before.mode === "territory") return true;
-    const trial = game.fork(); // preserve ko history, leave live game untouched
-    if (!trial.play(coord).ok) return false;
-    return advantage(kernel.countPosition(trial).score) > initialAdvantage;
+    // The candidate was already verified legal (including ko/superko).
+    // Score its pure kernel position rather than forking/replaying an entire
+    // game for each empty point; 19x19 can offer hundreds of candidates.
+    const placement = kernel.applyStonePlacement(game.current, point, game.ruleset);
+    return placement.ok && advantage(kernel.scoreArea(placement.position, game.ruleset)) > initialAdvantage;
   });
 }
 

@@ -92,6 +92,15 @@ test("an opponent pass cannot trick bots into filling their own territory or a l
     `${tier.label} must not damage a finished position`);
 });
 
+test("area-score endgame candidate evaluation uses the upstream pure scorer, without cloning whole histories", () => {
+  const game = gameAfter(["E5", "E4", "pass"]);
+  game.fork = () => { throw new Error("do not fork every candidate to count area"); };
+  const options = candidateMoveCoords(game, kernel);
+  assert.ok(options.length > 0);
+  for (const coord of options) assert.equal(game.isLegal(coord), true);
+  assert.equal(game.history.length, 4, "a provisional count must not change the accepted match");
+});
+
 test("Japanese territory rules allow a multi-move development after an early pass", () => {
   const game = gameAfter(["E5", "E4", "pass"], 9, "japanese");
   const before = kernel.countPosition(game);
