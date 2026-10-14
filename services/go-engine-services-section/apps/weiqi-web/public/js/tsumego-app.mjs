@@ -393,9 +393,14 @@ function submitPuzzleMove(coord) {
   operation.catch((error) => {
     if (ticket !== problemEpoch) return;
     transitionBusy = false;
+    awaitingRetry = false;
+    solved = false;
+    resetBtn.disabled = Boolean(rush);
+    skipBtn.disabled = false;
+    passProblemBtn.disabled = false;
     board.setLegalityChecker(() => false);
-    showFeedback("wrong", `This puzzle couldn't finish: ${error.message}. Try resetting the problem.`);
-    board.announce("The problem could not finish. Try resetting.");
+    showFeedback("wrong", `This puzzle couldn't finish: ${error.message}. Reset the problem or skip it.`);
+    board.announce("The problem could not finish. Reset or skip.");
   });
 }
 
