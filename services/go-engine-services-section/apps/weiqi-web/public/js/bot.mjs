@@ -500,6 +500,8 @@ export function chooseMonteCarloMove(game, kernel, rng = Math.random, options = 
   root.children = rankedMoves(game, kernel, candidates, rng)
     .slice(0, limit).map((coord) => treeNode(coord, color));
 
+  const onProgress = typeof options.onProgress === "function" ? options.onProgress : null;
+  const reportEvery = Math.max(1, Math.ceil(playouts / 8));
   for (let iteration = 0; iteration < playouts; iteration++) {
     const trial = game.fork();
     const path = [];
@@ -527,6 +529,18 @@ export function chooseMonteCarloMove(game, kernel, rng = Math.random, options = 
       visited.visits += 1;
       if (winner === visited.mover) visited.wins += 1;
       else if (winner === kernel.EMPTY) visited.wins += 0.5;
+    }
+    if (onProgress && ((iteration + 1) % reportEvery === 0 || iteration + 1 === playouts)) {
+      const visited = root.children.filter((child) => child.visits > 0)
+        .sort((a, b) => b.visits - a.visits || a.coord.localeCompare(b.coord));
+      // Visits are measured evidence of search work, not a claim of a
+      // calibrated winning chance or professional playing strength.
+      onProgress(Object.freeze({
+        completed: iteration + 1, total: playouts,
+        explored: visited.length,
+        leadingMove: visited[0]?.coord ?? null,
+        leadingVisits: visited[0]?.visits ?? 0,
+      }));
     }
   }
 
@@ -585,6 +599,6 @@ export const BOT_TIERS = Object.freeze([
     tagline: "Searches a tree of random playouts, each scored by the engine's own count, and plays the most-explored move.",
     description:
       "The search-tier opponent: bounded progressive-width UCT focuses visits on tactical candidates and explores replies rather than spending its full budget trying each empty point once. The rules engine still judges every move and score. It is not a neural Go engine and can misread ladders; thinking runs off the page thread.",
-    chooser: (game, kernel, rng = Math.random) => chooseMonteCarloMove(game, kernel, rng),
+    chooser: (game, kernel, rng = Math.random, options = {}) => chooseMonteCarloMove(game, kernel, rng, options),
   }),
 ]);
