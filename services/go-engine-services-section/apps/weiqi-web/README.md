@@ -5,10 +5,16 @@ local bot tiers, with undo and dead-stone marking at the count), **Tsumego** (a 
 kernel-verified problem trainer with spaced-repetition review), **Learn** (an interactive lesson
 player), **Study** (a replay of a share link, a finished Play session, or an imported SGF, with a concept
 summary and a share link out), **Read** (the compiled glossary). Installable, with study content
-available offline. Static and client-side, with one exact-pinned rules
-owner, per
-[the Weiqi Platform Plan](../../../../../../../../../../../science-services-section/services/philosophy-services-section/services/relationality-services-section/services/agency-services-section/services/being-services-section/services/doing-services-section/services/playing-services-section/services/gaming-services-section/services/board-games-services-section/services/weiqi-services-section/content/text/documents/articles/notes/weiqi-platform-plan.md) —
-"no accounts, no server state, deployable exactly like 561.group." All rules authority stays with
+available offline. The existing implementation is a standalone static/offline game mode, not the
+complete current commercial platform. The [Red Cup Commercial Game SRS](https://github.com/red-cup-engineering/computer-engineering-services-section/blob/main/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md)
+is the current **candidate** requirements specification for commercially viable modern
+gameplay, integrating the already-owned game-audio, agent-cast, scoring/competition,
+Go analysis, multiplayer and native Stripe/storefront suppliers through Red Cup's
+qualified architecture, design and fabrication process. The original
+[August Science platform plan](https://github.com/lenticule-science/science-services-section/blob/main/services/philosophy-services-section/services/relationality-services-section/services/agency-services-section/services/being-services-section/services/doing-services-section/services/playing-services-section/services/gaming-services-section/services/board-games-services-section/services/weiqi-services-section/content/text/documents/articles/notes/weiqi-platform-plan.md)
+is historical scientific context, not authority to keep the commercial game
+client-only or postpone actually paid products. No upstream package is
+declared installed here merely because it is available in source. All rules authority stays with
 [`@red-cup-engineering/weiqi-engine`](../../../../../../../../engineering-services-section/services/computer-engineering-services-section/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/weiqi-engine/README.md); this app renders what the engine
 computes and never reimplements legality, scoring, or event recognition.
 
