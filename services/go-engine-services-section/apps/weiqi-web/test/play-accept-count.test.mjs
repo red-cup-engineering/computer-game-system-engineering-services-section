@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import * as kernel from "../public/js/kernel/index.mjs";
+import { WALL_WITH_INVADER, sessionAfterMoves } from "@red-cup-engineering/weiqi-engine/testing";
 import { localCount, describeLocalCount } from "../public/js/local-game.mjs";
 import { buildStudyReplay, playLink, sessionFromStudyHash, studyLink } from "../public/js/study-replay.mjs";
 
@@ -20,16 +21,11 @@ if (renderBegin < 0 || renderEnd < 0) throw new Error("Play render control state
 const renderSource = source.slice(renderBegin, renderEnd);
 
 function liveFixture() {
-  // Black's B-column wall, White's D-column wall, White A3 invader,
-  // followed by two passes. A3 is a real stone and may be agreed dead.
-  const moves = [
-    "B1", "D1", "B2", "D2", "B3", "D3", "B4", "D4", "B5", "D5",
-    "pass", "A3", "pass", "pass",
-  ];
-  const commands = moves.map((move) =>
-    move === "pass" ? { kind: "pass" } : { kind: "play", move });
-  const session = kernel.createWeiqiGameSession(
-    { size: 5, ruleset: "chinese" }, commands);
+  // Whole-group/settlement truth comes from the generated browser kernel;
+  // the input sequence is the same upstream-owned wall fixture used by
+  // engine and two-player match regressions.
+  const session = sessionAfterMoves(
+    { size: 5, ruleset: "chinese" }, WALL_WITH_INVADER, kernel);
   assert.equal(session.state.passStreak, 2);
   assert.equal(session.state.result, null);
   return session;
