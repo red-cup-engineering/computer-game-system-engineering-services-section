@@ -407,6 +407,13 @@ function rootPrior(game, kernel, point, atariStones, lastPoint) {
   if (own.liberties.size > 1 && own.stones.some((s) => atariStones.has(s))) prior += 3;
   if (minAdjacentEnemyLiberties(kernel, placement.position, width, point, opp) === 1) prior += 2;
   if (lastPoint !== null && kernel.neighbors(width, width, lastPoint).includes(point)) prior += 1;
+  // With no local fight, Go openings compete for corners rather than
+  // repeating the old static center bonus on every large empty board.
+  // These are the upstream ruleset's own star points, not an invented board.
+  if (width >= 13 && game.history.length <= Math.floor(width / 2)) {
+    const stars = kernel.handicapPoints(width, 4);
+    if (stars.includes(kernel.pointToCoord(width, point))) prior += 2.5;
+  }
   return prior;
 }
 
@@ -427,19 +434,47 @@ function selectChild(children, parentVisits) {
   return best;
 }
 
-/** A node's children: every non-eye-filling empty point for the side to
- * move at `trial`, in random order. Legality is settled when a child is
- * first played (a refused move is dropped from the node), which is cheaper
- * than checking every point at expansion. */
-function expandChildren(trial, kernel, rng) {
-  const { board, toMove } = trial.current;
-  const width = trial.size;
-  const points = playoutCandidates(kernel, board, width, toMove);
-  for (let i = points.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1));
-    [points[i], points[j]] = [points[j], points[i]];
+/**
+ * Progressive candidate width: searching 40 times across 361 empty points
+ * leaves each root child unvisited or visited once. Keep enough width for
+ * real alternatives, but reserve repeated visits and opponent responses.
+ * The same cap applies to internal nodes, not just the root.
+ */
+export function searchCandidateWidth(available, playouts) {
+  if (!Number.isSafeInteger(available) || available < 0 ||
+      !Number.isSafeInteger(playouts) || playouts < 1) {
+    throw new TypeError("Search requires a nonnegative legal count and positive integer playout budget");
   }
-  return points.map((point) => treeNode(kernel.pointToCoord(width, point), toMove));
+  return Math.min(available, Math.max(1, Math.floor(Math.sqrt(playouts))), Math.max(1, Math.floor(playouts / 2)));
+}
+
+/** Sort actual kernel-legal tactical alternatives, shuffling equal priorities
+ * with injected randomness so an empty-board game isn't always the same side.
+ * No second rules or scoring engine is involved. */
+function rankedMoves(game, kernel, coordinates, rng) {
+  const color = game.current.toMove;
+  const endangered = colorAtariStones(game, kernel, color);
+  const last = lastPlacedPoint(game);
+  const choices = coordinates.map((coord) => ({
+    coord,
+    score: rootPrior(game, kernel, kernel.coordToPoint(game.size, game.size, coord), endangered, last),
+  }));
+  for (let i = choices.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [choices[i], choices[j]] = [choices[j], choices[i]];
+  }
+  return choices.sort((a, b) => b.score - a.score).map((choice) => choice.coord);
+}
+
+/** Internal UCT positions need actionable candidate breadth too: otherwise
+ * the next turn is as diluted as the 19x19 root used to be. */
+function expandChildren(trial, kernel, rng, playouts) {
+  const { board, toMove } = trial.current;
+  const points = playoutCandidates(kernel, board, trial.size, toMove);
+  const width = searchCandidateWidth(points.length, playouts);
+  const moves = points.map((point) => kernel.pointToCoord(trial.size, point));
+  return rankedMoves(trial, kernel, moves, rng)
+    .slice(0, width).map((coord) => treeNode(coord, toMove));
 }
 
 /**
@@ -458,16 +493,12 @@ export function chooseMonteCarloMove(game, kernel, rng = Math.random, options = 
   if (candidates.length === 0) return "pass";
   if (candidates.length === 1) return candidates[0];
   const playouts = options.playouts ?? monteCarloBudget(game.size);
+  const limit = searchCandidateWidth(candidates.length, playouts);
   const maxMoves = options.maxPlayoutMoves ?? game.size * game.size * 2;
-  const width = game.size;
   const color = game.current.toMove;
-  const atariStones = colorAtariStones(game, kernel, color);
-  const lastPoint = lastPlacedPoint(game);
   const root = treeNode(null, null);
-  root.children = candidates
-    .map((coord) => ({ node: treeNode(coord, color), prior: rootPrior(game, kernel, kernel.coordToPoint(width, width, coord), atariStones, lastPoint) }))
-    .sort((a, b) => b.prior - a.prior)
-    .map((entry) => entry.node);
+  root.children = rankedMoves(game, kernel, candidates, rng)
+    .slice(0, limit).map((coord) => treeNode(coord, color));
 
   for (let iteration = 0; iteration < playouts; iteration++) {
     const trial = game.fork();
@@ -483,7 +514,7 @@ export function chooseMonteCarloMove(game, kernel, rng = Math.random, options = 
       node = next;
     }
     if (node.children === null && node.visits > 0 && !trial.mainPhaseEnded) {
-      node.children = expandChildren(trial, kernel, rng);
+      node.children = expandChildren(trial, kernel, rng, playouts);
       while (node.children.length > 0) {
         const next = node.children[0];
         if (trial.play(next.coord).ok) { path.push(next); node = next; break; }
@@ -553,7 +584,7 @@ export const BOT_TIERS = Object.freeze([
     label: "Pondering",
     tagline: "Searches a tree of random playouts, each scored by the engine's own count, and plays the most-explored move.",
     description:
-      "The first tier that looks past one move: Monte Carlo tree search (UCT) over the kernel-legal candidates, every playout a random game the engine plays to the end and counts. No shape knowledge and a few hundred playouts per move, so it misreads ladders and long fights -- but it does read a few moves ahead. Thinks about a second per move, off the page thread.",
+      "The search-tier opponent: bounded progressive-width UCT focuses visits on tactical candidates and explores replies rather than spending its full budget trying each empty point once. The rules engine still judges every move and score. It is not a neural Go engine and can misread ladders; thinking runs off the page thread.",
     chooser: (game, kernel, rng = Math.random) => chooseMonteCarloMove(game, kernel, rng),
   }),
 ]);
