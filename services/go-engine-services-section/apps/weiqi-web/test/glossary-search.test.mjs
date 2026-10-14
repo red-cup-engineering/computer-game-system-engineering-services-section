@@ -62,6 +62,8 @@ test("glossary receiving surface provides accessible search and preserves deep l
   assert.match(script, /searchEl\.addEventListener\("input", updateSearch\)/);
   assert.match(script, /entryNodes\.get\(slug\)/);
   assert.match(script, /if \(el\.hidden\) \{/);
+  assert.match(script, /if \(!searchEl \|\| !clearEl \|\| !statusEl \|\| !emptyEl\) return;/);
+  assert.match(script, /el\.hidden = false;/);
   assert.match(script, /decodeURIComponent/);
   assert.match(script, /catch \{/);
 });
