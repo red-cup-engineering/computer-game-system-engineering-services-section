@@ -22,4 +22,6 @@ test('both Weiqi public receivers bind to the same static-assets Worker', async 
     assert.equal(route?.custom_domain, true, `expected an exact custom domain for ${hostname}`);
   }
   assert.ok(wrangler.assets && typeof wrangler.assets.directory === 'string', 'expected an assets.directory binding');
+  assert.equal(wrangler.main, undefined, 'this receiver must remain static: no implicit online-match Worker');
+  assert.equal(wrangler.durable_objects, undefined, 'a public-host alias must not activate unpublished match state');
 });
