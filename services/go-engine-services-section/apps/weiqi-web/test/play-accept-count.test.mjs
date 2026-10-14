@@ -154,7 +154,7 @@ function renderedCountButton(session, {
 } = {}) {
   const acceptCountBtn = { hidden: true, disabled: true };
   const dependencies = {
-    acceptCountBtn, session, marking, finished, botThinking, CAPTURE_GO, watchReelBtn: null,
+    acceptCountBtn, session, marking, finished, botThinking, CAPTURE_GO, watchReelBtn: null, repriseBtn: null,
     kernel, openingError: null, humanColor: kernel.BLACK,
     keepGameLink() {},
     board: { setPosition() {}, setLegalityChecker() {} },
@@ -213,4 +213,31 @@ test("a settled local Go game offers the playable source-verified spectator reel
   const watched = studyLink(accepted.session, "https://weiqi.play.561.group/play.html");
   assert.equal(sessionFromStudyHash(new URL(watched).hash).ok, true);
   assert.equal(buildStudyReplay(accepted.session).frames.at(-1).command.kind, "settle");
+});
+
+test("postgame reprise opens a genuine legal branching point, never a new guessed game", async () => {
+  const html = await readFile(new URL("../public/play.html", import.meta.url), "utf8");
+  assert.match(html, /id="reprise-btn"[^>]*hidden[^>]*disabled/);
+  assert.match(source, /kernel\.planReplayMoments\(accepted\.frames/);
+  assert.match(source, /params\.set\("explore", "1"\)/);
+  assert.match(source, /const from = best \? best\.version - 1/);
+  const session = kernel.createWeiqiGameSession({ size: 9, ruleset: "chinese" }, [
+    { kind: "play", move: "C3" }, { kind: "play", move: "C4" },
+    { kind: "play", move: "B4" }, { kind: "play", move: "A1" },
+    { kind: "play", move: "D4" }, { kind: "play", move: "A2" },
+    { kind: "play", move: "C5" },
+  ]);
+  const studied = buildStudyReplay(session);
+  const selected = kernel.planReplayMoments(studied.frames).find(x => x.kind === "capture");
+  assert.ok(selected && selected.version > 0);
+  const from = selected.version - 1;
+  const link = new URL(studyLink(session, "https://weiqi.play.561.group/play.html"));
+  const params = new URLSearchParams(link.hash.slice(1));
+  params.set("moment", String(from));
+  params.set("explore", "1");
+  link.hash = params.toString();
+  assert.equal(sessionFromStudyHash(link.hash).ok, true);
+  assert.equal(params.get("moment"), String(from));
+  assert.equal(params.get("explore"), "1");
+  assert.ok(from < session.version);
 });

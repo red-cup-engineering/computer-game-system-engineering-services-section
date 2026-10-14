@@ -41,6 +41,7 @@ const acceptCountBtn = document.getElementById("accept-count-btn");
 const undoBtn = document.getElementById("undo-btn");
 const studyGameBtn = document.getElementById("study-game-btn");
 const watchReelBtn = document.getElementById("watch-reel-btn");
+const repriseBtn = document.getElementById("reprise-btn");
 const downloadSgfBtn = document.getElementById("download-sgf-btn");
 const botSelect = document.getElementById("bot-select");
 const boardSizeSelect = document.getElementById("board-size-select");
@@ -243,6 +244,10 @@ function render() {
   if (watchReelBtn) {
     watchReelBtn.hidden = !finished || session.version === 0;
     watchReelBtn.disabled = !finished || session.version === 0;
+  }
+  if (repriseBtn) {
+    repriseBtn.hidden = !finished || session.version === 0;
+    repriseBtn.disabled = !finished || session.version === 0;
   }
   const inProgress = session.version > 0 && !finished;
   botSelect.disabled = inProgress;
@@ -496,6 +501,25 @@ if (watchReelBtn) {
     const link = new URL(studyLink(session, location.href));
     const params = new URLSearchParams(link.hash.slice(1));
     params.set("moment", "0");
+    link.hash = params.toString();
+    location.href = link.href;
+  });
+}
+if (repriseBtn) {
+  repriseBtn.addEventListener("click", () => {
+    if (!finished || session.version === 0) return;
+    const accepted = buildStudyReplay(session);
+    // A highlight's impact selects entertainment emphasis, not a verdict
+    // that a move was strategically good or bad. Rewind to the legal turn
+    // immediately BEFORE the event and let the player try another line.
+    const best = kernel.planReplayMoments(accepted.frames, { limit: 12 })
+      .filter((beat) => beat.version > 0 && beat.version < session.version && beat.impact > 0)
+      .sort((a, b) => b.impact - a.impact || a.version - b.version)[0];
+    const from = best ? best.version - 1 : Math.floor(session.version / 2);
+    const link = new URL(studyLink(session, location.href));
+    const params = new URLSearchParams(link.hash.slice(1));
+    params.set("moment", String(from));
+    params.set("explore", "1");
     link.hash = params.toString();
     location.href = link.href;
   });

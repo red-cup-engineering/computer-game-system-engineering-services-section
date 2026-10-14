@@ -20,7 +20,7 @@ function element(id) {
   return found;
 }
 
-function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = study.version) {
+function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = study.version, exploreImmediately = false) {
   // Importing a second SGF replaces the previous game, not a second board
   // and second timeline layered over the original.
   const host = element("board-host");
@@ -312,6 +312,7 @@ function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = s
   window.addEventListener("keydown", onKeydown);
   document.addEventListener("visibilitychange", onVisibilityChange);
   select(initialVersion);
+  if (exploreImmediately) exploreBtn.click();
   return {
     selectedSession: () => branch ?? recordedSession,
     dispose: () => {
@@ -335,7 +336,9 @@ function openStudy(session, notes, hoverCard) {
   activeStudy?.dispose();
   // A moment bookmark is an address into the SAME recorded game; it never
   // admits an alternate game state or bypasses the rules engine.
-  const momentText = new URLSearchParams(location.hash.replace(/^#/, "")).get("moment");
+  const incoming = new URLSearchParams(location.hash.replace(/^#/, ""));
+  const momentText = incoming.get("moment");
+  const exploreImmediately = incoming.get("explore") === "1";
   const requestedMoment = momentText === null ? session.version : Number(momentText);
   const firstMoment = Number.isSafeInteger(requestedMoment) &&
     requestedMoment >= 0 && requestedMoment <= session.version
@@ -345,7 +348,7 @@ function openStudy(session, notes, hoverCard) {
   element("review-empty").hidden = true;
   element("review-app").hidden = false;
   const study = buildStudyReplay(session);
-  activeStudy = renderStudyReplay(study, hoverCard, session, firstMoment);
+  activeStudy = renderStudyReplay(study, hoverCard, session, firstMoment, exploreImmediately);
   const summary = element("concept-summary");
   summary.replaceChildren();
   renderConceptSummaryCard(summary, study, kernel, { hoverCard });

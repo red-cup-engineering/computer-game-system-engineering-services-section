@@ -203,3 +203,13 @@ test("cinematic replay controls reuse Study's original engine/timeline and clean
   assert.match(app, /params\.set\("moment", String\(currentVersion\)\)/);
   assert.match(app, /document\.addEventListener\("visibilitychange"/);
 });
+
+test("a challenge deep link enters Study's original versioned branch from the selected moment", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const app = await readFile(new URL("../public/js/review-app.mjs", import.meta.url), "utf8");
+  assert.match(app, /incoming\.get\("explore"\) === "1"/);
+  assert.match(app, /if \(exploreImmediately\) exploreBtn\.click\(\)/);
+  assert.match(app, /branch = studyBranchAt\(recordedSession, currentVersion\)/);
+  assert.match(app, /branch = outcome\.session/);
+  assert.match(app, /const requestedMoment/);
+});
