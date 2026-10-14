@@ -43,8 +43,9 @@ test("the actual Worker config selects the player origin and all distinct static
 
 test("bad routes, shadow routes and stateful Workers are refused before publishing", async () => {
   const wrangler = JSON.parse(await readFile(new URL("wrangler.jsonc", ROOT), "utf8"));
-  const [first, ...rest] = wrangler.routes;
-  assert.throws(() => publicWeiqiOrigins({ ...wrangler, routes: rest }), /requested Weiqi player origin/);
+  const [first] = wrangler.routes;
+  const withoutPlayerOrigin = wrangler.routes.filter((route) => route.pattern !== new URL(WEIQI_ORIGIN).host);
+  assert.throws(() => publicWeiqiOrigins({ ...wrangler, routes: withoutPlayerOrigin }), /requested Weiqi player origin/);
   assert.throws(() => publicWeiqiOrigins({ ...wrangler, routes: [...wrangler.routes, first] }), /duplicate/);
   assert.throws(() => publicWeiqiOrigins({ ...wrangler, routes: [{ pattern: "*.561.group", custom_domain: true }] }), /non-wildcard/);
   assert.throws(() => publicWeiqiOrigins({ ...wrangler, routes: [{ ...first, custom_domain: false }] }), /custom domains/);
