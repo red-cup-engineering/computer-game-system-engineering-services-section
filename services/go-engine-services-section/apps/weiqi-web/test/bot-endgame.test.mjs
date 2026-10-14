@@ -248,3 +248,38 @@ test("large-board opening shortlist considers genuine kernel-owned 4-4 corner st
   assert.equal(searchCandidateWidth(81, 400), 20);
   assert.throws(() => searchCandidateWidth(100, 0), /positive integer/);
 });
+
+test("Pondering emits measured progressive search, not invented win percentages", () => {
+  const game = new kernel.Game(9, "chinese");
+  const observations = [];
+  const tier = BOT_TIERS.find(x => x.id === "montecarlo");
+  const move = tier.chooser(game, kernel, () => 0.37, {
+    playouts: 16,
+    maxPlayoutMoves: 0,
+    onProgress: (progress) => observations.push(progress),
+  });
+  assert.ok(game.isLegal(move));
+  assert.ok(observations.length >= 3);
+  assert.equal(observations.at(-1).completed, 16);
+  assert.equal(observations.at(-1).total, 16);
+  for (let i = 0; i < observations.length; i++) {
+    const progress = observations[i];
+    assert.ok(progress.completed > (observations[i - 1]?.completed ?? 0));
+    assert.ok(progress.explored > 0 && progress.explored <= progress.completed);
+    assert.ok(progress.leadingMove && game.isLegal(progress.leadingMove));
+    assert.ok(progress.leadingVisits >= 1);
+    assert.equal(Object.hasOwn(progress, "winProbability"), false,
+      "search visits must not be presented as calibrated winning odds");
+  }
+  assert.equal(game.history.length, 1);
+});
+
+test("the Play receiver chooses Pondering for normal games and consumes real worker search updates", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const app = await readFile(new URL("../public/js/play-app.mjs", import.meta.url), "utf8");
+  const worker = await readFile(new URL("../public/js/bot-worker.mjs", import.meta.url), "utf8");
+  assert.match(app, /CAPTURE_GO \? "greedy" : "montecarlo"/);
+  assert.match(app, /pending\.onProgress\?\.\(data\.progress\)/);
+  assert.match(app, /progress\.completed/);
+  assert.match(worker, /onProgress: \(progress\) => self\.postMessage/);
+});
