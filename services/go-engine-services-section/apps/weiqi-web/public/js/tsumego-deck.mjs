@@ -59,14 +59,38 @@ export function buildQueue(problems, srsStates, { category = "all", band = "all"
     });
 }
 
-/** Reproducible daily puzzle order, reusing the source-authored problems. */
+/**
+ * One daily contest from the existing verified puzzle corpus, escalating
+ * introductory → developing → challenging rather than arbitrarily jumping
+ * between novice and expert problems. All participants get the same
+ * UTC-day-selected puzzles, independent of catalog insertion order.
+ */
 export function rushDeck(problems, day, { limit = 30 } = {}) {
   if (!Number.isSafeInteger(day) || !Number.isSafeInteger(limit) || limit < 1) throw new TypeError("Invalid rush day or limit");
   const unique = new Map(problems.map(p => [p.id, p]));
   if (unique.size !== problems.length) throw new TypeError("Duplicate puzzle IDs");
   const seed = [...String(day)].reduce((a, c) => Math.imul(a ^ c.charCodeAt(0), 16777619) >>> 0, 2166136261);
   const hash = id => [...id].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0, seed);
-  return [...unique.values()].sort((a, b) => (hash(a.id) - hash(b.id)) || a.id.localeCompare(b.id)).slice(0, limit);
+  const shuffle = entries => entries.sort((a, b) => (hash(a.id) - hash(b.id)) || a.id.localeCompare(b.id));
+  const entries = [...unique.values()];
+  const bands = ["introductory", "developing", "challenging"];
+  const initial = Math.floor(limit * 0.4);
+  const quotas = [initial, initial, limit - initial * 2];
+  const chosen = [];
+  const seen = new Set();
+  for (const [index, band] of bands.entries()) {
+    for (const p of shuffle(entries.filter(p => p.band === band)).slice(0, quotas[index])) {
+      chosen.push(p);
+      seen.add(p.id);
+    }
+  }
+  // Any source with fewer graded items remains playable; all fallback
+  // choices still come from the one actual admitted game-problem set.
+  for (const p of shuffle(entries.filter(p => !seen.has(p.id)))) {
+    if (chosen.length === Math.min(limit, entries.length)) break;
+    chosen.push(p);
+  }
+  return chosen;
 }
 /** Score only outcomes already judged by the authoritative rules game. */
 export function rushResult(state, correct) {
