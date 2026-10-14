@@ -22,9 +22,19 @@ import { WeiqiBoard } from "./board.mjs";
 import { GlossaryHoverCard, loadGlossary } from "./hover-card.mjs";
 import { WeiqiSound } from "./sound.mjs";
 import { reviewCard } from "./srs.mjs";
-import { epochDay, buildQueue } from "./tsumego-deck.mjs";
+import { epochDay, buildQueue, rushDeck, rushResult } from "./tsumego-deck.mjs";
 import { foundationProblemForTrainer } from "./tsumego-foundations.mjs";
 
+const RUSH_SECONDS = 90;
+const RUSH_BEST_KEY = "weiqi-puzzle-rush-best";
+const rushStart = document.getElementById("rush-start");
+const rushStop = document.getElementById("rush-stop");
+const rushClock = document.getElementById("rush-clock");
+const rushScore = document.getElementById("rush-score");
+const rushLives = document.getElementById("rush-lives");
+const rushBest = document.getElementById("rush-best");
+let rush = null;
+let rushTimer = null;
 const RULESET = "chinese"; // arbitrary but fixed, matching test/tsumego-data.test.mts -- none of these problems turn on ko regime or komi
 export const TSUMEGO_SRS_KEY = "weiqi-tsumego-srs";
 
@@ -111,6 +121,39 @@ function startingPositionFor(problem) {
   return kernel.createPositionFromCells(problem.size, problem.size, cells, colorOf(problem.toPlay));
 }
 
+function showRush() {
+  if (!rush) return;
+  const seconds = Math.max(0, Math.ceil((rush.endsAt - performance.now()) / 1000));
+  rushClock.textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+  rushScore.textContent = `${rush.score} pts · ${rush.streak} streak`;
+  rushLives.textContent = "♥ ".repeat(rush.lives).trim() || "No lives";
+  if (seconds === 0) finishRush();
+}
+function finishRush() {
+  if (!rush) return;
+  const score = rush.score;
+  let prior = 0;
+  try { prior = Number(localStorage.getItem(RUSH_BEST_KEY) || 0) || 0;
+    if (score > prior) localStorage.setItem(RUSH_BEST_KEY, String(score));
+  } catch { /* local records are optional */ }
+  rushBest.textContent = `Personal best: ${Math.max(score, prior)} · Last run: ${score}`;
+  clearInterval(rushTimer); rushTimer = null; rush = null;
+  rushStart.hidden = false; rushStop.hidden = true;
+  dueOnlyToggle.disabled = false; categorySelect.disabled = false; bandSelect.disabled = false;
+  showFeedback("correct", `Run complete — ${score} points. Play again to beat your best.`);
+}
+function startRush() {
+  clearInterval(rushTimer);
+  rush = { endsAt: performance.now() + RUSH_SECONDS * 1000, score: 0, streak: 0, bestStreak: 0, solved: 0, answered: 0, lives: 3 };
+  queue = rushDeck(allProblems, epochDay()); queueIndex = 0;
+  dueOnlyToggle.disabled = true; categorySelect.disabled = true; bandSelect.disabled = true;
+  rushStart.hidden = true; rushStop.hidden = false;
+  rushTimer = setInterval(showRush, 200);
+  showRush(); loadProblemAt(0);
+}
+rushStart.addEventListener("click", startRush);
+rushStop.addEventListener("click", finishRush);
+try { rushBest.textContent = `Personal best: ${Number(localStorage.getItem(RUSH_BEST_KEY) || 0) || 0}`; } catch {}
 function rebuildQueue() {
   queue = buildQueue(allProblems, srsStates, {
     category: categorySelect.value,
@@ -133,6 +176,7 @@ function sourceLine(problem) {
 }
 
 function loadProblemAt(index) {
+  if (rush && (rush.lives === 0 || performance.now() >= rush.endsAt || index >= queue.length)) { finishRush(); return; }
   if (index >= queue.length) {
     currentProblem = null;
     board.setLegalityChecker(() => false);
@@ -206,6 +250,8 @@ function showFeedback(kind, text) {
 }
 
 async function onCorrect(acceptMove) {
+  const wasRush = Boolean(rush);
+  if (wasRush) { rush = rushResult(rush, true); showRush(); }
   solved = true;
   board.setLegalityChecker(() => false);
   await playMoveOnBoard(acceptMove);
@@ -213,10 +259,16 @@ async function onCorrect(acceptMove) {
   sound.playGameEnd();
   showFeedback("correct", `Correct! ${currentProblem.prompt}`);
   board.announce("Correct.");
-  gradePanel.hidden = false;
+  gradePanel.hidden = wasRush;
+  if (wasRush && rush) { queueIndex += 1; loadProblemAt(queueIndex); }
 }
 
 async function onWrong(triedCoord) {
+  if (rush) {
+    rush = rushResult(rush, false); showRush();
+    if (!rush || rush.lives === 0) { finishRush(); return; }
+    queueIndex += 1; loadProblemAt(queueIndex); return;
+  }
   awaitingRetry = true;
   board.setLegalityChecker(() => false);
   await playMoveOnBoard(triedCoord);
@@ -279,6 +331,7 @@ document.querySelectorAll(".grade-btn").forEach((btn) => {
 // --- Deck controls -----------------------------------------------------------
 
 function onDeckControlsChanged() {
+  if (rush) return;
   rebuildQueue();
   loadProblemAt(0);
 }
@@ -287,8 +340,9 @@ categorySelect.addEventListener("change", onDeckControlsChanged);
 bandSelect.addEventListener("change", onDeckControlsChanged);
 dueOnlyToggle.addEventListener("change", onDeckControlsChanged);
 
-resetBtn.addEventListener("click", () => loadProblemAt(queueIndex));
+resetBtn.addEventListener("click", () => { if (!rush) loadProblemAt(queueIndex); });
 skipBtn.addEventListener("click", () => {
+  if (rush) { rush = rushResult(rush, false); if (rush.lives === 0) { finishRush(); return; } showRush(); }
   queueIndex += 1;
   loadProblemAt(queueIndex);
 });
