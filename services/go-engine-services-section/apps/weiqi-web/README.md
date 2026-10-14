@@ -91,14 +91,18 @@ scripts, package files, this README).
 npm run deploy    # source gates, build, deploy, then independent public artifact-hash readback
 ```
 
-The deploy wrapper records the prior and newly-active Worker versions, then binds the exact
-`public/` artifact manifest to independent probes of the canonical receiver. It fails unless
-the shared release decision accepts the receiver readback. `custom_domain: true` in
-`wrangler.jsonc` attaches both `weiqi.561.group` and `weiqi.play.561.group` to the same
-static-assets Worker, retaining the old hostname while admitting the play-shelf URL.
-The release observer now checks each hostname's complete artifact-hash probes separately;
-passing on one hostname never certifies the other. Both bindings need an active
-Cloudflare zone and must be deployed and independently received before claiming the new URL works. `npm run dev` runs `wrangler dev` for a local preview of the deployed shape.
+The deployment command first checks the actual Worker version reported by
+Wrangler and publishes the built artifacts. It independently requests every
+public host declared by `wrangler.jsonc`, refusing mismatched response status,
+media type, artifact bytes, host identity or release identity. No locally
+constructed active-provider receipt, artificial `no-op` decision or second
+host registry can satisfy those receiving checks. `weiqi.play.561.group`
+is the canonical player address, while `weiqi.561.group` remains an
+independently observed route on the same configured Worker. A successful
+HTTP artifact check is distinct from Cloudflare account-state verification
+and from a real person's legal completed game; none is inferred from
+source commits or synthetic tests. Cloudflare must actually accept each
+custom-domain binding in an active zone before the public URLs can work. `npm run dev` runs `wrangler dev` for a local preview of the deployed shape.
 `npm run serve` (`scripts/serve.mjs`) remains a plain `node:http` dev/test convenience
 only; it is never what production serves.
 
