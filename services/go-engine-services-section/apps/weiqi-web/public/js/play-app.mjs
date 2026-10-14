@@ -25,6 +25,7 @@ const BOARD_SIZES = [9, 13, 19];
 const TOUCH_MODE_KEY = "weiqi-touch-mode";
 const BOARD_SIZE_KEY = "weiqi-board-size";
 const HUMAN_COLOR_KEY = "weiqi-human-color";
+const BOT_TIER_KEY = "weiqi-opponent-tier";
 const MIN_BOT_REPLY_MS = 260;
 
 const boardHost = document.getElementById("board-host");
@@ -70,7 +71,8 @@ for (const bot of BOT_TIERS) {
   option.textContent = `${bot.label} — ${bot.tagline}`;
   botSelect.append(option);
 }
-botSelect.value = "influence";
+const savedBot = readSetting(BOT_TIER_KEY, CAPTURE_GO ? "greedy" : "montecarlo");
+botSelect.value = BOT_TIERS.some((tier) => tier.id === savedBot) ? savedBot : (CAPTURE_GO ? "greedy" : "montecarlo");
 if (boardSizeSelect) {
   const stored = readSetting(BOARD_SIZE_KEY, "9");
   boardSizeSelect.value = BOARD_SIZES.includes(Number(stored)) ? stored : "9";
@@ -124,14 +126,18 @@ function createBotWorker() {
     worker.addEventListener("message", ({ data }) => {
       const pending = pendingBotReplies.get(data?.id);
       if (!pending) return;
+      if (data?.type === "progress") {
+        pending.onProgress?.(data.progress);
+        return;
+      }
       pendingBotReplies.delete(data.id);
-      pending(data.ok ? data.move : null);
+      pending.resolve(data.ok ? data.move : null);
     });
     worker.addEventListener("error", () => {
       // The worker could not load or threw: answer every waiter with null
       // so it falls back to thinking on the page thread, and stop using it.
       botWorker = null;
-      for (const pending of pendingBotReplies.values()) pending(null);
+      for (const pending of pendingBotReplies.values()) pending.resolve(null);
       pendingBotReplies.clear();
     });
     return worker;
@@ -141,11 +147,11 @@ function createBotWorker() {
 }
 
 /** The tier's reply for `forSession`, computed in the worker when possible and on the page thread otherwise. */
-async function chooseBotMove(forSession, tier) {
+async function chooseBotMove(forSession, tier, onProgress = null) {
   if (botWorker) {
     const id = ++botRequestId;
     const reply = await new Promise((resolve) => {
-      pendingBotReplies.set(id, resolve);
+      pendingBotReplies.set(id, { resolve, onProgress });
       botWorker.postMessage({ id, session: forSession, tierId: tier.id });
     });
     if (reply !== null) return reply;
@@ -331,7 +337,12 @@ async function playBotTurn() {
   botThinking = true;
   render();
   const startedAt = Date.now();
-  const move = await chooseBotMove(forSession, selectedBot());
+  const tier = selectedBot();
+  const move = await chooseBotMove(forSession, tier, (progress) => {
+    if (startedGeneration !== generation || !botThinking ||
+        tier.id !== "montecarlo" || !Number.isInteger(progress?.completed)) return;
+    setStatus(`${tier.label} is reading the board — ${progress.completed}/${progress.total} simulations; ${progress.explored} continuations explored.`);
+  });
   const wait = MIN_BOT_REPLY_MS - (Date.now() - startedAt);
   if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
   if (startedGeneration !== generation) return; // New game or Undo superseded this reply
@@ -344,6 +355,7 @@ function startNewGame() {
   openingError = null;
   resigned = false;
   generation += 1;
+  if (!CAPTURE_GO) writeSetting(BOT_TIER_KEY, selectedBot().id);
   const size = CAPTURE_GO ? DEFAULT_BOARD_SIZE : selectedBoardSize();
   humanColor = CAPTURE_GO ? kernel.BLACK : selectedHumanColor();
   if (boardSizeSelect) writeSetting(BOARD_SIZE_KEY, String(size));
