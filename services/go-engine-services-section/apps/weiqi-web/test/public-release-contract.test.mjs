@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { decidePublicRelease } from "@red-cup-engineering/web-release-candidate-service";
-import { createWeiqiPublicRelease, WEIQI_PUBLIC_PROBES } from "../scripts/public-release-contract.mjs";
+import { createWeiqiPublicRelease, WEIQI_PUBLIC_ORIGINS, WEIQI_PUBLIC_PROBES } from "../scripts/public-release-contract.mjs";
 
 test("the public release contract binds Study Replay and the shared browser engine to Weiqi's static receiver", () => {
   const artifacts = new Map([
@@ -53,4 +53,26 @@ test("the public release contract binds Study Replay and the shared browser engi
     })),
   };
   assert.equal(decidePublicRelease({ release, activeReceipt: receipt, receiverObservation: observation }).disposition, "no-op");
+});
+
+test("both public hosts are independently bound to the same Worker and release artifact", () => {
+  const artifacts = new Map([
+    ["index.html", "home"], ["play.html", "play"], ["review.html", "study"],
+    ["js/kernel/index.mjs", "engine"], ["js/review-app.mjs", "review"],
+    ["manifest.webmanifest", "manifest"], ["sw.js", "worker"],
+  ]);
+  const routes = WEIQI_PUBLIC_ORIGINS.map((origin) => ({ pattern: new URL(origin).host, custom_domain: true }));
+  const shared = { artifacts, repository: "https://example.test/owner/source", revision: "commit",
+    wrangler: { name: "weiqi-561-group", assets: { directory: "./public" }, routes }, baselineVersion: "before" };
+  const releases = WEIQI_PUBLIC_ORIGINS.map((origin) => createWeiqiPublicRelease({ ...shared, origin }));
+  assert.deepEqual(releases.map((release) => release.channel.canonicalOrigin), WEIQI_PUBLIC_ORIGINS);
+  assert.deepEqual(releases.map((release) => release.target.receiver), ["worker:weiqi-561-group", "worker:weiqi-561-group"]);
+  assert.deepEqual(releases[0].channel.probes, releases[1].channel.probes);
+  assert.deepEqual(releases.map((release) => release.artifact.manifest.artifactCount), [artifacts.size, artifacts.size]);
+  assert.notEqual(releases[0].digest, releases[1].digest, "distinct public receivers require distinct observations");
+  const missingAlias = { ...shared, wrangler: { ...shared.wrangler, routes: routes.slice(0, 1) } };
+  assert.throws(() => createWeiqiPublicRelease({ ...missingAlias, origin: WEIQI_PUBLIC_ORIGINS[1] }), /custom_domain binding/);
+  assert.throws(() => createWeiqiPublicRelease({ ...shared, origin: "https://unowned.example.com/" }), /not an approved public receiver/);
+  const falselyDeclaredAlias = { ...shared, wrangler: { ...shared.wrangler, routes: [routes[0], { ...routes[1], custom_domain: false }] } };
+  assert.throws(() => createWeiqiPublicRelease({ ...falselyDeclaredAlias, origin: WEIQI_PUBLIC_ORIGINS[1] }), /custom_domain binding/);
 });
