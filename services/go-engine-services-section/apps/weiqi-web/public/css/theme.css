@@ -890,3 +890,8 @@ footer.site-footer {
 @media(max-width:720px){.lobby-hero,.lobby-secondary{grid-template-columns:1fr}.lobby-hero-board{min-height:19rem}.lobby-board-grid{width:min(72%,18rem)}.lobby-hero-copy{padding:2rem}.lobby-section-heading{align-items:flex-start;flex-direction:column}.lobby-modes{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){.lobby-modes{grid-template-columns:1fr}.lobby-mode{min-height:12rem}}
 @media(prefers-reduced-motion:reduce){.lobby-mode,.lobby-button{transition:none}.lobby-mode:hover,.lobby-button:hover{transform:none}}
+
+.rush-feedback {grid-column:1/-1;min-height:2.7rem;display:flex;align-items:center;background:#ffffff10;border:1px solid #ffffff28;border-radius:.65rem;padding:.7rem 1rem;font:700 .95rem/1.4 system-ui,sans-serif;color:#fff}
+.rush-feedback[data-result="correct"] {background:#15584a;border-color:#5dd5ad;color:#d7fff2}
+.rush-feedback[data-result="wrong"] {background:#702e36;border-color:#f18b89;color:#fff0e9}
+.rush-feedback[data-result="finished"] {background:#6a5028;border-color:#ffcd75;color:#ffedc8}
