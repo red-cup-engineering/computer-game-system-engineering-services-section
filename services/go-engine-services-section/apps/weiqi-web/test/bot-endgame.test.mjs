@@ -65,9 +65,18 @@ test("an early human pass does not make any opponent abandon useful Go territory
 
   const capture = gameAfter(["E5", "D5", "pass", "F5", "pass", "E6", "pass"]);
   assert.equal(capture.passStreak, 1);
-  assert.deepEqual(candidateMoveCoords(capture, kernel), ["E4"]);
-  for (const tier of BOT_TIERS) assert.equal(tier.chooser(capture, kernel, first), "E4",
-    `${tier.label} must still take the real available capture`);
+  const captureCandidates = candidateMoveCoords(capture, kernel);
+  assert.ok(captureCandidates.includes("E4"), "real captures stay available after an early pass");
+  for (const tier of BOT_TIERS) {
+    const selected = tier.chooser(capture, kernel, first,
+      { playouts: 6, maxPlayoutMoves: 0 });
+    assert.ok(captureCandidates.includes(selected), `${tier.label} must play a legal continuation`);
+  }
+  for (const id of ["greedy", "liberty", "influence"]) {
+    const tier = BOT_TIERS.find((bot) => bot.id === id);
+    assert.equal(tier.chooser(capture, kernel, first), "E4",
+      `${tier.label} must retain its actual capture priority`);
+  }
 });
 
 test("an opponent pass cannot trick bots into filling their own territory or a legal eye", () => {

@@ -8,8 +8,9 @@
 // file for the one honest, shared description table, and the app README
 // for why none of these carry a kyu/dan claim. All five draw their
 // candidates from candidateMoveCoords, which carries the one piece of
-// endgame sense every tier shares: never fill your own eyes, and pass
-// once the opponent has passed and nothing can be captured.
+// endgame sense every tier shares: never fill your own eyes, contest
+// score-improving unclaimed points after an early pass, and stop once
+// the engine finds no useful continuation.
 //
 // Kernel-agnostic by design: this module never imports the kernel itself.
 // Every function takes the kernel's module namespace as an explicit `kernel`
