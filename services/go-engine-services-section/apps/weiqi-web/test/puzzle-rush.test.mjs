@@ -40,3 +40,32 @@ test("the actual player pages wire the arcade to the original game board and hom
   assert.match(theme, /\.rush-panel/);
   assert.match(theme, /\.lobby-modes/);
 });
+
+test("a daily run uses the real 56-problem corpus in escalating difficulty rather than random whiplash", async () => {
+  const original = JSON.parse(await readFile(new URL("../public/data/tsumego.json", import.meta.url), "utf8")).problems;
+  const foundations = JSON.parse(await readFile(new URL("../public/data/tsumego-foundations.json", import.meta.url), "utf8")).problems;
+  const all = [...original, ...foundations.map((p) => ({ ...p, band: "introductory" }))];
+  assert.equal(all.length, 56);
+  const today = rushDeck(all, 20740);
+  assert.deepEqual(today.map((p) => p.band), [
+    ...Array(12).fill("introductory"),
+    ...Array(12).fill("developing"),
+    ...Array(6).fill("challenging"),
+  ]);
+  assert.equal(new Set(today.map((p) => p.id)).size, 30);
+  assert.deepEqual(rushDeck([...all].reverse(), 20740).map((p) => p.id),
+    today.map((p) => p.id), "source reading order must not affect daily challenge");
+  assert.notDeepEqual(rushDeck(all, 20741).map((p) => p.id), today.map((p) => p.id));
+});
+
+test("an interrupted or expired arcade problem cannot mutate a newer problem or spend time auto-playing solutions", async () => {
+  const client = await readFile(new URL("../public/js/tsumego-app.mjs", import.meta.url), "utf8");
+  const html = await readFile(new URL("../public/tsumego.html", import.meta.url), "utf8");
+  assert.match(client, /problemEpoch\+\+/);
+  assert.match(client, /ticket !== problemEpoch/);
+  assert.match(client, /if \(!rush\) return;/);
+  assert.match(client, /if \(transitionBusy\) return;/);
+  assert.match(client, /const suggested = await playMoveOnBoard\(problem.accept\[0\]\)/);
+  assert.match(client, /Rush/);
+  assert.match(html, /id="rush-feedback"/);
+});
