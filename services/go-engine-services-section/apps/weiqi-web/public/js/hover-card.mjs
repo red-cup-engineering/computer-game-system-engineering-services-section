@@ -98,3 +98,21 @@ export async function loadGlossary() {
   if (!res.ok) throw new Error(`Failed to load glossary.json: ${res.status}`);
   return res.json();
 }
+
+
+/** Search the source-derived term graph without a server, analytics, or a second index.
+ * Every word must match either a term or its directly linked explanation.
+ * Returned entries are references to the original glossary, never replacements. */
+export function searchGlossary(glossary, query = "") {
+  const fold = (value) => String(value ?? "")
+    .normalize("NFKD").replace(/\p{M}/gu, "").toLocaleLowerCase("en").trim();
+  const words = fold(query).split(/\s+/u).filter(Boolean);
+  return Object.values(glossary)
+    .filter((entry) => {
+      const connected = (entry.related ?? []).flatMap((ref) => [ref.title, ref.slug, ref.note]);
+      const fields = [entry.slug, entry.title, entry.definition, entry.elaboration, ...connected];
+      const text = fold(fields.filter((value) => typeof value === "string").join(" "));
+      return words.every((word) => text.includes(word));
+    })
+    .sort((a, b) => a.title.localeCompare(b.title));
+}
