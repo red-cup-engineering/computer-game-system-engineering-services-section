@@ -13,10 +13,13 @@ import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SITE_ROOT = path.resolve(HERE, '..');
-test('weiqi.561.group has its own custom_domain route with a static assets binding', async () => {
+test('both Weiqi public receivers bind to the same static-assets Worker', async () => {
   const wrangler = JSON.parse(await readFile(path.join(SITE_ROOT, 'wrangler.jsonc'), 'utf8'));
-  const route = wrangler.routes.find((r) => r.pattern === 'weiqi.561.group');
-  assert.ok(route, 'expected a { pattern: "weiqi.561.group", custom_domain: true } route');
-  assert.equal(route.custom_domain, true);
+  const acceptedHosts = ['weiqi.561.group', 'weiqi.play.561.group'];
+  assert.deepEqual(wrangler.routes.map((route) => route.pattern).sort(), acceptedHosts.sort());
+  for (const hostname of acceptedHosts) {
+    const route = wrangler.routes.find((candidate) => candidate.pattern === hostname);
+    assert.equal(route?.custom_domain, true, `expected an exact custom domain for ${hostname}`);
+  }
   assert.ok(wrangler.assets && typeof wrangler.assets.directory === 'string', 'expected an assets.directory binding');
 });
