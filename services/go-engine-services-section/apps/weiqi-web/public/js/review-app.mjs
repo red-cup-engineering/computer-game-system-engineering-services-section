@@ -98,7 +98,7 @@ function renderStudyReplay(study, hoverCard, recordedSession) {
     if (!branch) return;
     const game = kernel.materializeWeiqiGame(branch);
     const last = branch.commands.at(-1);
-    const latestEvents = game.moveEvents.at(-1) ?? [];
+    const latestEvents = branch.version > branchBase ? (game.moveEvents.at(-1) ?? []) : [];
     const moves = branch.version - branchBase;
     board.setPosition(game.current.board, { toMove: game.current.toMove });
     board.setLastMove(last?.kind === "play" ? last.move : null);
@@ -134,7 +134,7 @@ function renderStudyReplay(study, hoverCard, recordedSession) {
     board.announce(command.kind === "pass" ? "Variation: passed." : `Variation: played ${command.move}.`);
   }
 
-  exploreBtn.addEventListener("click", () => {
+  exploreBtn.onclick = () => {
     branch = studyBranchAt(recordedSession, currentVersion);
     if (branch.state.result !== null) {
       branch = null;
@@ -144,16 +144,16 @@ function renderStudyReplay(study, hoverCard, recordedSession) {
     branchBase = currentVersion;
     renderBranch();
     board.announce("Exploration started. Try a legal move on the board.");
-  });
+  };
   board.addEventListener("weiqi-move", (event) =>
     applyVariation({ kind: "play", move: event.detail.coord }));
-  passBtn.addEventListener("click", () => applyVariation({ kind: "pass" }));
-  undoBtn.addEventListener("click", () => {
+  passBtn.onclick = () => applyVariation({ kind: "pass" });
+  undoBtn.onclick = () => {
     if (!branch || branch.version <= branchBase) return;
     branch = studyBranchAt(branch, branch.version - 1);
     renderBranch();
-  });
-  returnBtn.addEventListener("click", () => select(currentVersion));
+  };
+  returnBtn.onclick = () => select(currentVersion);
 
   for (const frame of study.frames) {
     const item = document.createElement("div");
@@ -174,9 +174,9 @@ function renderStudyReplay(study, hoverCard, recordedSession) {
     timeline.append(item);
   }
 
-  scrubber.addEventListener("input", () => select(Number(scrubber.value)));
-  previous.addEventListener("click", () => select(currentVersion - 1));
-  next.addEventListener("click", () => select(currentVersion + 1));
+  scrubber.oninput = () => select(Number(scrubber.value));
+  previous.onclick = () => select(currentVersion - 1);
+  next.onclick = () => select(currentVersion + 1);
   const onKeydown = (event) => {
     if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
     if (event.key === "ArrowLeft") select(currentVersion - 1);
