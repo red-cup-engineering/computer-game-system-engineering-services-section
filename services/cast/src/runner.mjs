@@ -52,6 +52,8 @@ export function createRunner(options) {
     toIntent = identity,
     classifyReaction = () => null,
     dialogueContext = () => ({}),
+    // Null means this game has no casino-style idle bark to manufacture.
+    idleSituation = 'chat-idle',
     shouldStop = defaultShouldStop,
     maxSteps = Infinity,
     sleep = defaultSleep,
@@ -163,8 +165,8 @@ export function createRunner(options) {
         const situation = classifyReaction(decision, result, gameState);
         if (situation !== null && situation !== undefined) {
           yield* emitReaction(situation, dialogueContext(decision, result, gameState));
-        } else {
-          yield* emitReaction('chat-idle', {});
+        } else if (idleSituation !== null) {
+          yield* emitReaction(idleSituation, {});
         }
 
         stepCount += 1;

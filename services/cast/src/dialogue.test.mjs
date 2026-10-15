@@ -98,3 +98,44 @@ test('every SITUATIONS entry produces at least one line for every authored perso
     }
   }
 });
+
+test('a Weiqi idol can speak for an explicitly authored source-event situation', () => {
+  const persona = {
+    ...pearl,
+    lines: {
+      ...(pearl.lines ?? {}),
+      'capture': ['{name} saw {stonesCaptured} stones captured at {point}.'],
+      'ko-started': ['The ko at {point} changes the room.'],
+    },
+    temperament: { ...pearl.temperament, chattiness: 0.5 },
+  };
+  assert.deepEqual(say(persona, 'capture', {
+    seed: 'game:42:event:9',
+    context: { stonesCaptured: 3, point: 'D4' },
+  }), ['Pearl Winkle saw 3 stones captured at D4.']);
+  assert.deepEqual(say(persona, 'ko-started', {
+    seed: 'game:42:event:10', context: { point: 'C3' },
+  }), ['The ko at C3 changes the room.']);
+  assert.equal(reactionProbability(persona, 'capture'), 1);
+  assert.equal(reactTo(persona, 'capture', { seed: 'g:1:9' }),
+    reactTo(persona, 'capture', { seed: 'g:1:9' }));
+  assert.equal(say(persona, 'loss', { seed: 'casino-unchanged' }).length, 1);
+});
+
+test('Cast refuses unauthored and invalid invented event vocabulary', () => {
+  assert.throws(() => say(pearl, 'capture'), /unauthored/);
+  assert.throws(() => reactionProbability(pearl, 'ko-started'), /unauthored/);
+  assert.throws(() => say({ ...pearl, lines: { capture: [] } }, 'capture'), /unauthored/);
+  assert.throws(() => say({ ...pearl, lines: { capture: [''] } }, 'capture'), /unauthored/);
+  assert.throws(() => say({ ...pearl, lines: Object.create({ capture: ['not owned'] }) }, 'capture'),
+    /unauthored/);
+});
+
+test('game-authored reserved-name events cannot inherit a casino template', () => {
+  const lines = Object.create(null);
+  lines.constructor = ['A sourced move at {point}, not JavaScript ancestry.'];
+  const persona = { ...pearl, lines, temperament: { ...pearl.temperament, chattiness: 0.5 } };
+  assert.deepEqual(say(persona, 'constructor', { context: { point: 'D7' } }),
+    ['A sourced move at D7, not JavaScript ancestry.']);
+  assert.equal(reactionProbability(persona, 'constructor'), 1);
+});
