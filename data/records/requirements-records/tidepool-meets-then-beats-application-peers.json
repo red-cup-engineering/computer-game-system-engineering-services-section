@@ -1,0 +1,64 @@
+{
+  "id": "tidepool-meets-then-beats-application-peers",
+  "name": "Tidepool meets then beats its application peers",
+  "kind": "requirement",
+  "raised-by": "emsenn",
+  "asks": "we wanna list meet-then-beats for more of our apps/ basically every app",
+  "comparison": {
+    "required-of": "561-group",
+    "subject": {
+      "kind": "system",
+      "name": "Tidepool"
+    },
+    "relation": "meet-then-beat",
+    "against": [
+      {
+        "name": "Evennia",
+        "domain": "programmable persistent multiuser worlds and human/agent interfaces"
+      },
+      {
+        "name": "LambdaMOO",
+        "domain": "live programmable world interaction, object persistence and participant agency"
+      }
+    ]
+  },
+  "met-when": [
+    {
+      "cell": "tidepool-meets-then-beats-application-peers:source",
+      "target": "held",
+      "says": "The actual Tidepool world/server and human/agent clients are recovered or coherently fabricated in their own Engineering repository and canonical game-app home; the catalog record alone does not supply the missing software."
+    },
+    {
+      "cell": "tidepool-meets-then-beats-application-peers:meet",
+      "target": "held",
+      "says": "Tidepool demonstrates parity with every named target on its relevant player and author workflows, with pinned baselines, explicit coverage, comparable conditions and independent receiving evidence."
+    },
+    {
+      "cell": "tidepool-meets-then-beats-application-peers:beat",
+      "target": "held",
+      "says": "After parity with each target, Tidepool demonstrates a material improvement in useful play or authoring capability while retaining the parity capabilities."
+    }
+  ],
+  "x-provenance": {
+    "recorded-by": "codex",
+    "recorded-on": "2026-10-15",
+    "leader-source": "lib/emsenn/services/561-group/services/561-group-services-section/data/records/leader-source-records/2026-10-15-application-meet-then-beat-expansion.json",
+    "target-selection-authority": "You should use your own best thinking and ambitions to say what each should meet-then-beat",
+    "leader-named-targets": [],
+    "agent-selected-targets": [
+      "Evennia",
+      "LambdaMOO"
+    ],
+    "intended-capability": "A rich tidal persistent-world application in which humans and agents can play, author, trade and govern through a legible protocol, with recoverable source and durable world continuity.",
+    "classification": "recovery-required application; the authored catalog explicitly records that current world source is absent",
+    "primary-sources": [
+      "https://www.evennia.com/docs/latest/",
+      "https://sourceforge.net/projects/lambdamoo/"
+    ],
+    "qualification-gaps": [
+      "Resolve exact versions, capability coverage, workloads, measures and independent receiving operations; no parity, superiority or signed enterprise admission is asserted."
+    ],
+    "held-catalog": "lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-games-services-section/services/public-web-games-services-section/sites/tidepool.561.group/catalog-entry.json",
+    "source-gap": "The held catalog states that world code, protocol documentation, terminal and bot clients are not present at a recorded repository path. No placeholder repository is substituted for recovery."
+  }
+}
