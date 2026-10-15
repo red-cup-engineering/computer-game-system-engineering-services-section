@@ -182,6 +182,27 @@
           "class": "functional",
           "moscow": "must",
           "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: each admitted line has a priced deliverable/offer, actual supplier/economic authority and a falsifiable pay-versus-delivery test; costed gross and net receiving determine continuation. Neither idle ticks nor cosmetic badges count as earned money."
+        },
+        {
+          "id": "R21",
+          "class": "functional",
+          "moscow": "must",
+          "says": "The WeiqIdol flagship shall deliver a connected, authentic, independently received season of recurring named performers whose actual Go matches and source-attributed actions determine replayable stories, voluntary rivalries and next playable encounters, rather than a cosmetic NPC skin or chat-only response.",
+          "rationale": "Refines the Leader's 2026-10-14 WeiqIdol focus with the original August vision, Lenticule 2026-10-14 oshi-katsu evidence, Causeway's selected Noodle Bar Cup complete-season public outcome and existing Red Cup WG-SRS-017. Receiving: second-client player observes one original accepted match, recognized persistent rival, true source-linked performance and consequential rematch; full season uses the eight original authored distinct opponents. Source-only Cast code, scene mock or legal standalone board is insufficient."
+        },
+        {
+          "id": "R22",
+          "class": "functional",
+          "moscow": "must",
+          "says": "Public Games shall test and deliver a real complete rights-cleared WeiqIdol season purchase through the existing fixed Digital Goods/Stripe supplier while keeping opt-in fan support, decorative customization, creator compensation, institutional offers and BTC Lightning/ZBD obligations separate from matches and from one another.",
+          "rationale": "Leader's profit-primary requirement and specific WeiqIdol focus; Causeway selected the one-time complete-season purchase as a price-testing candidate, not an active $24.99 SKU. Lenticule science EC-05/06/07 distinguishes official goods, decorative fan goods, meaningful encounters and limitations of digitally mediated presence. Acceptance: the legal buyer receives/reopens complete licensed paid entertainment with exact provider settlement, rights, refunds and measured contribution; funded rewards require external beneficiary/treasury finality. No fabricated checkout, simulated sats or fan score is commercial receipt."
+        },
+        {
+          "id": "R23",
+          "class": "quality",
+          "moscow": "must",
+          "says": "Before representing authenticated durable Weiqi contests or idol career events as source-qualified, Engineering shall reconcile its original match settlement test with the current exact match revision contract through native Red Cup Data/Code fabrication and run the actual integrated consumer tests.",
+          "rationale": "Source-qualified mismatch observed 2026-10-14: weiqi-engine/src/match.mjs requires expectedRevision: match.revision; test/match-settlement.test.mjs still supplies expectedVersion: match.session.version and therefore produces invalid-request before testing pending settlement. Other original match, web and Cast consumers already use expectedRevision. One renamed key alone cannot fix stale pending-proposal concurrency. Receiving: owner-approved source migration, actual test run of fresh proposal, stale competitor refusal, genuine agreement and replay, second consumer readback, then independently installed public play; no compatibility shim, handwritten source patch or post-hoc certification."
         }
       ]
     },
@@ -192,7 +213,7 @@
     },
     "revision-2026-10-14": {
       "basis": "Leader's repeated CEO Weiqisday demand on 2026-10-14, including explicit rejection of hand-coded thin capabilities and of treating source documents as market/product acceptance",
-      "stage": "Work requirements authorized by Leader, independently testable R1/R2/R10-R20 and WX01-10 choices present; SRS, HLD and LLD are unadmitted candidates; prior direct software edits not fabricated under native CbC; independent user-visible game, release and commercial receiving remain open",
+      "stage": "Leader-authorized Work R1-R23 and Causeway full-season product selection now address idol research, matched gameplay and paid receiving; SRS/HLD/LLD and Science model remain candidate/unadmitted; previous manual source changes remain candidate implementation evidence; native builds, installed first-party game, payer and profit not independently received.",
       "distinction": "Each met-when names an independent receiving obligation, not a status claim. The former source-note existence check was only capture evidence; it cannot discharge any product obligation.",
       "commercialReceiver": "Causeway Public Games",
       "reusableEngineeringReceiver": "Red Cup shared Game and Web/Commerce capabilities, not a new Weiqi-local payment or leaderboard service",
@@ -201,20 +222,20 @@
     },
     "current-weiqi-srs": {
       "source": "https://github.com/red-cup-engineering/computer-engineering-services-section/blob/main/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
-      "sourceBlob": "8d90300126584edabd693852e100a69c3781cac0",
+      "sourceBlob": "c7a5298d794f85e1be71490c8ed1d98e79f8ba93",
       "admission": "candidate-for-independent-acceptance; source presence only",
       "originRequirement": "games-pressure-upstream-and-the-sports-weiqi-lines",
-      "scope": "Weiqi player/game/commercial R1,R2,R10-R20; R3-R9 remain separate",
+      "scope": "Current exact candidate R1,R2,R10-R23; R3-R9 remain separate sports/FOCG/leader games.",
       "nextQualifiedStep": "Under the source-owned bilateral CbC method, recover actual Science law/assumptions and market/standards constraints; admit requirements and behavioral spec separately with Causeway/Red Cup; admit Architecture and Design on exact source graph; qualify the existing Code/Data native work order and fabrication plan; only then change software and run real native package V-model assays, integrated consumers, Guix/LAGOON/Cloudflare receiving and whole paying/customer game loop."
     },
     "current-weiqi-architecture": {
       "specificationSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
-      "specificationBlob": "8d90300126584edabd693852e100a69c3781cac0",
+      "specificationBlob": "c7a5298d794f85e1be71490c8ed1d98e79f8ba93",
       "architectureSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-hld.md",
-      "architectureBlob": "ade13d2504557d42deef1b7db4c490828de80b70",
+      "architectureBlob": "f76103b962123ce89732b27cc8f8efe734169693",
       "detailedDesignSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-lld.md",
-      "detailedDesignBlob": "28556e2f7876a8cc12753536de63790b47ffe25b",
-      "admission": "All SRS/HLD/LLD source revisions observed, each expressly candidate/not independently admitted; absence of separately accepted requirements/specification/architecture/design and qualified native Data/Code fabrication is a hard effect refusal",
+      "detailedDesignBlob": "269e931dc584710b2baea8781f881881cf4963e3",
+      "admission": "Candidate Science, requirements and source-owned SRS/HLD/LLD updated after 2026-10-14; distinct independently received specification, 42010 architecture, design and native Data/Code fabrication absent. Do not infer successful product or test.",
       "oneGameAuthority": "Red Cup weiqi-engine, single versioned match/SGF history; no browser or QwzSpace competing legality/ledger",
       "commercialReceiver": "Causeway Public Games WXWQ / WeiqIdol entertainment, practical Go education, institutional licensing, creator/club/tournament media, sponsored gameplay and optional bounded review portfolio; no designated first $2.99 sale",
       "moneyBoundary": "existing Stripe/Digital Goods fixed-release supplier lacks buyer-unique commissioned-work runtime; actual ZBD provider, reserve and beneficiary confirmation not established"
@@ -243,7 +264,17 @@
       ],
       "receiving": "Current browser and Game/Cast/arena/energy-bank source includes committed earlier changes; exact native built package, registry/link selection, installed Cloudflare, actual online player, profitable customer and real Lightning payout NOT independently received. Preserve source as candidate implementation evidence; never call committed source native-fabricated.",
       "repeatFailureDoNotRetry": "Former GitHub Weiqi public receiver workflow failed before any job steps on run 38625413178, and its obsolete workflow was retired in commit 5a869da80f2b6972f428cd78f7f7b5fb20d6c0c9. Use the existing game package's native verify:release and deploy/verify-public-release operations on an actually capable, authenticated executor instead of recreating that workflow.",
-      "installedOperationSource": "apps/weiqi-web/package.json npm run deploy -> native verify:release, Wrangler Cloudflare publish and independent public receiver byte checks"
+      "installedOperationSource": "apps/weiqi-web/package.json npm run deploy -> native verify:release, Wrangler Cloudflare publish and independent public receiver byte checks",
+      "sourceConsumerBreakage": {
+        "owner": "red-cup-engineering/computer-engineering-services-section",
+        "authority": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/weiqi-engine/src/match.mjs",
+        "consumer": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/weiqi-engine/test/match-settlement.test.mjs",
+        "actualContract": "request.expectedRevision equals match.revision including pending settlement proposals",
+        "obsoleteConsumer": "submit constructs expectedVersion from match.session.version; current admission refuses invalid-request",
+        "neighborConsumers": "weiqi-engine/test/match.test.mjs, weiqi-web/src/match-service.mjs, weiqi-web/public/js/online-match-client.mjs and cast/src/policy/weiqi.mjs use expectedRevision",
+        "repair": "Preserve original fixture scenarios; qualify native Red Cup Code/AOE migration rather than shim or manual patch; run actual source tests on a capable executor before claims of continuity.",
+        "evidence": "Compared exact currently fetched source texts; neither native CI execution nor live customer receiving established"
+      }
     },
     "2026-10-14-bilateral-conformance-recovery": {
       "sourceMethod": "561-group/561-group-services-section lib/agency/skills/improve-operating-skills/SKILL.md and assess-code-family/references/development-intake.md at commit e45f444efe33b14565a23f3717b9585b7797b8b0",
@@ -251,7 +282,7 @@
       "lawLeft": {
         "sourceRepo": "lenticule-science/science-services-section",
         "sourcePath": "services/philosophy-services-section/services/relationality-services-section/services/agency-services-section/services/being-services-section/services/doing-services-section/services/playing-services-section/services/gaming-services-section/services/board-games-services-section/services/weiqi-services-section/content/text/documents/articles/notes/2026-08-29-note-on-weiqidol-product-vision.md",
-        "sourceBlob": "e4694e102bf04282a976c6361fcf664b38cc4a31",
+        "sourceBlob": "9d19948c59424b81b8288d2caf80e92e142ef1f0",
         "status": "candidate formal research, not a proved Obsmetrologia model",
         "constructs": [
           "fixed-ruleset graph and free path category of legal Go histories",
@@ -271,9 +302,9 @@
       "commercialIntent": "Ten distinct WX-01 through WX-10 outcomes in the existing SRS/HLD/LLD, 2026-10-14; Deep Review only one optional analysis SKU; no automatic enrollment in paid products",
       "admissionStages": {
         "requirements": "Leader-authorized source requirement, separate market/receiver validation still necessary",
-        "behavioralSpecification": "candidate; current exact source blob 8d90300126584edabd693852e100a69c3781cac0",
-        "architecture": "candidate; current HLD is a form containing views, not independently admitted 42010 architecture; source blob ade13d2504557d42deef1b7db4c490828de80b70",
-        "design": "candidate; current LLD source blob 28556e2f7876a8cc12753536de63790b47ffe25b",
+        "behavioralSpecification": "candidate, updated SRS source blob c7a5298d794f85e1be71490c8ed1d98e79f8ba93; first-person customer and formal acceptance pending",
+        "architecture": "candidate existing original HLD source blob f76103b962123ce89732b27cc8f8efe734169693; source reconciliation resolved phantom v3 but not independent architecture admission",
+        "design": "candidate original LLD source blob 269e931dc584710b2baea8781f881881cf4963e3; true v2 match semantics, career/sale scene and native migration/design checks now explicit; not fabricated",
         "fabrication": "REFUSED until qualified original Data/Code source-bound artifact specification and executable realization plan",
         "nativeBuild": "not observed for exact current source; SW/registry/build must be generated and verified on a real qualified executor",
         "actualInstallation": "not observed for exact current source; Cold Red Gate remains declared down, Cloudflare release not verified",
@@ -317,6 +348,27 @@
         "measurableReceiving": "Source-correct complete playable matches, second play and session retention; qualified buyer invoices/access/course completion and learner transfer; teacher creator/rights receipts; sponsor campaign bought and delivered; exact funded legitimate sats beneficiary receipt; full unit/cohort net contribution.",
         "forecastLaw": "Dated eligible exposure denominator, baseline and seasonal holdout forecasts, probability Brier/log score, revenue interval coverage, no hindsight leakage; insufficient data stays unquantified.",
         "missing": "Independent production game, class/institution/creator buyers, actual price authorization, accepted sponsor and ZBD/Lightning payment provider remain unverified."
+      },
+      "currentConsumerChain": {
+        "scienceEvidence": {
+          "repo": "lenticule-science/science-services-section",
+          "path": "services/social-science-services-section/services/sociology-science-services-section/content/text/documents/articles/notes/2026/10/14/2026-10-14-idol-culture-and-weiqidol.md",
+          "blob": "ce555ebd9708be09ac3919584161f997027316b2",
+          "verifiedAs": "source-qualified mixed-field research; actual game buyer transfer conjectural"
+        },
+        "causewayProgram": {
+          "repo": "causeway-services/public-media-services-section",
+          "path": "services/public-games-services-section/README.md",
+          "blob": "5a5bbcebd194a214a7553b7e0824c948e0575b4b",
+          "selectedOffer": "complete eight-rival Noodle Bar Cup Season One Edition; US$24.99 candidate WTP anchor, NOT active merchant listing"
+        },
+        "operationsProcedure": {
+          "repo": "coesite-operations/operations-services-section",
+          "path": "lib/agency/skills/maintain-harmonization-frontier/SKILL.md",
+          "blob": "c8ffc5e850861ab779b1e33f0435e1afc84c80a3",
+          "verifiedAs": "source readback only; no installed actor/game receiving"
+        },
+        "engineeringSourceDefect": "Legacy settlement test rejects on obsolete expectedVersion before examining concurrency, qualified native migration remains pending"
       }
     }
   }
