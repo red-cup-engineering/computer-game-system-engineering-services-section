@@ -41,6 +41,10 @@ const acceptCountBtn = document.getElementById("accept-count-btn");
 const undoBtn = document.getElementById("undo-btn");
 const studyGameBtn = document.getElementById("study-game-btn");
 const watchReelBtn = document.getElementById("watch-reel-btn");
+const sectArrival = document.getElementById("sect-arrival");
+const sectArrivalTitle = document.getElementById("sect-arrival-title");
+const sectArrivalCopy = document.getElementById("sect-arrival-copy");
+const sectAcceptBtn = document.getElementById("sect-accept-btn");
 const repriseBtn = document.getElementById("reprise-btn");
 const downloadSgfBtn = document.getElementById("download-sgf-btn");
 const botSelect = document.getElementById("bot-select");
@@ -102,6 +106,7 @@ let openingError = null;
 let marking = false; // dead-stone marking, after two passes
 let deadPoints = new Set(); // point indices the human marked dead
 let generation = 0; // bumped by New game and Undo, so a bot reply for an older game is dropped
+let currentScout = null; // one derived, replayable challenge, not a second profile
 
 function colorName(color) {
   return color === kernel.BLACK ? "Black" : "White";
@@ -248,6 +253,20 @@ function render() {
   if (repriseBtn) {
     repriseBtn.hidden = !finished || session.version === 0;
     repriseBtn.disabled = !finished || session.version === 0;
+  }
+  if (sectArrival) {
+    const witnessed = finished && session.version > 0
+      ? kernel.planTacticalTryouts(buildStudyReplay(session).frames, { color: humanColor, limit: 5 })
+      : null;
+    currentScout = witnessed?.invitations.slice()
+      .sort((a, b) => b.priority - a.priority || a.sourceVersion - b.sourceVersion)[0] ?? null;
+    sectArrival.hidden = currentScout === null;
+    if (currentScout) {
+      sectArrivalTitle.textContent = "A visiting sect has read your game";
+      sectArrivalCopy.textContent = "An envoy witnessed " + currentScout.title.toLowerCase() +
+        " at move " + currentScout.sourceVersion +
+        ". They invite you to replay that position and prove the technique with a real move.";
+    }
   }
   const inProgress = session.version > 0 && !finished;
   botSelect.disabled = inProgress;
@@ -501,6 +520,20 @@ if (watchReelBtn) {
     const link = new URL(studyLink(session, location.href));
     const params = new URLSearchParams(link.hash.slice(1));
     params.set("moment", "0");
+    link.hash = params.toString();
+    location.href = link.href;
+  });
+}
+if (sectAcceptBtn) {
+  sectAcceptBtn.addEventListener("click", () => {
+    if (!finished || !currentScout) return;
+    const link = new URL(studyLink(session, location.href));
+    const params = new URLSearchParams(link.hash.slice(1));
+    // A player-selected invitation names exact source evidence and the
+    // board immediately before the observed move. It is no membership grant.
+    params.set("moment", String(currentScout.branchVersion));
+    params.set("scout", currentScout.kind);
+    params.set("focus", humanColor === kernel.WHITE ? "white" : "black");
     link.hash = params.toString();
     location.href = link.href;
   });

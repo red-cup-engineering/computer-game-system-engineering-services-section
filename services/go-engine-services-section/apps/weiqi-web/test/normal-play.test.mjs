@@ -48,3 +48,37 @@ test("two passes, rather than a capture, end a normal match", () => {
   assert.equal(game.mainPhaseEnded, true);
   if (finalPass.ok) assert.ok(finalPass.events.some((event) => event.type === "game-ended"));
 });
+
+test("WXWQ offers a visitor only for a witnessed tactical move by the actual player", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const html = await readFile(new URL("../public/play.html", import.meta.url), "utf8");
+  const app = await readFile(new URL("../public/js/play-app.mjs", import.meta.url), "utf8");
+  for (const id of ["sect-arrival", "sect-arrival-title", "sect-arrival-copy", "sect-accept-btn"])
+    assert.ok(html.includes('id="' + id + '"'));
+  assert.match(app, /kernel\.planTacticalTryouts\(buildStudyReplay\(session\)\.frames/);
+  assert.match(app, /\{ color: humanColor, limit: 5 \}/);
+  assert.match(app, /params\.set\("scout", currentScout\.kind\)/);
+  assert.match(app, /params\.set\("moment", String\(currentScout\.branchVersion\)\)/);
+  const source = kernel.createWeiqiGameSession({ size: 9, ruleset: "chinese" }, [
+    { kind: "play", move: "C3" }, { kind: "play", move: "C4" },
+    { kind: "play", move: "B4" }, { kind: "play", move: "A1" },
+    { kind: "play", move: "D4" }, { kind: "play", move: "A2" },
+    { kind: "play", move: "C5" },
+  ]);
+  const frames = (await import("../public/js/study-replay.mjs")).buildStudyReplay(source).frames;
+  const offered = kernel.planTacticalTryouts(frames, { color: kernel.BLACK }).invitations;
+  const capture = offered.find(invitation => invitation.kind === "capture");
+  assert.ok(capture, "the human's accepted capture must offer a real puzzle");
+  const link = new URL((await import("../public/js/study-replay.mjs")).studyLink(
+    source, "https://weiqi.play.561.group/play.html"));
+  const params = new URLSearchParams(link.hash.slice(1));
+  params.set("moment", String(capture.branchVersion));
+  params.set("scout", capture.kind);
+  params.set("focus", "black");
+  link.hash = params.toString();
+  assert.equal(link.pathname, "/review.html");
+  assert.equal(params.get("moment"), String(capture.sourceVersion - 1));
+  assert.equal(params.get("focus"), "black");
+  assert.equal(kernel.createWeiqiGameSession(source.config,
+    source.commands.slice(0, capture.branchVersion)).version, capture.branchVersion);
+});
