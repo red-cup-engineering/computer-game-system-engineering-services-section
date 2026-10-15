@@ -306,10 +306,13 @@ function render() {
 
 // --- Ending the game --------------------------------------------------------
 function showCount() {
-  const { score, ownership, ruleset } = localCount(session, deadPoints, kernel);
+  const receipt = localCount(session, deadPoints, kernel);
   resultEl.hidden = false;
-  resultEl.textContent = describeLocalCount(score, ruleset.komi, deadPoints.size, session.state.result?.by === "count");
-  board.setTerritory(ownership);
+  resultEl.textContent = describeLocalCount(
+    receipt, deadPoints.size, session.state.result?.by === "count",
+    RULESET_LABELS[session.config.ruleset],
+  );
+  board.setTerritory(receipt.ownership);
   board.setDeadStones([...deadPoints].map((point) => kernel.pointToCoord(session.config.size, point)));
   if (marking) setStatus("Game over. Mark dead stones by clicking their groups, then choose Accept count to finalize the agreed result.");
 }
