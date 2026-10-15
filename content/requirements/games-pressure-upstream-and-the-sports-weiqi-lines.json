@@ -201,7 +201,7 @@
     },
     "current-weiqi-srs": {
       "source": "https://github.com/red-cup-engineering/computer-engineering-services-section/blob/main/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
-      "sourceBlob": "7dd80a49fb8ee650e34196c56e6e171a3b1e1e90",
+      "sourceBlob": "c44fe6a6329a97fc3f594472883d07659635438d",
       "admission": "candidate-for-independent-acceptance; source presence only",
       "originRequirement": "games-pressure-upstream-and-the-sports-weiqi-lines",
       "scope": "Original candidate requirement scope R1-R20 (R3-R9 separate sports/FOCG/Leader game). WI idol/fan and edition choices not newly adopted R21-R23.",
@@ -209,11 +209,11 @@
     },
     "current-weiqi-architecture": {
       "specificationSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
-      "specificationBlob": "7dd80a49fb8ee650e34196c56e6e171a3b1e1e90",
+      "specificationBlob": "c44fe6a6329a97fc3f594472883d07659635438d",
       "architectureSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-hld.md",
-      "architectureBlob": "889abb39971727be079c30011b8d1228544ecece",
+      "architectureBlob": "d3bcd149a2b19e9325ae71c69ab261be0847536f",
       "detailedDesignSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-lld.md",
-      "detailedDesignBlob": "d2a1e0cc43f7d925a16f3b020af8fa45aca48406",
+      "detailedDesignBlob": "d7c774426d34facee312d499fe61b91e01d4b83a",
       "admission": "Original source-owned SRS/HLD/LLD corrected to distinguish user demand from generated paid-idol hypotheses; each remains candidate until independently admitted. No post-hoc fabricator certificate or installed receiving.",
       "oneGameAuthority": "Red Cup weiqi-engine, single versioned match/SGF history; no browser or QwzSpace competing legality/ledger",
       "commercialReceiver": "Causeway Public Games WXWQ / WeiqIdol entertainment, practical Go education, institutional licensing, creator/club/tournament media, sponsored gameplay and optional bounded review portfolio; no designated first $2.99 sale",
@@ -253,6 +253,10 @@
         "neighborConsumers": "weiqi-engine/test/match.test.mjs, weiqi-web/src/match-service.mjs, weiqi-web/public/js/online-match-client.mjs and cast/src/policy/weiqi.mjs use expectedRevision",
         "repair": "Preserve original fixture scenarios; qualify native Red Cup Code/AOE migration rather than shim or manual patch; run actual source tests on a capable executor before claims of continuity.",
         "evidence": "Compared exact currently fetched source texts; neither native CI execution nor live customer receiving established"
+      },
+      "castSourceQualification": {
+        "readmeBlob": "7e4aabe110038472d226d4b3283a631a9baae81e",
+        "status": "Eight casino personas are not the eight authored Go teaching-character designs; five actual Go policies do not instantiate eight tested idol minds. Local Go match replay does not by itself authenticate a remote actor. No actual recurring public idol is received."
       }
     },
     "2026-10-14-bilateral-conformance-recovery": {
@@ -281,9 +285,9 @@
       "commercialIntent": "Ten distinct WX-01 through WX-10 outcomes in the existing SRS/HLD/LLD, 2026-10-14; Deep Review only one optional analysis SKU; no automatic enrollment in paid products",
       "admissionStages": {
         "requirements": "Original user goal retained; generated R21-R23 withdrawn, all new idol SKU/career interpretations are unselected Science/Public hypotheses; independently qualified receiver/market remains open",
-        "behavioralSpecification": "Corrected conditional idol gameplay/commerce specification, candidate blob 7dd80a49fb8ee650e34196c56e6e171a3b1e1e90; buyer and formal admission unknown",
-        "architecture": "Corrected alternatives with one actual Go rules authority, candidate blob 889abb39971727be079c30011b8d1228544ecece; independent architecture admission unknown",
-        "design": "Corrected authentic Go tactical counterplay, candidate blob d2a1e0cc43f7d925a16f3b020af8fa45aca48406; no native producer execution",
+        "behavioralSpecification": "Corrected source candidate c44fe6a6329a97fc3f594472883d07659635438d; market/spec admission not established",
+        "architecture": "Corrected source candidate d3bcd149a2b19e9325ae71c69ab261be0847536f; architecture admission not established",
+        "design": "Corrected source candidate d7c774426d34facee312d499fe61b91e01d4b83a; native fabrication not established",
         "fabrication": "REFUSED until qualified original Data/Code source-bound artifact specification and executable realization plan",
         "nativeBuild": "not observed for exact current source; SW/registry/build must be generated and verified on a real qualified executor",
         "actualInstallation": "not observed for exact current source; Cold Red Gate remains declared down, Cloudflare release not verified",
