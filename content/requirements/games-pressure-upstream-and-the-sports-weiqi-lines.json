@@ -232,9 +232,9 @@
       "specificationSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
       "specificationBlob": "c7a5298d794f85e1be71490c8ed1d98e79f8ba93",
       "architectureSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-hld.md",
-      "architectureBlob": "f76103b962123ce89732b27cc8f8efe734169693",
+      "architectureBlob": "ad396a4e96860eb3f00aa18c9049ce5127117f67",
       "detailedDesignSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-lld.md",
-      "detailedDesignBlob": "269e931dc584710b2baea8781f881881cf4963e3",
+      "detailedDesignBlob": "7d47a38ce2a93e18cc3cc7dc3e16ce2a5acbbaf2",
       "admission": "Candidate Science, requirements and source-owned SRS/HLD/LLD updated after 2026-10-14; distinct independently received specification, 42010 architecture, design and native Data/Code fabrication absent. Do not infer successful product or test.",
       "oneGameAuthority": "Red Cup weiqi-engine, single versioned match/SGF history; no browser or QwzSpace competing legality/ledger",
       "commercialReceiver": "Causeway Public Games WXWQ / WeiqIdol entertainment, practical Go education, institutional licensing, creator/club/tournament media, sponsored gameplay and optional bounded review portfolio; no designated first $2.99 sale",
@@ -303,8 +303,8 @@
       "admissionStages": {
         "requirements": "Leader-authorized source requirement, separate market/receiver validation still necessary",
         "behavioralSpecification": "candidate, updated SRS source blob c7a5298d794f85e1be71490c8ed1d98e79f8ba93; first-person customer and formal acceptance pending",
-        "architecture": "candidate existing original HLD source blob f76103b962123ce89732b27cc8f8efe734169693; source reconciliation resolved phantom v3 but not independent architecture admission",
-        "design": "candidate original LLD source blob 269e931dc584710b2baea8781f881881cf4963e3; true v2 match semantics, career/sale scene and native migration/design checks now explicit; not fabricated",
+        "architecture": "candidate original HLD architecture/views source blob ad396a4e96860eb3f00aa18c9049ce5127117f67; V3 parallel authority rejected, original v2 match clocks retained; no separate competent admission",
+        "design": "candidate original LLD design source blob 7d47a38ce2a93e18cc3cc7dc3e16ce2a5acbbaf2; exact v2 match/revision, one artist/fan/customer encounter and native source-generation obligations; not fabricated",
         "fabrication": "REFUSED until qualified original Data/Code source-bound artifact specification and executable realization plan",
         "nativeBuild": "not observed for exact current source; SW/registry/build must be generated and verified on a real qualified executor",
         "actualInstallation": "not observed for exact current source; Cold Red Gate remains declared down, Cloudflare release not verified",
@@ -366,7 +366,9 @@
           "repo": "coesite-operations/operations-services-section",
           "path": "lib/agency/skills/maintain-harmonization-frontier/SKILL.md",
           "blob": "c8ffc5e850861ab779b1e33f0435e1afc84c80a3",
-          "verifiedAs": "source readback only; no installed actor/game receiving"
+          "verifiedAs": "Coesite SKILL.md and existing skill.json amended/read back; no installed runtime or playing/paid customer receiving",
+          "metadataPath": "lib/agency/skills/maintain-harmonization-frontier/skill.json",
+          "metadataBlob": "d058ef9e8922ec6baa5557091c337d3a056c1c9a"
         },
         "engineeringSourceDefect": "Legacy settlement test rejects on obsolete expectedVersion before examining concurrency, qualified native migration remains pending"
       }
