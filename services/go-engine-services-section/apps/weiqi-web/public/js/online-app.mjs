@@ -45,7 +45,7 @@ async function submit(command) {
   if (!view?.yourTurn || sending) return;
   sending = true;
   try {
-    const request = commandRequest({ principal, capability, version: view.session.version, command, idempotencyKey: commandId() });
+    const request = commandRequest({ principal, capability, revision: view.revision, command, idempotencyKey: commandId() });
     const response = await fetch(`/api/matches/${encodeURIComponent(matchId)}/command`, { method: "POST", ...request });
     const body = await response.json();
     if (!response.ok) setStatus(`Move refused by match service: ${body.reason}.`);

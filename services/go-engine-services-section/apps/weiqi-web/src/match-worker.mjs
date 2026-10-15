@@ -12,7 +12,7 @@ export class WeiqiMatchObject {
       if (await this.state.storage.get("match")) return json({ ok: false, reason: "already-initialized" }, 409);
       const stored = createStoredMatch(await request.json());
       await this.state.storage.put("match", stored);
-      return json({ ok: true, version: 0, stateHash: stored.match.stateHash });
+      return json({ ok: true, revision: stored.match.revision, stateHash: stored.match.stateHash });
     }
     if (request.method === "POST" && new URL(request.url).pathname === "/command") {
       const stored = await this.state.storage.get("match");

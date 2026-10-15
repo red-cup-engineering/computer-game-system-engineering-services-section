@@ -16,17 +16,17 @@ export function createStoredMatch({ config, black, white }) {
   return Object.freeze({ match, capabilities: Object.freeze({ black: black.capability, white: white.capability }) });
 }
 
-export function admitStoredMatchCommand(stored, { principal, capability, idempotencyKey, expectedVersion, command }, receivedAt) {
+export function admitStoredMatchCommand(stored, { principal, capability, idempotencyKey, expectedRevision, command }, receivedAt) {
   const player = stored.match.players.black === principal ? "black" : stored.match.players.white === principal ? "white" : null;
   if (!player || stored.capabilities[player] !== capability) {
     return Object.freeze({ status: 401, body: Object.freeze({ ok: false, reason: "unauthorized" }) });
   }
-  const admission = admitWeiqiMatchCommand(stored.match, { principal, idempotencyKey, expectedVersion, command }, receivedAt);
-  if (!admission.ok) return Object.freeze({ status: admission.reason === "version-mismatch" ? 409 : 422, body: admission });
+  const admission = admitWeiqiMatchCommand(stored.match, { principal, idempotencyKey, expectedRevision, command }, receivedAt);
+  if (!admission.ok) return Object.freeze({ status: admission.reason === "revision-mismatch" ? 409 : 422, body: admission });
   return Object.freeze({
     status: 200,
     stored: admission.duplicate ? stored : Object.freeze({ ...stored, match: admission.match }),
-    body: Object.freeze({ ok: true, duplicate: admission.duplicate, version: admission.match.session.version, stateHash: admission.match.stateHash, events: admission.events }),
+    body: Object.freeze({ ok: true, duplicate: admission.duplicate, revision: admission.match.revision, sessionVersion: admission.match.session.version, stateHash: admission.match.stateHash, events: admission.events }),
   });
 }
 
@@ -52,7 +52,8 @@ export function storedMatchResult(stored) {
 export function describeStoredMatch(stored) {
   return Object.freeze({
     ok: true,
-    version: stored.match.session.version,
+    revision: stored.match.revision,
+    sessionVersion: stored.match.session.version,
     stateHash: stored.match.stateHash,
     session: stored.match.session,
     result: storedMatchResult(stored),

@@ -6,10 +6,10 @@ export function onlineMatchUrl({ matchId, principal, capability, color }, base =
   return url.href;
 }
 
-export function commandRequest({ principal, capability, version, command, idempotencyKey }) {
+export function commandRequest({ principal, capability, revision, command, idempotencyKey }) {
   return Object.freeze({
     headers: Object.freeze({ authorization: `Bearer ${capability}`, "content-type": "application/json" }),
-    body: Object.freeze({ principal, expectedVersion: version, command, idempotencyKey }),
+    body: Object.freeze({ principal, expectedRevision: revision, command, idempotencyKey }),
   });
 }
 
@@ -19,6 +19,7 @@ export function serverView(response, color) {
   const finished = session.state.mainPhaseEnded === true;
   return Object.freeze({
     session,
+    revision: response.revision,
     finished,
     result: finished ? response.result ?? null : null,
     yourTurn: !finished && session.state.toMove === (color === "black" ? 1 : 2),
