@@ -192,7 +192,7 @@
     },
     "revision-2026-10-14": {
       "basis": "Leader's repeated CEO Weiqisday demand on 2026-10-14, including explicit rejection of hand-coded thin capabilities and of treating source documents as market/product acceptance",
-      "stage": "Leader-provenanced original game/revenue requirements retained; generated R21-R23 removed from active work and preserved historically. Exact source-owned Method, Science, Engineering, Operations and Public alternative-product corrections committed and read back; software code, native build, installed game, customer sale and earning provider receiving remain separate unperformed claims.",
+      "stage": "Original R1-R20 retained, generated R21-R23 withdrawn. Source-contract repairs now performed: original settlement test request normalized to current match revision, tactics event names restricted to own known source types, and the latter independently run on exact old/new source under Node 22 (3/5 -> 5/5 isolated tests). Source-only test files and contracts read back. Native complete Go suite, installed public Weiqi and real customer/sats remain unverified.",
       "distinction": "Each met-when names an independent receiving obligation, not a status claim. The former source-note existence check was only capture evidence; it cannot discharge any product obligation.",
       "commercialReceiver": "Causeway Public Games",
       "reusableEngineeringReceiver": "Red Cup shared Game and Web/Commerce capabilities, not a new Weiqi-local payment or leaderboard service",
@@ -201,7 +201,7 @@
     },
     "current-weiqi-srs": {
       "source": "https://github.com/red-cup-engineering/computer-engineering-services-section/blob/main/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
-      "sourceBlob": "c44fe6a6329a97fc3f594472883d07659635438d",
+      "sourceBlob": "7f6edf6503d64984c82c26343c0ef86e8efec971",
       "admission": "candidate-for-independent-acceptance; source presence only",
       "originRequirement": "games-pressure-upstream-and-the-sports-weiqi-lines",
       "scope": "Original candidate requirement scope R1-R20 (R3-R9 separate sports/FOCG/Leader game). WI idol/fan and edition choices not newly adopted R21-R23.",
@@ -209,11 +209,11 @@
     },
     "current-weiqi-architecture": {
       "specificationSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
-      "specificationBlob": "c44fe6a6329a97fc3f594472883d07659635438d",
+      "specificationBlob": "7f6edf6503d64984c82c26343c0ef86e8efec971",
       "architectureSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-hld.md",
-      "architectureBlob": "d3bcd149a2b19e9325ae71c69ab261be0847536f",
+      "architectureBlob": "1805d3e7c54e987d55f948d6f0845dc9f4218072",
       "detailedDesignSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-lld.md",
-      "detailedDesignBlob": "d7c774426d34facee312d499fe61b91e01d4b83a",
+      "detailedDesignBlob": "0009df94ee64cdaf6b559fcf9745a2af2629aa99",
       "admission": "Original source-owned SRS/HLD/LLD corrected to distinguish user demand from generated paid-idol hypotheses; each remains candidate until independently admitted. No post-hoc fabricator certificate or installed receiving.",
       "oneGameAuthority": "Red Cup weiqi-engine, single versioned match/SGF history; no browser or QwzSpace competing legality/ledger",
       "commercialReceiver": "Causeway Public Games WXWQ / WeiqIdol entertainment, practical Go education, institutional licensing, creator/club/tournament media, sponsored gameplay and optional bounded review portfolio; no designated first $2.99 sale",
@@ -252,11 +252,53 @@
         "obsoleteConsumer": "submit constructs expectedVersion from match.session.version; current admission refuses invalid-request",
         "neighborConsumers": "weiqi-engine/test/match.test.mjs, weiqi-web/src/match-service.mjs, weiqi-web/public/js/online-match-client.mjs and cast/src/policy/weiqi.mjs use expectedRevision",
         "repair": "Preserve original fixture scenarios; qualify native Red Cup Code/AOE migration rather than shim or manual patch; run actual source tests on a capable executor before claims of continuity.",
-        "evidence": "Compared exact currently fetched source texts; neither native CI execution nor live customer receiving established"
+        "evidence": "Compared exact currently fetched source texts; neither native CI execution nor live customer receiving established",
+        "status": "repaired-and-read-back-in-authoritative-source; original native test suite still unexecuted",
+        "historicalDefect": "submit constructs expectedVersion from match.session.version; current admission refuses invalid-request",
+        "previousTestBlob": "df823897083995a5965b41938a4d0af1454f8431",
+        "repairedTestBlob": "769e3fa708eb5c02b317c6e9d94065515657b81d",
+        "repairCommit": "b6ee9b4b89410217d87e2293ed21e4e967988c05",
+        "sourceRepair": "Original submit() consumer now sends expectedRevision:match.revision. Existing test file covers pending-proposal clock divergence, stale-candidate refusal, replay-safe duplicate, changed-key body conflict, followed by legitimate opponent agreement and original rules-case tests.",
+        "nativeVerification": "Not executed for this exact version: run the original Go engine package native match/settlement test suite with @red-cup-engineering/gaming installed, then the real weiqi-web match-service/online client receiving. No running deployment or end-user result established.",
+        "repairMethod": {
+          "groupMethodBlob": "0d6c65c1b028fdd2700ab8612b1e15eddb4edace",
+          "codeFamilySkillBlob": "1cd96e2a2a17ec165a911ad131dd64cb3046295e",
+          "developmentIntakeBlob": "5c7403d78a663c08519ef9c05b12aff77e0a6e05",
+          "classification": "original contract-preserving consumer normalization, not a new source behavior or product"
+        }
       },
       "castSourceQualification": {
         "readmeBlob": "7e4aabe110038472d226d4b3283a631a9baae81e",
         "status": "Eight casino personas are not the eight authored Go teaching-character designs; five actual Go policies do not instantiate eight tested idol minds. Local Go match replay does not by itself authenticate a remote actor. No actual recurring public idol is received."
+      },
+      "sourceTacticalEventClassification": {
+        "status": "repaired-and-exercised-with-exact-source-blob-in-isolated-node-22",
+        "owner": "red-cup-engineering/computer-engineering-services-section",
+        "sourcePath": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/weiqi-engine/src/tactics.mjs",
+        "testPath": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/weiqi-engine/test/tactics.test.mjs",
+        "previousSourceBlob": "6f9c436ec745a3a12216aff99e95131c53189df0",
+        "repairedSourceBlob": "64a6732e5a8ceafe3fec6cce35503af920f5a63e",
+        "newTestBlob": "6fd907039259d5d9fa5dab3a08c325a379d356e9",
+        "sourceFixCommit": "aae7ee5b66a584b460c9151679dd3a9fb569017d",
+        "sourceTestCommit": "53d762f12555696dc35e1dcf781101dbf7115441",
+        "defect": "Inherited names on Object.prototype (constructor, toString, __proto__, hasOwnProperty, valueOf) could be treated as Go events by rule = kinds[event?.type].",
+        "fix": "Select only own named authored event types using Object.hasOwn(kinds,event.type) with a string kind.",
+        "isolatedAssay": {
+          "environment": "Node v22.16.0, no network, direct import of byte-identical original pure tactics.mjs",
+          "assayCount": 5,
+          "previous": {
+            "pass": 3,
+            "fail": 2
+          },
+          "current": {
+            "pass": 5,
+            "fail": 0
+          },
+          "confirmedSourceGitBlobs": true,
+          "conformance": "known valid captures retained; inherited/unknown events ignored; self-capture and wrong actor filtered; wrong version/color refused; output stable/immutable",
+          "qualifier": "Not original full native npm test; test fixture used independently authored isolated harness and exact Git source blobs"
+        },
+        "receiver": "No claim of independent published game, player choice or revenue; original engine consumers require native package/integration testing"
       }
     },
     "2026-10-14-bilateral-conformance-recovery": {
@@ -285,11 +327,11 @@
       "commercialIntent": "Ten distinct WX-01 through WX-10 outcomes in the existing SRS/HLD/LLD, 2026-10-14; Deep Review only one optional analysis SKU; no automatic enrollment in paid products",
       "admissionStages": {
         "requirements": "Original user goal retained; generated R21-R23 withdrawn, all new idol SKU/career interpretations are unselected Science/Public hypotheses; independently qualified receiver/market remains open",
-        "behavioralSpecification": "Corrected source candidate c44fe6a6329a97fc3f594472883d07659635438d; market/spec admission not established",
-        "architecture": "Corrected source candidate d3bcd149a2b19e9325ae71c69ab261be0847536f; architecture admission not established",
-        "design": "Corrected source candidate d7c774426d34facee312d499fe61b91e01d4b83a; native fabrication not established",
-        "fabrication": "REFUSED until qualified original Data/Code source-bound artifact specification and executable realization plan",
-        "nativeBuild": "not observed for exact current source; SW/registry/build must be generated and verified on a real qualified executor",
+        "behavioralSpecification": "Candidate corrected original SRS blob 7f6edf6503d64984c82c26343c0ef86e8efec971; external admission and actual player value still open",
+        "architecture": "Candidate original HLD blob 1805d3e7c54e987d55f948d6f0845dc9f4218072; no independent architecture admission",
+        "design": "Candidate LLD original match clocks and auth/actor boundary blob 0009df94ee64cdaf6b559fcf9745a2af2629aa99; changed Go source repair has separate historical evidence",
+        "fabrication": "New capability requires qualified native Data/Code artifact specification and selected producer, not the JSNode package-birth supplier by default. Two bounded existing-contract maintenance edits have source readback, not a new module fabrication claim or independent admission.",
+        "nativeBuild": "Original full Go engine and web game suite unexecuted on current revisions. Isolated exact tactics source Node 22 before/after assay: prior 3/5 pass, corrected 5/5 pass; source blob verified; no Node24 full workspace or active CI receiving.",
         "actualInstallation": "not observed for exact current source; Cold Red Gate remains declared down, Cloudflare release not verified",
         "marketReceiving": "no independently received public player, actual school/club/course purchaser, sponsor, Lightning beneficiary or fulfilled SKU/profit"
       },
@@ -354,12 +396,12 @@
           "metadataPath": "lib/agency/skills/maintain-harmonization-frontier/skill.json",
           "metadataBlob": "96ed9bab63be8b04f70d074b39d36d79edc6853d"
         },
-        "engineeringSourceDefect": "Legacy settlement test rejects on obsolete expectedVersion before examining concurrency, qualified native migration remains pending",
+        "engineeringSourceDefect": "Go settlement caller formerly used obsolete expectedVersion, repaired at source blob 769e3fa708eb5c02b317c6e9d94065515657b81d; authoritative match revision/source unchanged. Tactics planner own-key event guard corrected at blob 64a6732e5a8ceafe3fec6cce35503af920f5a63e, isolated exact-source 5/5 vs prior 3/5. Native full-suite, authenticated online match and customer gameplay still unreceived.",
         "governingMethod": {
           "repo": "561-group/561-group-services-section",
           "path": "content/text/glossary/concepts/method-for-work-in-the-561-group.md",
-          "blob": "2de43f143dcf1281a87d107a55810cee4249b9ae",
-          "scope": "Model-imagined-demand provenance/alternative/contaminated-chain check; operating loader not independently witnessed"
+          "blob": "0d6c65c1b028fdd2700ab8612b1e15eddb4edace",
+          "scope": "Qualifies bounded existing-code consumer repair separate from new JSNode package fabrication; two affected existing-source repairs now applied, source read back, native/full runtime still open."
         }
       }
     },
