@@ -57,7 +57,7 @@ The **product** is an entertaining competitive game with a recoverable real Go m
 
 **Real social competition:** Footing receives only an accepted game/attempt replay with host-trusted date, contest seed, principal and unique scored-attempt identity. It enforces a consumed scored attempt and canonical server recomputation. A local Puzzle Rush timer or localStorage best is personal practice and cannot be promoted into a globally ranked score or money liability. Reuse in a second real game chosen by its actual consumer and test both; do not create a test-only mimic.
 
-### Existing WeiqIdol/XWXQ visitor graph, strategy and cultural teaching
+### Existing WeiqIdol/WXWQ visitor graph, strategy and cultural teaching
 
 The original Game Systems and Science authorities already described **WeiqIdol** sects scouting evidenced playing styles, a noodle-bar social frame, and authored recurring rival personas. The Leader's **WXWQ / Wu(x)weiqi** direction reads actual Go moves as *tactics within strategies*, with agents inhabiting fictional sects and optional access to historically sourced Japanese/Korean/Chinese or more specific professional study paths. In Engineering, the new pure **weiqi-engine/src/tactics.mjs** consumes the original accepted Study frame sequence; it produces exact event/move/side/source-version challenges and no alternative legality, history or cultural-style detector. The existing browser app can branch the one legal session and verify a fresh attempt by a subsequent accepted event. The authored visitor names and hypothetical sect houses do not yet constitute real Cast-runner actor identities; preserving that boundary means the next substantive step is receiving Cast and shared Qwzspace, not building a rival web page persona runtime.
 
