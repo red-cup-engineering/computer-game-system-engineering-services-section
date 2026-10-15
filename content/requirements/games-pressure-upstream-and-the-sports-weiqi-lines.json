@@ -182,27 +182,6 @@
           "class": "functional",
           "moscow": "must",
           "rationale": "Leader, 2026-10-14: \"Don’t add in more thin capabilities: look at how our existing capabilities are too thin\"; \"profit is a primary goal\"; \"STOP MAKING THIN CODE IN THE MOST DOWNSTREAM PACKAGE ... USE THE MILLIONS OF LINES ... IN OTHER REPOSITORIES\". Acceptance: Observed receiver: each admitted line has a priced deliverable/offer, actual supplier/economic authority and a falsifiable pay-versus-delivery test; costed gross and net receiving determine continuation. Neither idle ticks nor cosmetic badges count as earned money."
-        },
-        {
-          "id": "R21",
-          "class": "functional",
-          "moscow": "must",
-          "says": "The WeiqIdol flagship shall deliver a connected, authentic, independently received season of recurring named performers whose actual Go matches and source-attributed actions determine replayable stories, voluntary rivalries and next playable encounters, rather than a cosmetic NPC skin or chat-only response.",
-          "rationale": "Refines the Leader's 2026-10-14 WeiqIdol focus with the original August vision, Lenticule 2026-10-14 oshi-katsu evidence, Causeway's selected Noodle Bar Cup complete-season public outcome and existing Red Cup WG-SRS-017. Receiving: second-client player observes one original accepted match, recognized persistent rival, true source-linked performance and consequential rematch; full season uses the eight original authored distinct opponents. Source-only Cast code, scene mock or legal standalone board is insufficient."
-        },
-        {
-          "id": "R22",
-          "class": "functional",
-          "moscow": "must",
-          "says": "Public Games shall test and deliver a real complete rights-cleared WeiqIdol season purchase through the existing fixed Digital Goods/Stripe supplier while keeping opt-in fan support, decorative customization, creator compensation, institutional offers and BTC Lightning/ZBD obligations separate from matches and from one another.",
-          "rationale": "Leader's profit-primary requirement and specific WeiqIdol focus; Causeway selected the one-time complete-season purchase as a price-testing candidate, not an active $24.99 SKU. Lenticule science EC-05/06/07 distinguishes official goods, decorative fan goods, meaningful encounters and limitations of digitally mediated presence. Acceptance: the legal buyer receives/reopens complete licensed paid entertainment with exact provider settlement, rights, refunds and measured contribution; funded rewards require external beneficiary/treasury finality. No fabricated checkout, simulated sats or fan score is commercial receipt."
-        },
-        {
-          "id": "R23",
-          "class": "quality",
-          "moscow": "must",
-          "says": "Before representing authenticated durable Weiqi contests or idol career events as source-qualified, Engineering shall reconcile its original match settlement test with the current exact match revision contract through native Red Cup Data/Code fabrication and run the actual integrated consumer tests.",
-          "rationale": "Source-qualified mismatch observed 2026-10-14: weiqi-engine/src/match.mjs requires expectedRevision: match.revision; test/match-settlement.test.mjs still supplies expectedVersion: match.session.version and therefore produces invalid-request before testing pending settlement. Other original match, web and Cast consumers already use expectedRevision. One renamed key alone cannot fix stale pending-proposal concurrency. Receiving: owner-approved source migration, actual test run of fresh proposal, stale competitor refusal, genuine agreement and replay, second consumer readback, then independently installed public play; no compatibility shim, handwritten source patch or post-hoc certification."
         }
       ]
     },
@@ -213,7 +192,7 @@
     },
     "revision-2026-10-14": {
       "basis": "Leader's repeated CEO Weiqisday demand on 2026-10-14, including explicit rejection of hand-coded thin capabilities and of treating source documents as market/product acceptance",
-      "stage": "Leader-authorized Work R1-R23 and Causeway full-season product selection now address idol research, matched gameplay and paid receiving; SRS/HLD/LLD and Science model remain candidate/unadmitted; previous manual source changes remain candidate implementation evidence; native builds, installed first-party game, payer and profit not independently received.",
+      "stage": "Leader-raised original Weiqi, profit, upstream reuse, idle and funded microearnings duties retained as R1-R20 historical scope. Added R21-R23 removed from active requirement list as generated assumptions or engineering-drift observation, original text preserved. Candidate Science/SRS/architecture/design still unadmitted; qualified native fabrication, installed public game and real buyers not independently received.",
       "distinction": "Each met-when names an independent receiving obligation, not a status claim. The former source-note existence check was only capture evidence; it cannot discharge any product obligation.",
       "commercialReceiver": "Causeway Public Games",
       "reusableEngineeringReceiver": "Red Cup shared Game and Web/Commerce capabilities, not a new Weiqi-local payment or leaderboard service",
@@ -225,8 +204,8 @@
       "sourceBlob": "c7a5298d794f85e1be71490c8ed1d98e79f8ba93",
       "admission": "candidate-for-independent-acceptance; source presence only",
       "originRequirement": "games-pressure-upstream-and-the-sports-weiqi-lines",
-      "scope": "Current exact candidate R1,R2,R10-R23; R3-R9 remain separate sports/FOCG/leader games.",
-      "nextQualifiedStep": "Under the source-owned bilateral CbC method, recover actual Science law/assumptions and market/standards constraints; admit requirements and behavioral spec separately with Causeway/Red Cup; admit Architecture and Design on exact source graph; qualify the existing Code/Data native work order and fabrication plan; only then change software and run real native package V-model assays, integrated consumers, Guix/LAGOON/Cloudflare receiving and whole paying/customer game loop."
+      "scope": "Original candidate requirement scope R1-R20 (R3-R9 separate sports/FOCG/Leader game). WI idol/fan and edition choices not newly adopted R21-R23.",
+      "nextQualifiedStep": "Qualify original user/player need and source-owned science first; compare alternative lawful product forms, then admit only requirements/specification actually warranted for existing Go/Cast/scene and independent receiving; qualify native Data/Code fabrication instead of hand-writing app features."
     },
     "current-weiqi-architecture": {
       "specificationSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
@@ -282,7 +261,7 @@
       "lawLeft": {
         "sourceRepo": "lenticule-science/science-services-section",
         "sourcePath": "services/philosophy-services-section/services/relationality-services-section/services/agency-services-section/services/being-services-section/services/doing-services-section/services/playing-services-section/services/gaming-services-section/services/board-games-services-section/services/weiqi-services-section/content/text/documents/articles/notes/2026-08-29-note-on-weiqidol-product-vision.md",
-        "sourceBlob": "9d19948c59424b81b8288d2caf80e92e142ef1f0",
+        "sourceBlob": "b626ad66",
         "status": "candidate formal research, not a proved Obsmetrologia model",
         "constructs": [
           "fixed-ruleset graph and free path category of legal Go histories",
@@ -301,7 +280,7 @@
       "standardsRight": "29148 requirements, 42010 architecture description, 12207:2026 engineering life cycle, NIST SSDF/SLSA where applicable; no blanket ISO certification; actual competing-player fit, course/institution/creator payer receiving and net contribution unverified",
       "commercialIntent": "Ten distinct WX-01 through WX-10 outcomes in the existing SRS/HLD/LLD, 2026-10-14; Deep Review only one optional analysis SKU; no automatic enrollment in paid products",
       "admissionStages": {
-        "requirements": "Leader-authorized source requirement, separate market/receiver validation still necessary",
+        "requirements": "Original user goal retained; generated R21-R23 withdrawn, all new idol SKU/career interpretations are unselected Science/Public hypotheses; independently qualified receiver/market remains open",
         "behavioralSpecification": "candidate, updated SRS source blob c7a5298d794f85e1be71490c8ed1d98e79f8ba93; first-person customer and formal acceptance pending",
         "architecture": "candidate original HLD architecture/views source blob ad396a4e96860eb3f00aa18c9049ce5127117f67; V3 parallel authority rejected, original v2 match clocks retained; no separate competent admission",
         "design": "candidate original LLD design source blob 7d47a38ce2a93e18cc3cc7dc3e16ce2a5acbbaf2; exact v2 match/revision, one artist/fan/customer encounter and native source-generation obligations; not fabricated",
@@ -315,7 +294,8 @@
         "Source-grep and V8-evaluated modules with some host/Cartridge substitutes are not complete native tests or artifact-qualified fabrication",
         "Game/arena/Cast and Energy Bank were changed in several repositories with incomplete selected-consumer revision and registry/Guix/LAGOON readback",
         "Deleted browser bot source while checked-in content-addressed PWA SW still needed actual native rebuild; treat offline/public regression risk as open until built and received",
-        "Retired failing pre-job GitHub receiver workflow must not be restarted; independent authenticated build/installation is distinct necessary effect"
+        "Retired failing pre-job GitHub receiver workflow must not be restarted; independent authenticated build/installation is distinct necessary effect",
+        "Generated R21/R22 claims and a source-match-test defect R23 were improperly admitted as new Leader-origin requirements; retracted while preserving original text and true R1-R20."
       ],
       "mostCoherentProductSlice": "WX-01/WX-03/WX-04 genuine player-to-Cast opponent match and repeatable playable sect recruitment, source-recorded game through persistent authorized actors, independently received online; other WX-02 and WX-05..10 requirements preserved and separately scoped",
       "nextLawfulMove": "Bilateral premises now source-pinned; qualify actual original requirements with player/Causeway evidence, independently admit behavioral specification and architecture/design through the competent receiver, and only then invoke real native qualified fabrication. Do not handwrite new code from an unadmitted HLD/LLD, fake ZBD earnings, or claim measured market demand.",
@@ -353,14 +333,14 @@
         "scienceEvidence": {
           "repo": "lenticule-science/science-services-section",
           "path": "services/social-science-services-section/services/sociology-science-services-section/content/text/documents/articles/notes/2026/10/14/2026-10-14-idol-culture-and-weiqidol.md",
-          "blob": "ce555ebd9708be09ac3919584161f997027316b2",
-          "verifiedAs": "source-qualified mixed-field research; actual game buyer transfer conjectural"
+          "blob": "b99167dfc79e85611710e6d3f2031ae8b8c2d93f",
+          "verifiedAs": "source-owned original research corrections and first-party case abstracts; fan-business-transfer untested; no season/price selected"
         },
         "causewayProgram": {
           "repo": "causeway-services/public-media-services-section",
           "path": "services/public-games-services-section/README.md",
-          "blob": "5a5bbcebd194a214a7553b7e0824c948e0575b4b",
-          "selectedOffer": "complete eight-rival Noodle Bar Cup Season One Edition; US$24.99 candidate WTP anchor, NOT active merchant listing"
+          "blob": "c6a21a656f78d15e57763961d7f8835ac8c8cd5b",
+          "selectedOffer": "WITHDRAWN: previous ChatGPT-Web eight-rival Noodle Bar Cup Season One Edition and US$24.99 inferred flagship; Causeway now holds competing candidate product forms and original commercially ambitious game requirements, no active edition price"
         },
         "operationsProcedure": {
           "repo": "coesite-operations/operations-services-section",
@@ -372,6 +352,49 @@
         },
         "engineeringSourceDefect": "Legacy settlement test rejects on obsolete expectedVersion before examining concurrency, qualified native migration remains pending"
       }
+    },
+    "superseded-2026-10-14-model-authored-refinements": {
+      "status": "withdrawn-from-Leader-raised-requirements; historical text retained here for source provenance",
+      "reason": "An AI-generated assumption promoted an eight-rival scripted season, a price anchor and the match-test repair into new Leader-authorized R21/R22/R23. The user wanted stronger actual Weiqi and scientific idol inquiry, not these product choices or an engineering defect labeled a new user requirement. This correction withdraws false authorization without withdrawing R1-R20 or existing genuine match-test debt.",
+      "sourceProvenance": "ChatGPT-Web 2026-10-14 session; the exact prior requirement objects are retained verbatim in clauses",
+      "clauses": [
+        {
+          "sourceKind": "generated-commercial-design-hypothesis",
+          "id": "R21",
+          "class": "functional",
+          "moscow": "must",
+          "says": "The WeiqIdol flagship shall deliver a connected, authentic, independently received season of recurring named performers whose actual Go matches and source-attributed actions determine replayable stories, voluntary rivalries and next playable encounters, rather than a cosmetic NPC skin or chat-only response.",
+          "rationale": "Refines the Leader's 2026-10-14 WeiqIdol focus with the original August vision, Lenticule 2026-10-14 oshi-katsu evidence, Causeway's selected Noodle Bar Cup complete-season public outcome and existing Red Cup WG-SRS-017. Receiving: second-client player observes one original accepted match, recognized persistent rival, true source-linked performance and consequential rematch; full season uses the eight original authored distinct opponents. Source-only Cast code, scene mock or legal standalone board is insufficient."
+        },
+        {
+          "sourceKind": "generated-commercial-design-hypothesis",
+          "id": "R22",
+          "class": "functional",
+          "moscow": "must",
+          "says": "Public Games shall test and deliver a real complete rights-cleared WeiqIdol season purchase through the existing fixed Digital Goods/Stripe supplier while keeping opt-in fan support, decorative customization, creator compensation, institutional offers and BTC Lightning/ZBD obligations separate from matches and from one another.",
+          "rationale": "Leader's profit-primary requirement and specific WeiqIdol focus; Causeway selected the one-time complete-season purchase as a price-testing candidate, not an active $24.99 SKU. Lenticule science EC-05/06/07 distinguishes official goods, decorative fan goods, meaningful encounters and limitations of digitally mediated presence. Acceptance: the legal buyer receives/reopens complete licensed paid entertainment with exact provider settlement, rights, refunds and measured contribution; funded rewards require external beneficiary/treasury finality. No fabricated checkout, simulated sats or fan score is commercial receipt."
+        },
+        {
+          "sourceKind": "observed-engineering-drift-misclassified-as-customer-demand",
+          "id": "R23",
+          "class": "quality",
+          "moscow": "must",
+          "says": "Before representing authenticated durable Weiqi contests or idol career events as source-qualified, Engineering shall reconcile its original match settlement test with the current exact match revision contract through native Red Cup Data/Code fabrication and run the actual integrated consumer tests.",
+          "rationale": "Source-qualified mismatch observed 2026-10-14: weiqi-engine/src/match.mjs requires expectedRevision: match.revision; test/match-settlement.test.mjs still supplies expectedVersion: match.session.version and therefore produces invalid-request before testing pending settlement. Other original match, web and Cast consumers already use expectedRevision. One renamed key alone cannot fix stale pending-proposal concurrency. Receiving: owner-approved source migration, actual test run of fresh proposal, stale competitor refusal, genuine agreement and replay, second consumer readback, then independently installed public play; no compatibility shim, handwritten source patch or post-hoc certification."
+        }
+      ],
+      "survivingDemand": "Original recorded user game/business/cultural research requirements and separately owned source mismatch remain active at their original owners.",
+      "conflictsRetained": [
+        "Original August WeiqIdol creative vision does not select a season or price.",
+        "The original eight opponent pedagogical designs are not eight installed persistent idol identities.",
+        "The match settlement test mismatch is a real engineering observation, not a Leader-created business requirement."
+      ]
+    },
+    "requirement-source-qualification": {
+      "method": "https://github.com/561-group/561-group-services-section/blob/main/content/text/glossary/concepts/method-for-work-in-the-561-group.md",
+      "instruction": "Keep exact Leader quotations/addresses, owner-admitted requirements, externally measured customer needs and generated solution hypotheses distinguishable. Authoring a plausible SRS/HLD/LLD never grants authority. Existing R10-R20 were refined/elicited by earlier agents from recorded user direction and need their own consuming/receiving qualification, not retroactive designation as direct unambiguous Leader choices.",
+      "originalSource": "The 2026-09/10 Leader utterance addresses and 2026-10-14 explicit profit/game quality/upstream-use directions already in x-provenance.",
+      "qualification": "WeiqIdol-specific fan and season mechanics remain science/creative hypotheses until independently chosen; restoring original Go experience is separately authorized."
     }
   }
 }
