@@ -192,7 +192,7 @@
     },
     "revision-2026-10-14": {
       "basis": "Leader's repeated CEO Weiqisday demand on 2026-10-14, including explicit rejection of hand-coded thin capabilities and of treating source documents as market/product acceptance",
-      "stage": "original-requirements-owned; SRS/HLD/LLD each exist as unadmitted candidates; user-visible integration, native qualification and independently received release remain open",
+      "stage": "Work requirements authorized by Leader, independently testable R1/R2/R10-R20 and WX01-10 choices present; SRS, HLD and LLD are unadmitted candidates; prior direct software edits not fabricated under native CbC; independent user-visible game, release and commercial receiving remain open",
       "distinction": "Each met-when names an independent receiving obligation, not a status claim. The former source-note existence check was only capture evidence; it cannot discharge any product obligation.",
       "commercialReceiver": "Causeway Public Games",
       "reusableEngineeringReceiver": "Red Cup shared Game and Web/Commerce capabilities, not a new Weiqi-local payment or leaderboard service",
@@ -201,22 +201,22 @@
     },
     "current-weiqi-srs": {
       "source": "https://github.com/red-cup-engineering/computer-engineering-services-section/blob/main/services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
-      "sourceBlob": "6bc7eede1ef3aa4a36e34ebcd87fd357ffe47d34",
-      "admission": "candidate-unreviewed",
+      "sourceBlob": "8d90300126584edabd693852e100a69c3781cac0",
+      "admission": "candidate-for-independent-acceptance; source presence only",
       "originRequirement": "games-pressure-upstream-and-the-sports-weiqi-lines",
       "scope": "Weiqi player/game/commercial R1,R2,R10-R20; R3-R9 remain separate",
-      "nextQualifiedStep": "Use current source-owned SRS/HLD/LLD and incumbent supplier implementations; independently admit/refuse each stage with the real consumer. Do NOT restart requirements or reconstruct candidate design, hand-author code, or fire retired GH workflows. Next actual effects: Red Cup native source-bound qualified fabrication/producer-consumer integration; complete game build and Cloudflare public release; independent complete game, rematch, and paid buyer receiving."
+      "nextQualifiedStep": "Under the source-owned bilateral CbC method, recover actual Science law/assumptions and market/standards constraints; admit requirements and behavioral spec separately with Causeway/Red Cup; admit Architecture and Design on exact source graph; qualify the existing Code/Data native work order and fabrication plan; only then change software and run real native package V-model assays, integrated consumers, Guix/LAGOON/Cloudflare receiving and whole paying/customer game loop."
     },
     "current-weiqi-architecture": {
       "specificationSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-srs.md",
-      "specificationBlob": "6bc7eede1ef3aa4a36e34ebcd87fd357ffe47d34",
+      "specificationBlob": "8d90300126584edabd693852e100a69c3781cac0",
       "architectureSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-hld.md",
-      "architectureBlob": "85e0ca0c498f25c7f70c6147bf47bcab520df78a",
+      "architectureBlob": "ade13d2504557d42deef1b7db4c490828de80b70",
       "detailedDesignSource": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/content/text/documents/articles/specifications/weiqi-commercial-game-lld.md",
-      "detailedDesignBlob": "5524a6d32200e327612637196ab8f42444e3a11d",
-      "admission": "candidate-only; native Data/Code fabrication and executed full-source tests not established",
+      "detailedDesignBlob": "28556e2f7876a8cc12753536de63790b47ffe25b",
+      "admission": "All SRS/HLD/LLD source revisions observed, each expressly candidate/not independently admitted; absence of separately accepted requirements/specification/architecture/design and qualified native Data/Code fabrication is a hard effect refusal",
       "oneGameAuthority": "Red Cup weiqi-engine, single versioned match/SGF history; no browser or QwzSpace competing legality/ledger",
-      "commercialReceiver": "Causeway Public Games $2.99 single Deep Review test SKU, conditional and not yet a live purchase",
+      "commercialReceiver": "Causeway Public Games WXWQ / WeiqIdol entertainment, practical Go education, institutional licensing, creator/club/tournament media, sponsored gameplay and optional bounded review portfolio; no designated first $2.99 sale",
       "moneyBoundary": "existing Stripe/Digital Goods fixed-release supplier lacks buyer-unique commissioned-work runtime; actual ZBD provider, reserve and beneficiary confirmation not established"
     },
     "current-player-supplier-selection": {
@@ -241,9 +241,41 @@
           "effectInSource": "Go opponent background search and player-facing progress test"
         }
       ],
-      "receiving": "committed source; game package CI, Cloudflare installation, live player and paid buyer acceptance not observed in this execution",
+      "receiving": "Current browser and Game/Cast/arena/energy-bank source includes committed earlier changes; exact native built package, registry/link selection, installed Cloudflare, actual online player, profitable customer and real Lightning payout NOT independently received. Preserve source as candidate implementation evidence; never call committed source native-fabricated.",
       "repeatFailureDoNotRetry": "Former GitHub Weiqi public receiver workflow failed before any job steps on run 38625413178, and its obsolete workflow was retired in commit 5a869da80f2b6972f428cd78f7f7b5fb20d6c0c9. Use the existing game package's native verify:release and deploy/verify-public-release operations on an actually capable, authenticated executor instead of recreating that workflow.",
       "installedOperationSource": "apps/weiqi-web/package.json npm run deploy -> native verify:release, Wrangler Cloudflare publish and independent public receiver byte checks"
+    },
+    "2026-10-14-bilateral-conformance-recovery": {
+      "sourceMethod": "561-group/561-group-services-section lib/agency/skills/improve-operating-skills/SKILL.md and assess-code-family/references/development-intake.md at commit e45f444efe33b14565a23f3717b9585b7797b8b0",
+      "originalAuthority": "Leader user demand on 2026-10-14; true independent Customer and market-demand receiving not shown",
+      "lawLeft": "Lenticule source-owned Go rules/Obsmetrologia premises, explicit validity limits, source-correct command histories; a source-level V8 game trace is not Lean proof or categorical naturality",
+      "standardsRight": "29148 requirements, 42010 architecture description, 12207:2026 engineering life cycle, NIST SSDF/SLSA where applicable; no blanket ISO certification; actual competing-player fit, course/institution/creator payer receiving and net contribution unverified",
+      "commercialIntent": "Ten distinct WX-01 through WX-10 outcomes in the existing SRS/HLD/LLD, 2026-10-14; Deep Review only one optional analysis SKU; no automatic enrollment in paid products",
+      "admissionStages": {
+        "requirements": "Leader-authorized source requirement, separate market/receiver validation still necessary",
+        "behavioralSpecification": "candidate; current exact source blob 8d90300126584edabd693852e100a69c3781cac0",
+        "architecture": "candidate; current HLD is a form containing views, not independently admitted 42010 architecture; source blob ade13d2504557d42deef1b7db4c490828de80b70",
+        "design": "candidate; current LLD source blob 28556e2f7876a8cc12753536de63790b47ffe25b",
+        "fabrication": "REFUSED until qualified original Data/Code source-bound artifact specification and executable realization plan",
+        "nativeBuild": "not observed for exact current source; SW/registry/build must be generated and verified on a real qualified executor",
+        "actualInstallation": "not observed for exact current source; Cold Red Gate remains declared down, Cloudflare release not verified",
+        "marketReceiving": "no independently received public player, actual school/club/course purchaser, sponsor, Lightning beneficiary or fulfilled SKU/profit"
+      },
+      "previousCycleDeviations": [
+        "Direct GitHub source, test and UI authorship skipped admitted predecessor stages and native source-qualified fabrication effects; preserve distinct useful contents without post-hoc certification",
+        "Source-grep and V8-evaluated modules with some host/Cartridge substitutes are not complete native tests or artifact-qualified fabrication",
+        "Game/arena/Cast and Energy Bank were changed in several repositories with incomplete selected-consumer revision and registry/Guix/LAGOON readback",
+        "Deleted browser bot source while checked-in content-addressed PWA SW still needed actual native rebuild; treat offline/public regression risk as open until built and received",
+        "Retired failing pre-job GitHub receiver workflow must not be restarted; independent authenticated build/installation is distinct necessary effect"
+      ],
+      "mostCoherentProductSlice": "WX-01/WX-03/WX-04 genuine player-to-Cast opponent match and repeatable playable sect recruitment, source-recorded game through persistent authorized actors, independently received online; other WX-02 and WX-05..10 requirements preserved and separately scoped",
+      "nextLawfulMove": "First close separately admitted current SRS/architecture/design evidence from real receiver and source-owned scientific premises, then invoke native Code/Data qualification (qualify_work_order / fabricate-jsnode-closure) through a real executable, not direct GitHub source writes; perform a separate immediately valuable approved operation if fabrication is unavailable",
+      "refusalCases": [
+        "candidate SRS + HLD + LLD and manually committed code, but no admitted native plan -> REFUSE software fabrication and claims of public parity",
+        "fully admitted qualified plan with exact source and two real consumers -> ALLOW native generator effect and planned verification, not automatic public acceptance",
+        "unmodified previously admitted functioning system -> ALLOW normal qualified operation without re-fabricating it; public effect must still be received",
+        "local simulated ZBD receipt or unsupported cultural playing-style attribution -> REFUSE earnings/cultural truth claims"
+      ]
     }
   }
 }
