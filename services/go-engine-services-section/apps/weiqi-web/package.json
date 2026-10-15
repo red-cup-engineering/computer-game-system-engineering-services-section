@@ -13,9 +13,9 @@
   "scripts": {
     "build": "node scripts/build-kernel.mjs && node scripts/build-glossary.mjs && node scripts/build-icons.mjs && node scripts/build-service-worker.mjs",
     "check": "for f in public/js/*.mjs public/js/kernel/*.mjs scripts/*.mjs src/*.mjs test/*.test.mjs; do node --check \"$f\" || exit 1; done",
-    "test": "npm run check && node --test 'test/*.test.mjs'",
+    "test": "npm run build && npm run check && node --test 'test/*.test.mjs'",
     "verify:normal-play": "node scripts/verify-normal-play.mjs",
-    "verify:release": "npm run build && npm test && npm run verify:normal-play",
+    "verify:release": "npm test && npm run verify:normal-play",
     "verify:public": "node scripts/verify-public-release.mjs",
     "serve": "node scripts/serve.mjs",
     "deploy": "npm run verify:release && node scripts/deploy-public-release.mjs",

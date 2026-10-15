@@ -2,7 +2,7 @@
 // 19x19 as either color against a local bot tier, and the separate 7x7
 // Capture Go learning route (data-game-mode="capture-go"). Rules, scoring,
 // ko, and semantic events come only from the generated Weiqi engine; the bot
-// tiers (bot.mjs) only choose among moves the engine certified, and think
+// tiers (engine-projected policies) only choose among moves the engine certified, and think
 // off the page thread in bot-worker.mjs. This module owns browser effects
 // and presentation: the versioned session, undo, dead-stone marking after
 // two passes, the event log, sound, toasts, and settings.
