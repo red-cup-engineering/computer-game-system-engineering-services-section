@@ -192,7 +192,7 @@
     },
     "revision-2026-10-14": {
       "basis": "Leader's repeated CEO Weiqisday demand on 2026-10-14, including explicit rejection of hand-coded thin capabilities and of treating source documents as market/product acceptance",
-      "stage": "Original R1-R20 retained, generated R21-R23 withdrawn. Source-contract repairs now performed: original settlement test request normalized to current match revision, tactics event names restricted to own known source types, and the latter independently run on exact old/new source under Node 22 (3/5 -> 5/5 isolated tests). Source-only test files and contracts read back. Native complete Go suite, installed public Weiqi and real customer/sats remain unverified.",
+      "stage": "Existing original 20 requirements retained, AI-invented R21-R23 historical only. Red Cup original match settlement consumer and tactics event-name guard repaired, isolated Node tactic checks passed 5/5 vs prior 3/5. Ruleset finite-name and handicap size contract source repaired and 9 test declarations read back (native execution unverified). Lenticule catalogue/runtime claims and Science research method corrected to actual Red Cup static/default vs unselected online candidate. No verified production, customer sale or Lightning.",
       "distinction": "Each met-when names an independent receiving obligation, not a status claim. The former source-note existence check was only capture evidence; it cannot discharge any product obligation.",
       "commercialReceiver": "Causeway Public Games",
       "reusableEngineeringReceiver": "Red Cup shared Game and Web/Commerce capabilities, not a new Weiqi-local payment or leaderboard service",
@@ -303,6 +303,18 @@
           "qualifier": "Not original full native npm test; test fixture used independently authored isolated harness and exact Git source blobs"
         },
         "receiver": "No claim of independent published game, player choice or revenue; original engine consumers require native package/integration testing"
+      },
+      "rulesetAndHandicapQualification": {
+        "owner": "red-cup-engineering/computer-engineering-services-section",
+        "source": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/weiqi-engine/src/rulesets.mjs",
+        "test": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/weiqi-engine/test/rulesets.test.mjs",
+        "sourceBlob": "a1d4cb0e9db7942ecc87aab6fbee286f537626ac",
+        "testBlob": "7997f0d9b72d27033a29a469a3ff2f34053940a0",
+        "sourceCommit": "4bba2602f17a9174f232df857d0beb38613942a0",
+        "testCommit": "0e4eb7ad5ba47445e7ebc84549d0c28bc72f619f",
+        "evidence": "Source prior inherited RULESETS[name] could return Object.prototype.constructor or toString instead of one of five lawful rulesets. Fixed finite string/own-key selection. Standard fixed-star handicap function formerly assumed all sizes except 9 and 13 meant 19; now refuses nonstandard sizes rather than yielding alien-board hoshi coordinates.",
+        "scope": "Source-compatible repair to original finite table selection; preserved valid five named rulesets and official 9, 13, 19 board handicap tables. No new Go ruleset, alternative game-engine or compatibility shim.",
+        "verification": "Read back exact revised Engineering source and regression file with additional positive and refusal cases (9 total ruleset test declarations). Complete native package Node test still unexecuted, no release claim."
       }
     },
     "2026-10-14-bilateral-conformance-recovery": {
@@ -406,6 +418,12 @@
           "path": "content/text/glossary/concepts/method-for-work-in-the-561-group.md",
           "blob": "0d6c65c1b028fdd2700ab8612b1e15eddb4edace",
           "scope": "Qualifies bounded existing-code consumer repair separate from new JSNode package fabrication; two affected existing-source repairs now applied, source read back, native/full runtime still open."
+        },
+        "scienceWeiqiCatalog": {
+          "catalogBlob": "06961634d31d3a0cca6addbd628653fd8cbe930f",
+          "readmeBlob": "abf96fcf71eb2d3659ce36013e4166637d5f72d2",
+          "researchMethodBlob": "6ce994eae6d7354c99bfa75841881d021420c80a",
+          "receiving": "source only; default Worker static, separate online candidate; public live unknown"
         }
       }
     },
@@ -451,6 +469,18 @@
       "instruction": "Keep exact Leader quotations/addresses, owner-admitted requirements, externally measured customer needs and generated solution hypotheses distinguishable. Authoring a plausible SRS/HLD/LLD never grants authority. Existing R10-R20 were refined/elicited by earlier agents from recorded user direction and need their own consuming/receiving qualification, not retroactive designation as direct unambiguous Leader choices.",
       "originalSource": "The 2026-09/10 Leader utterance addresses and 2026-10-14 explicit profit/game quality/upstream-use directions already in x-provenance.",
       "qualification": "Model-authored idol product shape and price do not acquire Leader authorization by repeated SRS/PR prose; original R1-R20 remain with original provenance, other refinements require their own warrant"
+    },
+    "scienceWeiqiCatalogCorrection": {
+      "owner": "lenticule-science/science-services-section",
+      "catalogPath": "services/philosophy-services-section/services/relationality-services-section/services/agency-services-section/services/being-services-section/services/doing-services-section/services/playing-services-section/services/gaming-services-section/services/board-games-services-section/services/weiqi-services-section/catalog-entry.json",
+      "catalogBlob": "06961634d31d3a0cca6addbd628653fd8cbe930f",
+      "readmePath": "services/philosophy-services-section/services/relationality-services-section/services/agency-services-section/services/being-services-section/services/doing-services-section/services/playing-services-section/services/gaming-services-section/services/board-games-services-section/services/weiqi-services-section/README.md",
+      "readmeBlob": "abf96fcf71eb2d3659ce36013e4166637d5f72d2",
+      "researchMethodPath": "lib/agency/skills/research/SKILL.md",
+      "researchMethodBlob": "6ce994eae6d7354c99bfa75841881d021420c80a",
+      "sourceEvidence": "Red Cup default apps/weiqi-web/wrangler.jsonc is static assets and intended hostname routes; separate unselected wrangler.online.jsonc contains match Worker/DO source. Previous Science catalogue had falsely asserted the online match Worker was deployed and that Science owned executable web app/tooling.",
+      "correction": "Existing Science source catalogue and README now distinguish verified local playable Game Systems source and intended static route from unverified Cloudflare production and separate online-match implementation, align Science knowledge custody vs Red Cup Engineering code custody, and do not advertise paid/live service based on source alone.",
+      "receiving": "Science source readback only; actual installed production, player gameplay, merchant acceptance and BTC payout not independently witnessed."
     }
   }
 }
