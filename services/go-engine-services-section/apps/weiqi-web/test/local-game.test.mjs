@@ -75,10 +75,10 @@ test("the count removes marked stones as prisoners before the engine counts", ()
       "the neutral region between the black and white walls must remain unshaded");
   }
   assert.equal(settled.score.margin, "White by 7.5");
-  const text = describeLocalCount(settled.score, game.ruleset.komi, 1);
+  const text = describeLocalCount(settled, 1, false, "Chinese");
   assert.match(text, /^White by 7\.5\. Provisional Chinese area count: Black 10 \(5 stones \+ 5 territory\)/);
   assert.match(text, /1 stone marked dead/);
-  assert.match(describeLocalCount(alive.score, game.ruleset.komi, 0), /counted as alive/);
+  assert.match(describeLocalCount(alive, 0, false, "Chinese"), /counted as alive/);
 });
 
 test("local count delegates all scoring authority to the upstream session API", () => {
@@ -147,11 +147,60 @@ test("agreed counts are explicitly final and agree with upstream settlement scor
   const receipt = localCount(accepted.session, dead, kernel);
   assert.deepEqual(receipt.score, settled.result.score,
     "the final presentation must use the upstream agreed dead-stone count");
-  const display = describeLocalCount(receipt.score, receipt.ruleset.komi, dead.size, true);
+  const display = describeLocalCount(receipt, dead.size, true, "Chinese");
   assert.match(display, /^White by 7\.5\. Agreed Chinese area count:/);
   assert.match(display, /1 stone agreed dead and removed before counting\./);
   assert.doesNotMatch(display, /click a stone|Provisional/);
-  const provisional = describeLocalCount(receipt.score, receipt.ruleset.komi, 0);
+  const provisional = describeLocalCount(receipt, 0, false, "Chinese");
   assert.match(provisional, /Provisional Chinese area count/);
   assert.match(provisional, /click a stone/);
+});
+
+test("score captions distinguish five actual rulesets, area and territory contributions", () => {
+  const cases = [
+    ["chinese", "Chinese", "area", 7.5],
+    ["japanese", "Japanese", "territory", 6.5],
+    ["aga", "AGA", "area", 7.5],
+    ["newzealand", "New Zealand", "area", 7],
+    ["ing", "Ing", "area", 8],
+  ];
+  for (const [ruleset, label, mode, effectiveKomi] of cases) {
+    const session = kernel.createWeiqiGameSession({ size: 9, ruleset });
+    const receipt = localCount(session, new Set(), kernel);
+    const text = describeLocalCount(receipt, 0, false, label);
+    assert.equal(receipt.mode, mode, `engine selects ${ruleset}'s actual scoring mode`);
+    assert.match(text, new RegExp(`Provisional ${label} ${mode} count:`));
+    assert.ok(text.includes(`+ ${effectiveKomi} komi`),
+      `receipt komi must be actual scoring-mode komi for ${ruleset}`);
+    if (mode === "territory") {
+      assert.match(text, /territory \+ 0 prisoners/);
+      assert.doesNotMatch(text, /stones \+ 0 territory/);
+    } else {
+      assert.match(text, /0 stones \+ 0 territory/);
+      assert.doesNotMatch(text, /territory \+ 0 prisoners/);
+    }
+  }
+});
+
+test("Japanese final dead-group count describes prisoners, not fictitious area points", () => {
+  const session = sessionAfterMoves({ size: 5, ruleset: "japanese" },
+    WALL_WITH_INVADER, kernel);
+  const a3 = kernel.coordToPoint(5, 5, "A3");
+  const receipt = localCount(session, new Set([a3]), kernel);
+  assert.equal(receipt.mode, "territory");
+  const caption = describeLocalCount(receipt, 1, true, "Japanese");
+  assert.match(caption, /Agreed Japanese territory count/);
+  assert.match(caption, /territory \+ \d+ prisoners/);
+  assert.match(caption, /1 stone agreed dead and removed/);
+  assert.doesNotMatch(caption, /stones \+ \d+ territory/);
+  assert.ok(caption.includes(String(receipt.score.blackScore)));
+  assert.ok(caption.includes(String(receipt.score.whiteScore)));
+});
+
+test("a count presenter refuses incomplete or non-engine scoring-mode contracts", () => {
+  const session = kernel.createWeiqiGameSession({ size: 9, ruleset: "chinese" });
+  const receipt = localCount(session, [], kernel);
+  assert.throws(() => describeLocalCount({ ...receipt, mode: "imaginary" }, 0, false, "Chinese"),
+    /accepted Go scoring mode/);
+  assert.throws(() => describeLocalCount(receipt, 0, false, ""), /ruleset label/);
 });
