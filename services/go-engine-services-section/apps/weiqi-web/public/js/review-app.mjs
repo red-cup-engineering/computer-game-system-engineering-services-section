@@ -355,7 +355,11 @@ function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = s
           " triggered " + invitation.kind.replaceAll("-", " ") +
           ". Replaying that move is legal; another legal move can qualify too.";
       });
-      card.append(title, speech, evidence, accept, hint);
+      const studyTerm = document.createElement("a");
+      studyTerm.href = "glossary.html#" + encodeURIComponent(invitation.term);
+      studyTerm.textContent = "Learn the actual " + invitation.term + " concept →";
+      studyTerm.className = "sect-lesson-link";
+      card.append(title, speech, evidence, accept, hint, studyTerm);
       sectVisitors.append(card);
     }
     return observed;
