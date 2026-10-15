@@ -398,6 +398,7 @@ function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = s
     const url = new URL(studyLink(recordedSession, location.href));
     const params = new URLSearchParams(url.hash.slice(1));
     params.set("moment", String(currentVersion));
+    params.set("focus", sectFocus.value);
     url.hash = params.toString();
     try {
       await navigator.clipboard.writeText(url.href);
@@ -446,11 +447,11 @@ function showImportError(text) {
 
 let activeStudy = null;
 
-function openStudy(session, notes, hoverCard) {
+function openStudy(session, notes, hoverCard, incomingHash = "") {
   activeStudy?.dispose();
   // A moment bookmark is an address into the SAME recorded game; it never
   // admits an alternate game state or bypasses the rules engine.
-  const incoming = new URLSearchParams(location.hash.replace(/^#/, ""));
+  const incoming = new URLSearchParams(incomingHash.replace(/^#/, ""));
   const momentText = incoming.get("moment");
   const exploreImmediately = incoming.get("explore") === "1";
   const scouting = {
@@ -461,8 +462,17 @@ function openStudy(session, notes, hoverCard) {
   const firstMoment = Number.isSafeInteger(requestedMoment) &&
     requestedMoment >= 0 && requestedMoment <= session.version
     ? requestedMoment : session.version;
-  const link = studyLink(session, location.href);
-  history.replaceState(null, "", link);
+  const link = new URL(studyLink(session, location.href));
+  const linked = new URLSearchParams(link.hash.slice(1));
+  // Presentation metadata is kept in a bookmark ONLY for the exact match
+  // actually opened. An imported new SGF never inherits an old game's scout.
+  if (incomingHash && momentText !== null && firstMoment === requestedMoment)
+    linked.set("moment", String(firstMoment));
+  if (incomingHash && incoming.get("focus") === "white") linked.set("focus", "white");
+  if (incomingHash && scouting.kind) linked.set("scout", scouting.kind);
+  if (incomingHash && exploreImmediately) linked.set("explore", "1");
+  link.hash = linked.toString();
+  history.replaceState(null, "", link.href);
   element("review-empty").hidden = true;
   element("review-app").hidden = false;
   const study = buildStudyReplay(session);
@@ -523,7 +533,7 @@ if (typeof document !== "undefined") {
   };
   const fromHash = sessionFromStudyHash(location.hash);
   if (fromHash?.ok) {
-    openStudy(fromHash.session, [], hoverCard);
+    openStudy(fromHash.session, [], hoverCard, location.hash);
   } else {
     element("review-empty").hidden = false;
     if (fromHash && !fromHash.ok)

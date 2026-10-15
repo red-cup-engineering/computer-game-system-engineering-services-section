@@ -250,3 +250,16 @@ test("WXWQ visiting sect controls are connected to actual board admission, not a
   assert.match(client, /activeTryout = null/);
   assert.match(client, /sourceMove/);
 });
+
+test("newly imported SGF never inherits another game's selected scout or color", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const app = await readFile(new URL("../public/js/review-app.mjs", import.meta.url), "utf8");
+  const play = await readFile(new URL("../public/js/play-app.mjs", import.meta.url), "utf8");
+  assert.match(app, /function openStudy\(session, notes, hoverCard, incomingHash = ""\)/);
+  assert.match(app, /incomingHash\.replace\(\/\^#\//);
+  assert.match(app, /openStudy\(fromHash\.session, \[\], hoverCard, location\.hash\)/);
+  assert.match(app, /openStudy\(result\.session, result\.notes, hoverCard\)/);
+  assert.match(app, /linked\.set\("scout", scouting\.kind\)/);
+  assert.match(app, /linked\.set\("moment", String\(firstMoment\)\)/);
+  assert.match(play, /params\.set\("focus", humanColor === kernel\.WHITE/);
+});

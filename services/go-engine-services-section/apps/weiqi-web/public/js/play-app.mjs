@@ -510,7 +510,11 @@ if (studyGameBtn) {
   studyGameBtn.addEventListener("click", () => {
     // Study receives the engine-admitted commands in a share link; it owns
     // no parser, persistence, or second game model, and the link is durable.
-    location.href = studyLink(session, location.href);
+    const link = new URL(studyLink(session, location.href));
+    const params = new URLSearchParams(link.hash.slice(1));
+    params.set("focus", humanColor === kernel.WHITE ? "white" : "black");
+    link.hash = params.toString();
+    location.href = link.href;
   });
 }
 if (watchReelBtn) {
@@ -520,6 +524,7 @@ if (watchReelBtn) {
     const link = new URL(studyLink(session, location.href));
     const params = new URLSearchParams(link.hash.slice(1));
     params.set("moment", "0");
+    params.set("focus", humanColor === kernel.WHITE ? "white" : "black");
     link.hash = params.toString();
     location.href = link.href;
   });
@@ -552,6 +557,7 @@ if (repriseBtn) {
     const link = new URL(studyLink(session, location.href));
     const params = new URLSearchParams(link.hash.slice(1));
     params.set("moment", String(from));
+    params.set("focus", humanColor === kernel.WHITE ? "white" : "black");
     params.set("explore", "1");
     link.hash = params.toString();
     location.href = link.href;
