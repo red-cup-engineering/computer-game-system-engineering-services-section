@@ -20,12 +20,20 @@ import { describeLocalCount, isUnsettledTwoPassPosition, localCount, toggleDeadG
 
 const CAPTURE_GO = document.body.dataset.gameMode === "capture-go";
 const DEFAULT_BOARD_SIZE = CAPTURE_GO ? 7 : 9;
-const RULESET = CAPTURE_GO ? "japanese" : "chinese";
+const CAPTURE_GO_RULESET = "japanese";
+const DEFAULT_RULESET = "chinese";
+// The five actual rules and scoring regimes belong to the single engine.
+// This is a user's game-law choice, NOT a classifier of national play style.
+const RULESET_LABELS = Object.freeze({
+  chinese: "Chinese", japanese: "Japanese", aga: "AGA",
+  newzealand: "New Zealand", ing: "Ing",
+});
 const BOARD_SIZES = [9, 13, 19];
 const TOUCH_MODE_KEY = "weiqi-touch-mode";
 const BOARD_SIZE_KEY = "weiqi-board-size";
 const HUMAN_COLOR_KEY = "weiqi-human-color";
 const BOT_TIER_KEY = "weiqi-opponent-tier";
+const RULESET_KEY = "weiqi-ruleset";
 const MIN_BOT_REPLY_MS = 260;
 
 const boardHost = document.getElementById("board-host");
@@ -49,6 +57,7 @@ const repriseBtn = document.getElementById("reprise-btn");
 const downloadSgfBtn = document.getElementById("download-sgf-btn");
 const botSelect = document.getElementById("bot-select");
 const boardSizeSelect = document.getElementById("board-size-select");
+const rulesetSelect = document.getElementById("ruleset-select");
 const humanColorSelect = document.getElementById("human-color-select");
 const soundToggleBtn = document.getElementById("sound-toggle-btn");
 const conceptTierSelect = document.getElementById("concept-tier-select");
@@ -84,6 +93,17 @@ if (boardSizeSelect) {
   boardSizeSelect.value = BOARD_SIZES.includes(Number(stored)) ? stored : "9";
 }
 if (humanColorSelect) humanColorSelect.value = readSetting(HUMAN_COLOR_KEY, "black") === "white" ? "white" : "black";
+if (rulesetSelect) {
+  for (const [id, rules] of Object.entries(kernel.RULESETS)) {
+    const option = document.createElement("option");
+    option.value = id;
+    const scoring = rules.scoring === "territory" ? "territory" : "area";
+    option.textContent = RULESET_LABELS[id] + " — " + scoring + ", komi " + rules.komi;
+    rulesetSelect.append(option);
+  }
+  const remembered = readSetting(RULESET_KEY, DEFAULT_RULESET);
+  rulesetSelect.value = Object.hasOwn(kernel.RULESETS, remembered) ? remembered : DEFAULT_RULESET;
+}
 
 function selectedBot() {
   return BOT_TIERS.find((bot) => bot.id === botSelect.value) ?? BOT_TIERS[0];
@@ -92,12 +112,16 @@ function selectedBoardSize() {
   const size = Number(boardSizeSelect?.value);
   return BOARD_SIZES.includes(size) ? size : DEFAULT_BOARD_SIZE;
 }
+function selectedRuleset() {
+  const selection = rulesetSelect?.value;
+  return selection && Object.hasOwn(kernel.RULESETS, selection) ? selection : DEFAULT_RULESET;
+}
 function selectedHumanColor() {
   return humanColorSelect?.value === "white" ? kernel.WHITE : kernel.BLACK;
 }
 
 // --- Game state ------------------------------------------------------------
-let session = kernel.createWeiqiGameSession({ size: DEFAULT_BOARD_SIZE, ruleset: RULESET });
+let session = kernel.createWeiqiGameSession({ size: DEFAULT_BOARD_SIZE, ruleset: CAPTURE_GO ? CAPTURE_GO_RULESET : DEFAULT_RULESET });
 let humanColor = kernel.BLACK;
 let botThinking = false;
 let finished = false;
@@ -272,6 +296,7 @@ function render() {
   botSelect.disabled = inProgress;
   if (boardSizeSelect) boardSizeSelect.disabled = inProgress;
   if (humanColorSelect) humanColorSelect.disabled = inProgress;
+  if (rulesetSelect) rulesetSelect.disabled = inProgress;
   if (!finished) {
     const captures = `Captures: Black ${game.current.capturedWhiteStones}, White ${game.current.capturedBlackStones}.`;
     const passed = game.passStreak > 0 ? " The last move was a pass; a second consecutive pass ends the game." : "";
@@ -386,10 +411,12 @@ function startNewGame() {
   generation += 1;
   if (!CAPTURE_GO) writeSetting(BOT_TIER_KEY, selectedBot().id);
   const size = CAPTURE_GO ? DEFAULT_BOARD_SIZE : selectedBoardSize();
+  const ruleset = CAPTURE_GO ? CAPTURE_GO_RULESET : selectedRuleset();
   humanColor = CAPTURE_GO ? kernel.BLACK : selectedHumanColor();
   if (boardSizeSelect) writeSetting(BOARD_SIZE_KEY, String(size));
   if (humanColorSelect) writeSetting(HUMAN_COLOR_KEY, humanColor === kernel.WHITE ? "white" : "black");
-  session = kernel.createWeiqiGameSession({ size, ruleset: RULESET });
+  if (rulesetSelect) writeSetting(RULESET_KEY, ruleset);
+  session = kernel.createWeiqiGameSession({ size, ruleset });
   botThinking = false;
   finished = false;
   marking = false;
@@ -405,7 +432,7 @@ function startNewGame() {
   board.setTerritory(null);
   updateKoMarker();
   render();
-  board.announce(`New ${size} by ${size} ${CAPTURE_GO ? "Capture Go learning game" : "normal game"}. You are ${colorName(humanColor)}. Black to move.`);
+  board.announce(`New ${size} by ${size} ${CAPTURE_GO ? "Capture Go learning game" : "normal game"}. You are ${colorName(humanColor)}. ${CAPTURE_GO ? "First-capture" : RULESET_LABELS[ruleset]} rules. Black to move.`);
   if (humanColor === kernel.WHITE) playBotTurn();
 }
 
@@ -585,8 +612,9 @@ function openGameLink() {
     const opened = sessionFromStudyHash(location.hash);
     if (!opened?.ok) throw new Error(opened?.reason ?? "the link contains no game");
     const { size, ruleset } = opened.session.config;
-    if (ruleset !== RULESET || (CAPTURE_GO ? size !== 7 : !BOARD_SIZES.includes(size))) {
-      throw new Error(`this page plays ${CAPTURE_GO ? "7×7 Capture Go under Japanese" : "9×9, 13×13, or 19×19 under Chinese"} rules`);
+    if ((CAPTURE_GO ? ruleset !== CAPTURE_GO_RULESET : !Object.hasOwn(kernel.RULESETS, ruleset))
+      || (CAPTURE_GO ? size !== 7 : !BOARD_SIZES.includes(size))) {
+      throw new Error(`this page supports ${CAPTURE_GO ? "7×7 Capture Go under Japanese rules" : "9×9, 13×13 or 19×19 under the engine's five available rulesets"}`);
     }
     const params = new URLSearchParams(location.hash.slice(1));
     const human = params.get("human") ?? "black";
@@ -627,6 +655,7 @@ function openGameLink() {
     humanColor = chosenHumanColor;
     botSelect.value = bot;
     if (boardSizeSelect) boardSizeSelect.value = String(size);
+    if (rulesetSelect) rulesetSelect.value = ruleset;
     if (humanColorSelect) humanColorSelect.value = human;
     if (board.size !== size) board.setSize(size);
     resigned = isResigned;
