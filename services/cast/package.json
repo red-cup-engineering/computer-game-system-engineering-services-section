@@ -23,7 +23,8 @@
     "@red-cup-engineering/card-table": "workspace:*",
     "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*",
     "@red-cup-engineering/computer-text-content-engineering-services-section": "workspace:*",
-    "@red-cup-engineering/feltos": "workspace:*"
+    "@red-cup-engineering/feltos": "workspace:*",
+    "@red-cup-engineering/weiqi-engine": "workspace:*"
   },
   "devDependencies": {
     "@red-cup-engineering/feltos": "workspace:*"
@@ -62,7 +63,10 @@
     "./adapters/telnet": {
       "default": "./src/adapters/telnet.mjs"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./policy/weiqi": {
+      "default": "./src/policy/weiqi.mjs"
+    }
   },
   "files": [
     "src",

@@ -35,6 +35,10 @@ connect/observe/send-intent/disconnect surface can seat this cast at its table.
 npm install @red-cup-engineering/cast --registry http://127.0.0.1:4873/
 ```
 
+## Go cast actor: one policy source across web and on-chain play
+
+The native `./policy/weiqi` export now composes existing `@red-cup-engineering/weiqi-engine` opponent algorithms with Cast's seeded runner. A real character has a stable Persona ID, an authorized player principal and the current accepted-log revision; all Go legality, candidate search and strategy remain upstream. `createRunner` consumes `createWeiqiCastPolicy({tierId,...})` with the actual authenticated match transport and `toWeiqiIntent`. This is Go decision-making code, not a new network client, character dataset, player account service, or fictional traditional ranking. Live matchmaking and durable character memory still need native installed actor/room providers.
+
 ## The five modules
 
 ### `./persona` — who an agent player is
