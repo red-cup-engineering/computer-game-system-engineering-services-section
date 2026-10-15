@@ -39,6 +39,55 @@ npm install @red-cup-engineering/cast --registry http://127.0.0.1:4873/
 
 The native `./policy/weiqi` export now composes existing `@red-cup-engineering/weiqi-engine` opponent algorithms with Cast's seeded runner. A real character has a stable Persona ID, an authorized player principal and the current accepted-log revision; all Go legality, candidate search and strategy remain upstream. `createRunner` consumes `createWeiqiCastPolicy({tierId,...})` with the actual authenticated match transport and `toWeiqiIntent`. This is Go decision-making code, not a new network client, character dataset, player account service, or fictional traditional ranking. Live matchmaking and durable character memory still need native installed actor/room providers.
 
+## A Go idol's actual speaking event (WeiqIdol receiver)
+
+The same Cast is usable for Go without casino-language clones. The original
+generic dialogue engine now admits **only source-named, explicitly authored**
+extra situations through Persona `lines`. A Weiqi event named `capture`,
+`ko-started`, `atari-given` or `connection` has no default invented
+reaction: public instance/character authors supply the words and rights.
+The existing Go engine and match log, **not** the prompt or web page,
+establish what occurred.
+
+Use the already-shipped runner and Go policy with an authenticated match
+transport that returns the full
+`weiqi-engine/match#admitWeiqiMatchCommand` result:
+
+```js
+import { createRunner } from "@red-cup-engineering/cast/runner";
+import { createWeiqiCastPolicy, toWeiqiIntent,
+  createWeiqiCastReactions } from "@red-cup-engineering/cast/policy/weiqi";
+
+const persona = { id: "wxwq:my-authorized-character", name: "The Rival",
+  voiceTag: "stoic", temperament: { chattiness: 0.5, patience: 0.5 },
+  lines: { capture: ["{name} saw {stonesCaptured} taken at {point}."] } };
+const reactions = createWeiqiCastReactions(persona);
+const runner = createRunner({
+  persona, transport: authenticatedMatchTransport, seed: "match-seed",
+  policy: createWeiqiCastPolicy({ tierId: "influence" }),
+  toIntent: toWeiqiIntent, ...reactions, idleSituation: null,
+});
+for await (const emitted of runner.events()) showAcceptedCastEvent(emitted);
+```
+
+Here `authenticatedMatchTransport` and `showAcceptedCastEvent` are
+**consumer-provided** functions, not hidden Cast services. A runnable
+transport must enforce actor capability, persist the accepted match
+result and observe current revision; the example cannot receive a live
+player without those installed dependencies. `createWeiqiCastReactions`
+verifies the Cartridge-derived match, recomputes the source move's events
+with the authoritative Go engine, ignores duplicate submissions and
+unauthored situations, and carries original `stateHash`, revision,
+version and term reference into the spoken event. The in-process
+observation cache is not a stored character biography or ledger.
+
+The Go policy and dialogue are different contracts. This solves the
+shared vocabulary/authority mismatch; it **does not** by itself install
+persistent idol memory, membership, audience channels, payment, a live
+performance scene or production Go matchmaking. Those receivers belong
+to Cast/Qwzspace/Semioverse, Operations and Causeway rather than a
+`weiqi-web` per-page imitation.
+
 ## The five modules
 
 ### `./persona` — who an agent player is

@@ -5,6 +5,7 @@
  * come from an authenticated match observer; timing is owned by Cast runner.
  */
 import * as go from "@red-cup-engineering/weiqi-engine";
+import { verifyWeiqiMatch } from "@red-cup-engineering/weiqi-engine/match";
 
 export const WEIQI_CAST_TIERS = Object.freeze(go.BOT_TIERS.map(t=>t.id));
 
@@ -47,4 +48,72 @@ export function toWeiqiIntent(decision) {
     throw new TypeError("Only real accepted-shape play/pass commands can be sent");
   return Object.freeze({principal:decision.principal,idempotencyKey:decision.idempotencyKey,
     expectedRevision:decision.expectedRevision,command:decision.command});
+}
+
+/**
+ * Bind a source-authenticated Go match to Cast's existing runner dialogue.
+ * The performer writes its *own* lines keyed by a real engine event type;
+ * Cast never invents an event, declares a result, or implements Go legality.
+ * The transport must return admitWeiqiMatchCommand's match+log result,
+ * not only client-supplied event strings. A duplicate never speaks twice.
+ */
+export function createWeiqiCastReactions(persona) {
+  if (typeof persona?.id !== "string" || persona.id.length === 0)
+    throw new TypeError("Named Cast persona required");
+  let cachedDecision = null;
+  let cachedResult = null;
+  let cachedObservation = null;
+  function observed(decision, result) {
+    if (decision === cachedDecision && result === cachedResult) return cachedObservation;
+    let found = null;
+    if (decision?.personaId === persona.id && decision?.action === "play" &&
+        result?.ok === true && !result.duplicate && !result.proposed && result.match &&
+        Number.isSafeInteger(decision.expectedRevision) && decision.expectedRevision >= 0 &&
+        result.match.revision === decision.expectedRevision + 1) {
+      const last = result.match.log?.at(-1)?.intent;
+      if (last?.kind === "weiqi-command" && last.principal === decision.principal &&
+          last.idempotencyKey === decision.idempotencyKey &&
+          last.expectedRevision === decision.expectedRevision &&
+          last.command?.kind === "play" && last.command.move === decision.command?.move) {
+        const verified = verifyWeiqiMatch(result.match);
+        if (verified.valid && verified.session.version > 0) {
+          const previous = go.createWeiqiGameSession(result.match.config,
+            verified.session.commands.slice(0, -1));
+          const admitted = go.admitWeiqiGameCommand(previous, previous.version, decision.command);
+          if (admitted.ok && admitted.session.version === verified.session.version) {
+            const event = admitted.events.find(e => {
+              const lines = persona.lines?.[e.type];
+              return !e.detail?.selfCapture && Object.hasOwn(persona.lines ?? {}, e.type) &&
+                Array.isArray(lines) && lines.length > 0 &&
+                lines.every(line => typeof line === "string" && line.trim().length > 0);
+            });
+            if (event) found = Object.freeze({
+              event, stateHash: result.match.stateHash,
+              sourceRevision: result.match.revision, sourceVersion: verified.session.version,
+              principal: decision.principal,
+            });
+          }
+        }
+      }
+    }
+    cachedDecision = decision;
+    cachedResult = result;
+    cachedObservation = found;
+    return found;
+  }
+  return Object.freeze({
+    classifyReaction: (decision, result) => observed(decision, result)?.event.type ?? null,
+    dialogueContext: (decision, result) => {
+      const source = observed(decision, result);
+      if (!source) return Object.freeze({});
+      return Object.freeze({
+        termRef: source.event.termRef ?? null,
+        eventType: source.event.type,
+        point: source.event.detail?.point ?? decision.command.move,
+        stonesCaptured: source.event.detail?.stonesCaptured ?? 0,
+        sourceVersion: source.sourceVersion, sourceRevision: source.sourceRevision,
+        stateHash: source.stateHash, principal: source.principal,
+      });
+    },
+  });
 }
