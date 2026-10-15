@@ -25,59 +25,40 @@
     </nav>
   </header>
 
-  <main>
-    <p class="pill">Play, learn, and read &mdash; one rules engine</p>
-    <h1>The game explains itself while you play it.</h1>
-    <p class="subtitle">
-      A rules kernel that recognizes weiqi's own vocabulary &mdash; atari, capture, ko, connection,
-      eye &mdash; as it happens on the board, and an interface that surfaces this section's own
-      glossary the moment each concept becomes relevant. No account required.
-    </p>
-
-    <div class="face-grid">
-      <a class="face-card" href="play.html">
-        <span class="glyph" aria-hidden="true">&#9899;&#9898;</span>
-        <h2>Play</h2>
-        <p>Play normal Chinese-rules weiqi on 9&times;9, 13&times;13, or 19&times;19, as Black or White,
-          against five local AI tiers. Two passes end the game; mark dead stones, then count.</p>
-      </a>
-      <a class="face-card" href="learn/capture-go/">
-        <span class="glyph" aria-hidden="true">&#9678;</span>
-        <h2>Capture Go</h2>
-        <p>A separate first-capture learning game on 7&times;7. Use it to make liberties, atari,
-          and capture concrete before returning to normal play.</p>
-      </a>
-      <a class="face-card" href="learn.html">
-        <span class="glyph" aria-hidden="true">&#9634;</span>
-        <h2>Learn</h2>
-        <p>Step through the Weiqi Overview lesson as an interactive board sequence: liberties,
-          atari, and capture, worked out one move at a time.</p>
-      </a>
-      <a class="face-card" href="tsumego.html">
-        <span class="glyph" aria-hidden="true">&#9673;</span>
-        <h2>Tsumego</h2>
-        <p>Graded life-and-death problems, every answer checked by the real rules kernel. Reviews
-          are scheduled by spaced repetition, so problems come back right when you're about to
-          forget them.</p>
-      </a>
-      <a class="face-card" href="glossary.html">
-        <span class="glyph" aria-hidden="true">&#128214;</span>
-        <h2>Read</h2>
-        <p>The section's own glossary, compiled straight from its markdown source &mdash; the same
-          text the hover-cards in Play and Learn draw from.</p>
-      </a>
-    </div>
-
-    <section class="card" style="margin-top:2.5rem;">
-      <h2 style="margin-top:0;">One graph, three faces</h2>
-      <p style="color:var(--ink-soft); margin-bottom:0;">
-        A capture in Play, a step in Learn, and the glossary entry for &ldquo;capture&rdquo; in Read
-        are the same concept seen three ways. The rules engine (<code>@red-cup-engineering/weiqi-engine</code>)
-        emits semantic events with a <code>termRef</code> pointing straight at this section's own
-        corpus; this app never hardcodes a definition &mdash; every hover-card and glossary entry is
-        compiled from <a href="glossary.html">the same markdown</a> at build time.
-      </p>
+  <main class="game-lobby">
+    <section class="lobby-hero">
+      <div class="lobby-hero-copy">
+        <span class="lobby-overline">561 PLAY / THE GO ARENA</span>
+        <h1>One board.<br><em>Infinite battles.</em></h1>
+        <p>Outread a rival. Win the shape. Beat your personal best. Real Go, sharp AI opponents, and rapid-fire puzzles built on one rules engine.</p>
+        <div class="lobby-hero-actions">
+          <a class="lobby-button lobby-button-primary" href="tsumego.html#rush-panel">Play Puzzle Rush <span aria-hidden="true">↗</span></a>
+          <a class="lobby-button lobby-button-outline" href="play.html">Challenge the AI <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="lobby-micro">Instant browser play · No account needed · Daily arcade run</p>
+      </div>
+      <div class="lobby-hero-board" role="img" aria-label="Illustrative nine-by-nine Go board with black and white stones forming a tactical fight">
+        <div class="lobby-board-grid" aria-hidden="true">
+          <span class="lobby-stone dark" style="--x:2;--y:1"></span><span class="lobby-stone light" style="--x:3;--y:1"></span>
+          <span class="lobby-stone dark" style="--x:4;--y:2"></span><span class="lobby-stone light" style="--x:3;--y:3"></span>
+          <span class="lobby-stone dark" style="--x:2;--y:3"></span><span class="lobby-stone light" style="--x:5;--y:3"></span>
+          <span class="lobby-stone dark" style="--x:4;--y:4"></span><span class="lobby-stone dark" style="--x:5;--y:5"></span>
+          <span class="lobby-stone light" style="--x:6;--y:4"></span><span class="lobby-stone light" style="--x:2;--y:5"></span>
+          <span class="lobby-stone dark" style="--x:3;--y:6"></span><span class="lobby-stone light" style="--x:6;--y:6"></span>
+        </div>
+        <span class="lobby-board-caption">READ THE BOARD / MAKE YOUR MOVE</span>
+      </div>
     </section>
+    <section class="lobby-section" aria-labelledby="modes-heading">
+      <div class="lobby-section-heading"><div><span class="lobby-overline">SELECT YOUR MODE</span><h2 id="modes-heading">Your next move starts here.</h2></div><a href="glossary.html">Explore the Go field →</a></div>
+      <div class="lobby-modes">
+        <a class="lobby-mode lobby-mode-hot" href="tsumego.html#rush-panel"><span class="mode-topline">01 / DAILY ARCADE <span>90 SEC</span></span><strong>Puzzle Rush</strong><span>Beat the clock. Build streaks. Three lives to prove your reading.</span><span class="mode-action">Enter rush →</span></a>
+        <a class="lobby-mode" href="play.html"><span class="mode-topline">02 / SINGLE PLAYER <span>5 AI TIERS</span></span><strong>Go Arena</strong><span>9×9, 13×13 or 19×19. Fight real games against a local opponent.</span><span class="mode-action">Start a match →</span></a>
+        <a class="lobby-mode" href="tsumego.html"><span class="mode-topline">03 / TACTICS <span>56 PROBLEMS</span></span><strong>Problem Vault</strong><span>Practice captures, ladders, life and death, and the endgame.</span><span class="mode-action">Explore puzzles →</span></a>
+        <a class="lobby-mode" href="learn/capture-go/"><span class="mode-topline">04 / QUICK START <span>7×7</span></span><strong>First Capture</strong><span>Small board, instant battle. Capture a stone to take the win.</span><span class="mode-action">Play now →</span></a>
+      </div>
+    </section>
+    <section class="lobby-secondary"><div><span class="lobby-overline">BUILD YOUR EDGE</span><h2>From first move to great reads.</h2><p>The game explains atari, ko and connection as you play. Sharpen your strategy with interactive lessons, then study complete SGF game records.</p><div class="lobby-secondary-actions"><a href="learn.html">Interactive lessons →</a><a href="review.html">Study a game →</a><a href="glossary.html">40 Go concepts →</a></div></div><div class="lobby-score"><span>NEW CHALLENGER?</span><strong>Start with a win.</strong><p>Jump into a 7×7 capture battle, then graduate to the full board.</p><a class="lobby-button lobby-button-primary" href="learn/capture-go/">Play First Capture →</a></div></section>
   </main>
 
   <footer class="site-footer">

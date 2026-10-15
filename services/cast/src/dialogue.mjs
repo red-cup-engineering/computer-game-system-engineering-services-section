@@ -94,9 +94,17 @@ const BASE_REACTION_RATE = Object.freeze({
   farewell: 0.8,
 });
 
-function assertSituation(situation) {
-  if (!SITUATIONS.includes(situation)) {
-    throw new TypeError(`dialogue: unknown situation "${situation}" (expected one of ${SITUATIONS.join(', ')})`);
+// Common casino situations retain their shared templates. A game may also
+// author a non-casino situation in its Persona data, keyed by an event the
+// game's authoritative source actually emits (e.g. Weiqi "capture"). Cast
+// never invents that event or a default reaction to a nonexistent encounter.
+function assertSituation(situation, persona) {
+  if (SITUATIONS.includes(situation)) return;
+  const lines = persona?.lines?.[situation];
+  if (typeof situation !== 'string' || !Object.hasOwn(persona?.lines ?? {}, situation) ||
+      !Array.isArray(lines) || lines.length === 0 ||
+      !lines.every(line => typeof line === 'string' && line.trim().length > 0)) {
+    throw new TypeError(`dialogue: unknown or unauthored situation "${String(situation)}"`);
   }
 }
 
@@ -107,8 +115,8 @@ function assertSituation(situation) {
  * less, but the base rate itself is never bypassed entirely.
  */
 export function reactionProbability(persona, situation) {
-  assertSituation(situation);
-  const base = BASE_REACTION_RATE[situation];
+  assertSituation(situation, persona);
+  const base = Object.hasOwn(BASE_REACTION_RATE, situation) ? BASE_REACTION_RATE[situation] : 1;
   const chattiness = clamp01(persona.temperament?.chattiness ?? 0.5);
   return clamp01(base * (0.3 + 1.4 * chattiness));
 }
@@ -120,9 +128,10 @@ export function shouldSpeak(persona, situation, rng) {
 }
 
 function templatesFor(persona, situation) {
-  const authored = persona.lines?.[situation] ?? [];
-  const voiced = VOICE_TEMPLATES[persona.voiceTag]?.[situation] ?? [];
-  const fallback = DEFAULT_TEMPLATES[situation] ?? [];
+  const authored = Object.hasOwn(persona.lines ?? {}, situation) ? persona.lines[situation] : [];
+  const voice = VOICE_TEMPLATES[persona.voiceTag] ?? {};
+  const voiced = Object.hasOwn(voice, situation) ? voice[situation] : [];
+  const fallback = Object.hasOwn(DEFAULT_TEMPLATES, situation) ? DEFAULT_TEMPLATES[situation] : [];
   // Authored lines first (most specific), then voice-archetype flavor, then the universal
   // fallback — order matters only in that authored/voiced lines are preferred when sampling
   // without replacement runs out of room, not for any weighting beyond that.
@@ -147,7 +156,7 @@ function fillSlots(template, context) {
  * counter) to avoid replaying the same line twice for the same persona/situation pair.
  */
 export function say(persona, situation, options = {}) {
-  assertSituation(situation);
+  assertSituation(situation, persona);
   const count = options.count ?? 1;
   if (!Number.isInteger(count) || count < 1) {
     throw new RangeError(`say: count must be a positive integer (got ${count})`);

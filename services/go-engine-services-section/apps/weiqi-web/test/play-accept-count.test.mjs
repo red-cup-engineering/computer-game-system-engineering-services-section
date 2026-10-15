@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import * as kernel from "../public/js/kernel/index.mjs";
+import { WALL_WITH_INVADER, sessionAfterMoves } from "@red-cup-engineering/weiqi-engine/testing";
 import { localCount, describeLocalCount } from "../public/js/local-game.mjs";
 import { buildStudyReplay, playLink, sessionFromStudyHash, studyLink } from "../public/js/study-replay.mjs";
 
@@ -20,16 +21,11 @@ if (renderBegin < 0 || renderEnd < 0) throw new Error("Play render control state
 const renderSource = source.slice(renderBegin, renderEnd);
 
 function liveFixture() {
-  // Black's B-column wall, White's D-column wall, White A3 invader,
-  // followed by two passes. A3 is a real stone and may be agreed dead.
-  const moves = [
-    "B1", "D1", "B2", "D2", "B3", "D3", "B4", "D4", "B5", "D5",
-    "pass", "A3", "pass", "pass",
-  ];
-  const commands = moves.map((move) =>
-    move === "pass" ? { kind: "pass" } : { kind: "play", move });
-  const session = kernel.createWeiqiGameSession(
-    { size: 5, ruleset: "chinese" }, commands);
+  // Whole-group/settlement truth comes from the generated browser kernel;
+  // the input sequence is the same upstream-owned wall fixture used by
+  // engine and two-player match regressions.
+  const session = sessionAfterMoves(
+    { size: 5, ruleset: "chinese" }, WALL_WITH_INVADER, kernel);
   assert.equal(session.state.passStreak, 2);
   assert.equal(session.state.result, null);
   return session;
@@ -57,6 +53,7 @@ function mountedCountButton(session, marks = new Set(), {
   const dependencies = {
     acceptCountBtn, CAPTURE_GO, botThinking, session, marking, finished,
     deadPoints: new Set(marks), kernel, localCount, describeLocalCount, resultEl, board,
+    RULESET_LABELS: { chinese: "Chinese", japanese: "Japanese", aga: "AGA", newzealand: "New Zealand", ing: "Ing" },
     setStatus(text) { calls.status.push(text); },
     rebuildEventLog() { calls.events++; },
     showConceptSummary() { calls.summaries++; },
@@ -158,7 +155,7 @@ function renderedCountButton(session, {
 } = {}) {
   const acceptCountBtn = { hidden: true, disabled: true };
   const dependencies = {
-    acceptCountBtn, session, marking, finished, botThinking, CAPTURE_GO,
+    acceptCountBtn, session, marking, finished, botThinking, CAPTURE_GO, watchReelBtn: null, repriseBtn: null,
     kernel, openingError: null, humanColor: kernel.BLACK,
     keepGameLink() {},
     board: { setPosition() {}, setLegalityChecker() {} },
@@ -200,4 +197,48 @@ test("normal Play alone exposes a hidden-by-default Accept count control", async
   ]);
   assert.match(play, /id="accept-count-btn"[^>]*\bhidden\b[^>]*\bdisabled\b/);
   assert.doesNotMatch(capture, /id="accept-count-btn"/);
+});
+
+test("a settled local Go game offers the playable source-verified spectator reel", async () => {
+  const html = await readFile(new URL("../public/play.html", import.meta.url), "utf8");
+  assert.match(html, /id="watch-reel-btn"[^>]*hidden[^>]*disabled/);
+  assert.match(source, /if \(watchReelBtn\) \{/);
+  assert.match(source, /watchReelBtn\.hidden = !finished \|\| session\.version === 0/);
+  assert.match(source, /watchReelBtn\.addEventListener\("click"/);
+  assert.match(source, /params\.set\("moment", "0"\)/);
+  const finishedGame = liveFixture();
+  const accepted = kernel.admitWeiqiGameCommand(finishedGame, finishedGame.version,
+    { kind: "settle", dead: [] });
+  assert.equal(accepted.ok, true);
+  if (!accepted.ok) return;
+  const watched = studyLink(accepted.session, "https://weiqi.play.561.group/play.html");
+  assert.equal(sessionFromStudyHash(new URL(watched).hash).ok, true);
+  assert.equal(buildStudyReplay(accepted.session).frames.at(-1).command.kind, "settle");
+});
+
+test("postgame reprise opens a genuine legal branching point, never a new guessed game", async () => {
+  const html = await readFile(new URL("../public/play.html", import.meta.url), "utf8");
+  assert.match(html, /id="reprise-btn"[^>]*hidden[^>]*disabled/);
+  assert.match(source, /kernel\.planReplayMoments\(accepted\.frames/);
+  assert.match(source, /params\.set\("explore", "1"\)/);
+  assert.match(source, /const from = best \? best\.version - 1/);
+  const session = kernel.createWeiqiGameSession({ size: 9, ruleset: "chinese" }, [
+    { kind: "play", move: "C3" }, { kind: "play", move: "C4" },
+    { kind: "play", move: "B4" }, { kind: "play", move: "A1" },
+    { kind: "play", move: "D4" }, { kind: "play", move: "A2" },
+    { kind: "play", move: "C5" },
+  ]);
+  const studied = buildStudyReplay(session);
+  const selected = kernel.planReplayMoments(studied.frames).find(x => x.kind === "capture");
+  assert.ok(selected && selected.version > 0);
+  const from = selected.version - 1;
+  const link = new URL(studyLink(session, "https://weiqi.play.561.group/play.html"));
+  const params = new URLSearchParams(link.hash.slice(1));
+  params.set("moment", String(from));
+  params.set("explore", "1");
+  link.hash = params.toString();
+  assert.equal(sessionFromStudyHash(link.hash).ok, true);
+  assert.equal(params.get("moment"), String(from));
+  assert.equal(params.get("explore"), "1");
+  assert.ok(from < session.version);
 });

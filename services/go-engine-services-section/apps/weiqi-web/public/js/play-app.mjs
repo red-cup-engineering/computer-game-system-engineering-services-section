@@ -2,7 +2,7 @@
 // 19x19 as either color against a local bot tier, and the separate 7x7
 // Capture Go learning route (data-game-mode="capture-go"). Rules, scoring,
 // ko, and semantic events come only from the generated Weiqi engine; the bot
-// tiers (bot.mjs) only choose among moves the engine certified, and think
+// tiers (engine-projected policies) only choose among moves the engine certified, and think
 // off the page thread in bot-worker.mjs. This module owns browser effects
 // and presentation: the versioned session, undo, dead-stone marking after
 // two passes, the event log, sound, toasts, and settings.
@@ -10,7 +10,7 @@
 import * as kernel from "./kernel/index.mjs";
 import { WeiqiBoard, getEventGlyph } from "./board.mjs";
 import { GlossaryHoverCard, loadGlossary } from "./hover-card.mjs";
-import { BOT_TIERS } from "./bot.mjs";
+import { BOT_TIERS } from "./kernel/policies.mjs";
 import { WeiqiSound } from "./sound.mjs";
 import { ConceptToastStrip } from "./concept-toast.mjs";
 import { canAdmitHumanBoardMove } from "./play-turn-admission.mjs";
@@ -20,11 +20,20 @@ import { describeLocalCount, isUnsettledTwoPassPosition, localCount, toggleDeadG
 
 const CAPTURE_GO = document.body.dataset.gameMode === "capture-go";
 const DEFAULT_BOARD_SIZE = CAPTURE_GO ? 7 : 9;
-const RULESET = CAPTURE_GO ? "japanese" : "chinese";
+const CAPTURE_GO_RULESET = "japanese";
+const DEFAULT_RULESET = "chinese";
+// The five actual rules and scoring regimes belong to the single engine.
+// This is a user's game-law choice, NOT a classifier of national play style.
+const RULESET_LABELS = Object.freeze({
+  chinese: "Chinese", japanese: "Japanese", aga: "AGA",
+  newzealand: "New Zealand", ing: "Ing",
+});
 const BOARD_SIZES = [9, 13, 19];
 const TOUCH_MODE_KEY = "weiqi-touch-mode";
 const BOARD_SIZE_KEY = "weiqi-board-size";
 const HUMAN_COLOR_KEY = "weiqi-human-color";
+const BOT_TIER_KEY = "weiqi-opponent-tier";
+const RULESET_KEY = "weiqi-ruleset";
 const MIN_BOT_REPLY_MS = 260;
 
 const boardHost = document.getElementById("board-host");
@@ -39,9 +48,16 @@ const resignBtn = document.getElementById("resign-btn");
 const acceptCountBtn = document.getElementById("accept-count-btn");
 const undoBtn = document.getElementById("undo-btn");
 const studyGameBtn = document.getElementById("study-game-btn");
+const watchReelBtn = document.getElementById("watch-reel-btn");
+const sectArrival = document.getElementById("sect-arrival");
+const sectArrivalTitle = document.getElementById("sect-arrival-title");
+const sectArrivalCopy = document.getElementById("sect-arrival-copy");
+const sectAcceptBtn = document.getElementById("sect-accept-btn");
+const repriseBtn = document.getElementById("reprise-btn");
 const downloadSgfBtn = document.getElementById("download-sgf-btn");
 const botSelect = document.getElementById("bot-select");
 const boardSizeSelect = document.getElementById("board-size-select");
+const rulesetSelect = document.getElementById("ruleset-select");
 const humanColorSelect = document.getElementById("human-color-select");
 const soundToggleBtn = document.getElementById("sound-toggle-btn");
 const conceptTierSelect = document.getElementById("concept-tier-select");
@@ -70,12 +86,24 @@ for (const bot of BOT_TIERS) {
   option.textContent = `${bot.label} — ${bot.tagline}`;
   botSelect.append(option);
 }
-botSelect.value = "influence";
+const savedBot = readSetting(BOT_TIER_KEY, CAPTURE_GO ? "greedy" : "montecarlo");
+botSelect.value = BOT_TIERS.some((tier) => tier.id === savedBot) ? savedBot : (CAPTURE_GO ? "greedy" : "montecarlo");
 if (boardSizeSelect) {
   const stored = readSetting(BOARD_SIZE_KEY, "9");
   boardSizeSelect.value = BOARD_SIZES.includes(Number(stored)) ? stored : "9";
 }
 if (humanColorSelect) humanColorSelect.value = readSetting(HUMAN_COLOR_KEY, "black") === "white" ? "white" : "black";
+if (rulesetSelect) {
+  for (const [id, rules] of Object.entries(kernel.RULESETS)) {
+    const option = document.createElement("option");
+    option.value = id;
+    const scoring = rules.scoring === "territory" ? "territory" : "area";
+    option.textContent = RULESET_LABELS[id] + " — " + scoring + ", komi " + rules.komi;
+    rulesetSelect.append(option);
+  }
+  const remembered = readSetting(RULESET_KEY, DEFAULT_RULESET);
+  rulesetSelect.value = Object.hasOwn(kernel.RULESETS, remembered) ? remembered : DEFAULT_RULESET;
+}
 
 function selectedBot() {
   return BOT_TIERS.find((bot) => bot.id === botSelect.value) ?? BOT_TIERS[0];
@@ -84,12 +112,16 @@ function selectedBoardSize() {
   const size = Number(boardSizeSelect?.value);
   return BOARD_SIZES.includes(size) ? size : DEFAULT_BOARD_SIZE;
 }
+function selectedRuleset() {
+  const selection = rulesetSelect?.value;
+  return selection && Object.hasOwn(kernel.RULESETS, selection) ? selection : DEFAULT_RULESET;
+}
 function selectedHumanColor() {
   return humanColorSelect?.value === "white" ? kernel.WHITE : kernel.BLACK;
 }
 
 // --- Game state ------------------------------------------------------------
-let session = kernel.createWeiqiGameSession({ size: DEFAULT_BOARD_SIZE, ruleset: RULESET });
+let session = kernel.createWeiqiGameSession({ size: DEFAULT_BOARD_SIZE, ruleset: CAPTURE_GO ? CAPTURE_GO_RULESET : DEFAULT_RULESET });
 let humanColor = kernel.BLACK;
 let botThinking = false;
 let finished = false;
@@ -98,6 +130,7 @@ let openingError = null;
 let marking = false; // dead-stone marking, after two passes
 let deadPoints = new Set(); // point indices the human marked dead
 let generation = 0; // bumped by New game and Undo, so a bot reply for an older game is dropped
+let currentScout = null; // one derived, replayable challenge, not a second profile
 
 function colorName(color) {
   return color === kernel.BLACK ? "Black" : "White";
@@ -124,14 +157,18 @@ function createBotWorker() {
     worker.addEventListener("message", ({ data }) => {
       const pending = pendingBotReplies.get(data?.id);
       if (!pending) return;
+      if (data?.type === "progress") {
+        pending.onProgress?.(data.progress);
+        return;
+      }
       pendingBotReplies.delete(data.id);
-      pending(data.ok ? data.move : null);
+      pending.resolve(data.ok ? data.move : null);
     });
     worker.addEventListener("error", () => {
       // The worker could not load or threw: answer every waiter with null
       // so it falls back to thinking on the page thread, and stop using it.
       botWorker = null;
-      for (const pending of pendingBotReplies.values()) pending(null);
+      for (const pending of pendingBotReplies.values()) pending.resolve(null);
       pendingBotReplies.clear();
     });
     return worker;
@@ -141,11 +178,11 @@ function createBotWorker() {
 }
 
 /** The tier's reply for `forSession`, computed in the worker when possible and on the page thread otherwise. */
-async function chooseBotMove(forSession, tier) {
+async function chooseBotMove(forSession, tier, onProgress = null) {
   if (botWorker) {
     const id = ++botRequestId;
     const reply = await new Promise((resolve) => {
-      pendingBotReplies.set(id, resolve);
+      pendingBotReplies.set(id, { resolve, onProgress });
       botWorker.postMessage({ id, session: forSession, tierId: tier.id });
     });
     if (reply !== null) return reply;
@@ -233,10 +270,33 @@ function render() {
     acceptCountBtn.disabled = CAPTURE_GO || !finished || botThinking || !marking || session.state.result !== null || Boolean(openingError);
   }
   if (undoBtn) undoBtn.disabled = botThinking || session.state.result !== null || undoLastExchange(session, humanColor, kernel) === null;
+  if (watchReelBtn) {
+    watchReelBtn.hidden = !finished || session.version === 0;
+    watchReelBtn.disabled = !finished || session.version === 0;
+  }
+  if (repriseBtn) {
+    repriseBtn.hidden = !finished || session.version === 0;
+    repriseBtn.disabled = !finished || session.version === 0;
+  }
+  if (sectArrival) {
+    const witnessed = finished && session.version > 0
+      ? kernel.planTacticalTryouts(buildStudyReplay(session).frames, { color: humanColor, limit: 5 })
+      : null;
+    currentScout = witnessed?.invitations.slice()
+      .sort((a, b) => b.priority - a.priority || a.sourceVersion - b.sourceVersion)[0] ?? null;
+    sectArrival.hidden = currentScout === null;
+    if (currentScout) {
+      sectArrivalTitle.textContent = "A visiting sect has read your game";
+      sectArrivalCopy.textContent = "An envoy witnessed " + currentScout.title.toLowerCase() +
+        " at move " + currentScout.sourceVersion +
+        ". They invite you to replay that position and prove the technique with a real move.";
+    }
+  }
   const inProgress = session.version > 0 && !finished;
   botSelect.disabled = inProgress;
   if (boardSizeSelect) boardSizeSelect.disabled = inProgress;
   if (humanColorSelect) humanColorSelect.disabled = inProgress;
+  if (rulesetSelect) rulesetSelect.disabled = inProgress;
   if (!finished) {
     const captures = `Captures: Black ${game.current.capturedWhiteStones}, White ${game.current.capturedBlackStones}.`;
     const passed = game.passStreak > 0 ? " The last move was a pass; a second consecutive pass ends the game." : "";
@@ -246,10 +306,13 @@ function render() {
 
 // --- Ending the game --------------------------------------------------------
 function showCount() {
-  const { score, ownership, ruleset } = localCount(session, deadPoints, kernel);
+  const receipt = localCount(session, deadPoints, kernel);
   resultEl.hidden = false;
-  resultEl.textContent = describeLocalCount(score, ruleset.komi, deadPoints.size, session.state.result?.by === "count");
-  board.setTerritory(ownership);
+  resultEl.textContent = describeLocalCount(
+    receipt, deadPoints.size, session.state.result?.by === "count",
+    RULESET_LABELS[session.config.ruleset],
+  );
+  board.setTerritory(receipt.ownership);
   board.setDeadStones([...deadPoints].map((point) => kernel.pointToCoord(session.config.size, point)));
   if (marking) setStatus("Game over. Mark dead stones by clicking their groups, then choose Accept count to finalize the agreed result.");
 }
@@ -331,7 +394,12 @@ async function playBotTurn() {
   botThinking = true;
   render();
   const startedAt = Date.now();
-  const move = await chooseBotMove(forSession, selectedBot());
+  const tier = selectedBot();
+  const move = await chooseBotMove(forSession, tier, (progress) => {
+    if (startedGeneration !== generation || !botThinking ||
+        tier.id !== "montecarlo" || !Number.isInteger(progress?.completed)) return;
+    setStatus(`${tier.label} is reading the board — ${progress.completed}/${progress.total} simulations; ${progress.explored} continuations explored.`);
+  });
   const wait = MIN_BOT_REPLY_MS - (Date.now() - startedAt);
   if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
   if (startedGeneration !== generation) return; // New game or Undo superseded this reply
@@ -344,11 +412,14 @@ function startNewGame() {
   openingError = null;
   resigned = false;
   generation += 1;
+  if (!CAPTURE_GO) writeSetting(BOT_TIER_KEY, selectedBot().id);
   const size = CAPTURE_GO ? DEFAULT_BOARD_SIZE : selectedBoardSize();
+  const ruleset = CAPTURE_GO ? CAPTURE_GO_RULESET : selectedRuleset();
   humanColor = CAPTURE_GO ? kernel.BLACK : selectedHumanColor();
   if (boardSizeSelect) writeSetting(BOARD_SIZE_KEY, String(size));
   if (humanColorSelect) writeSetting(HUMAN_COLOR_KEY, humanColor === kernel.WHITE ? "white" : "black");
-  session = kernel.createWeiqiGameSession({ size, ruleset: RULESET });
+  if (rulesetSelect) writeSetting(RULESET_KEY, ruleset);
+  session = kernel.createWeiqiGameSession({ size, ruleset });
   botThinking = false;
   finished = false;
   marking = false;
@@ -364,7 +435,7 @@ function startNewGame() {
   board.setTerritory(null);
   updateKoMarker();
   render();
-  board.announce(`New ${size} by ${size} ${CAPTURE_GO ? "Capture Go learning game" : "normal game"}. You are ${colorName(humanColor)}. Black to move.`);
+  board.announce(`New ${size} by ${size} ${CAPTURE_GO ? "Capture Go learning game" : "normal game"}. You are ${colorName(humanColor)}. ${CAPTURE_GO ? "First-capture" : RULESET_LABELS[ruleset]} rules. Black to move.`);
   if (humanColor === kernel.WHITE) playBotTurn();
 }
 
@@ -469,7 +540,57 @@ if (studyGameBtn) {
   studyGameBtn.addEventListener("click", () => {
     // Study receives the engine-admitted commands in a share link; it owns
     // no parser, persistence, or second game model, and the link is durable.
-    location.href = studyLink(session, location.href);
+    const link = new URL(studyLink(session, location.href));
+    const params = new URLSearchParams(link.hash.slice(1));
+    params.set("focus", humanColor === kernel.WHITE ? "white" : "black");
+    link.hash = params.toString();
+    location.href = link.href;
+  });
+}
+if (watchReelBtn) {
+  watchReelBtn.addEventListener("click", () => {
+    if (!finished || session.version === 0) return;
+    // The entire legal match travels intact; moment=0 is presentation only.
+    const link = new URL(studyLink(session, location.href));
+    const params = new URLSearchParams(link.hash.slice(1));
+    params.set("moment", "0");
+    params.set("focus", humanColor === kernel.WHITE ? "white" : "black");
+    link.hash = params.toString();
+    location.href = link.href;
+  });
+}
+if (sectAcceptBtn) {
+  sectAcceptBtn.addEventListener("click", () => {
+    if (!finished || !currentScout) return;
+    const link = new URL(studyLink(session, location.href));
+    const params = new URLSearchParams(link.hash.slice(1));
+    // A player-selected invitation names exact source evidence and the
+    // board immediately before the observed move. It is no membership grant.
+    params.set("moment", String(currentScout.branchVersion));
+    params.set("scout", currentScout.kind);
+    params.set("focus", humanColor === kernel.WHITE ? "white" : "black");
+    link.hash = params.toString();
+    location.href = link.href;
+  });
+}
+if (repriseBtn) {
+  repriseBtn.addEventListener("click", () => {
+    if (!finished || session.version === 0) return;
+    const accepted = buildStudyReplay(session);
+    // A highlight's impact selects entertainment emphasis, not a verdict
+    // that a move was strategically good or bad. Rewind to the legal turn
+    // immediately BEFORE the event and let the player try another line.
+    const best = kernel.planReplayMoments(accepted.frames, { limit: 12 })
+      .filter((beat) => beat.version > 0 && beat.version < session.version && beat.impact > 0)
+      .sort((a, b) => b.impact - a.impact || a.version - b.version)[0];
+    const from = best ? best.version - 1 : Math.floor(session.version / 2);
+    const link = new URL(studyLink(session, location.href));
+    const params = new URLSearchParams(link.hash.slice(1));
+    params.set("moment", String(from));
+    params.set("focus", humanColor === kernel.WHITE ? "white" : "black");
+    params.set("explore", "1");
+    link.hash = params.toString();
+    location.href = link.href;
   });
 }
 
@@ -494,8 +615,9 @@ function openGameLink() {
     const opened = sessionFromStudyHash(location.hash);
     if (!opened?.ok) throw new Error(opened?.reason ?? "the link contains no game");
     const { size, ruleset } = opened.session.config;
-    if (ruleset !== RULESET || (CAPTURE_GO ? size !== 7 : !BOARD_SIZES.includes(size))) {
-      throw new Error(`this page plays ${CAPTURE_GO ? "7×7 Capture Go under Japanese" : "9×9, 13×13, or 19×19 under Chinese"} rules`);
+    if ((CAPTURE_GO ? ruleset !== CAPTURE_GO_RULESET : !Object.hasOwn(kernel.RULESETS, ruleset))
+      || (CAPTURE_GO ? size !== 7 : !BOARD_SIZES.includes(size))) {
+      throw new Error(`this page supports ${CAPTURE_GO ? "7×7 Capture Go under Japanese rules" : "9×9, 13×13 or 19×19 under the engine's five available rulesets"}`);
     }
     const params = new URLSearchParams(location.hash.slice(1));
     const human = params.get("human") ?? "black";
@@ -536,6 +658,7 @@ function openGameLink() {
     humanColor = chosenHumanColor;
     botSelect.value = bot;
     if (boardSizeSelect) boardSizeSelect.value = String(size);
+    if (rulesetSelect) rulesetSelect.value = ruleset;
     if (humanColorSelect) humanColorSelect.value = human;
     if (board.size !== size) board.setSize(size);
     resigned = isResigned;

@@ -17,10 +17,10 @@
   </header>
   <main class="wide">
     <h1>Study Replay</h1>
-    <p class="subtitle">Replay a game from a share link, a finished Play session, or an SGF file. The timeline reports bounded rules observations from the shared engine; it is not AI analysis, a judgment of a move, or a recommendation. Use the arrow keys to step.</p>
+    <p class="subtitle">Every real match can become a highlight reel. Watch and share captures, ko fights and escapes, or branch the engine-verified game and explore an alternative. Highlights are rules observations, not AI judgments of good or bad moves.</p>
     <div id="review-empty" class="card" hidden>
       <h2 style="margin-top:0;">Open a game</h2>
-      <p>Paste SGF text or choose an <code>.sgf</code> file. It is read through the engine's own parser and replayed move by move; setup stones and handicap records are not supported yet.</p>
+      <p>Paste SGF text or choose an <code>.sgf</code> file. It is read through the engine's own parser and replayed move by move. Standard fixed-star handicap SGF is supported; arbitrary setup-stone arrangements are refused.</p>
       <div class="settings-row"><label for="sgf-file">SGF file</label><input id="sgf-file" type="file" accept=".sgf,text/plain,application/x-go-sgf" /></div>
       <textarea id="sgf-text" rows="6" style="width:100%; font-family: ui-monospace, monospace;" placeholder="(;GM[1]FF[4]SZ[9];B[cc];W[gg]...)" aria-label="SGF text"></textarea>
       <div class="controls-row" style="margin-top:0.6rem;"><button id="load-sgf-btn" class="primary" type="button">Replay this SGF</button><a href="play.html">or play a game first</a></div>
@@ -33,10 +33,52 @@
         <div class="controls-row">
           <button id="previous-move-btn" type="button">Previous</button>
           <button id="next-move-btn" type="button">Next</button>
+          <button id="review-import-btn" type="button">Import another game</button>
           <button id="share-link-btn" type="button">Copy share link</button>
           <button id="download-sgf-btn" type="button">Download SGF</button>
         </div>
         <p id="share-status" class="status-line" aria-live="polite"></p>
+        <section class="card game-reel-panel" aria-labelledby="reel-heading">
+          <div class="reel-heading"><span class="reel-eyebrow">DIRECTOR'S CUT / ENGINE-VERIFIED</span><h2 id="reel-heading">Turn your game into a show.</h2></div>
+          <p>Watch the moments the rules actually recorded. Nothing is invented, and every scene leads back to a playable move.</p>
+          <div class="controls-row reel-controls">
+            <button id="reel-play-btn" class="primary" type="button">Watch highlights</button>
+            <button id="reel-stop-btn" type="button" disabled>Pause</button>
+            <button id="reel-audio-btn" type="button">Sound</button>
+            <button id="reel-share-btn" type="button">Share selected moment</button>
+          </div>
+          <label for="reel-speed">Playback tempo</label>
+          <select id="reel-speed" aria-label="Replay tempo">
+            <option value="0.75">Cinematic · 0.75×</option>
+            <option value="1" selected>Normal · 1×</option>
+            <option value="1.5">Quick · 1.5×</option>
+            <option value="2">Fast · 2×</option>
+          </select>
+          <progress id="reel-progress" max="1" value="0" aria-label="Highlight reel progress"></progress>
+          <p id="reel-status" class="reel-status" role="status" aria-live="polite"></p>
+          <div id="reel-beats" class="reel-beats" aria-label="Select a verified scene"></div>
+        </section>
+
+        <section class="card sect-recruitment" aria-labelledby="sect-heading">
+          <span class="reel-eyebrow">WU(X)WEIQI / THE VISITING SECTS</span>
+          <h2 id="sect-heading">The jianghu has been watching your game.</h2>
+          <p>These are authored fictional visiting rivals, not yet live agent accounts. Each challenges you at a moment your original game actually played. Win a tryout by making a real legal move that produces the named tactical event.</p>
+          <label for="sect-focus">Inspect the recorded play of</label>
+          <select id="sect-focus"><option value="black">Black</option><option value="white">White</option></select>
+          <p id="sect-status" class="sect-status" role="status" aria-live="polite"></p>
+          <div id="sect-visitors" class="sect-visitor-deck" aria-label="Accepted tactics and playable sect invitations"></div>
+        </section>
+        <section class="card variation-panel" aria-labelledby="variation-title">
+          <h2 id="variation-title">What if you played differently?</h2>
+          <p>Select any move in the timeline, explore new moves on the real board, and compare what follows. The recorded game stays intact.</p>
+          <div class="controls-row">
+            <button id="variation-explore" class="primary" type="button">Explore from here</button>
+            <button id="variation-pass" type="button" disabled>Pass</button>
+            <button id="variation-undo" type="button" disabled>Undo variation</button>
+            <button id="variation-return" type="button" hidden>Return to recording</button>
+          </div>
+          <p id="variation-status" class="variation-status" role="status" aria-live="polite">Choose a move to explore a new line.</p>
+        </section>
         <div id="study-notes" class="card" hidden></div>
         <label for="move-scrubber">Move <output id="move-number">0</output></label>
         <input id="move-scrubber" type="range" min="0" value="0" step="1" />

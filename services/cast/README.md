@@ -35,6 +35,34 @@ connect/observe/send-intent/disconnect surface can seat this cast at its table.
 npm install @red-cup-engineering/cast --registry http://127.0.0.1:4873/
 ```
 
+## Go cast actor: one policy source across web and on-chain play
+
+The native `./policy/weiqi` export now composes existing `@red-cup-engineering/weiqi-engine` opponent algorithms with Cast's seeded runner. A real character has a stable Persona ID, an authorized player principal and the current accepted-log revision; all Go legality, candidate search and strategy remain upstream. `createRunner` consumes `createWeiqiCastPolicy({tierId,...})` with the actual authenticated match transport and `toWeiqiIntent`. This is Go decision-making code, not a new network client, character dataset, player account service, or fictional traditional ranking. Live matchmaking and durable character memory still need native installed actor/room providers.
+
+## Go source events and Cast: actual supplier qualification, not an installed idol
+
+**2026-10-14 source audit and method correction.** This package contains three separate categories of thing that earlier ChatGPT-Web work wrongly fused into eight “WeiqIdol idols”:
+
+1. `cast/src/personas/roster.mjs` contains **eight authored Cowrie casino regulars** (`pearl-winkle`, `reef-halyard`, `sable-ledger`, `bonny-driftwood`, `gull-corbin`, `otter-vance`, `marina-quill`, `cove-brackish`). They are source-bound Cast *persona data*, not actual Go teachers, followers or independent authenticated Semioverse actors.
+2. The older `apps/weiqi-platform/.../design/opponent-cast.md` specifies **eight different pedagogical opponent concepts** (The Wanderer, Miser, Neighbor, Straggler, Loner, Believer, Contester and Debtor). Those are authorial **game designs**, not published character principals with installed, separately verified Go policies. Some older Weiqi Study visitor **copy** uses six of their names, but that does not install the missing two or realize the eight opponent behaviors.
+3. `weiqi-engine/src/policies.mjs` exposes **five Go policy IDs**: `random`, `greedy`, `liberty`, `influence`, `montecarlo`. `cast/src/policy/weiqi.mjs#createWeiqiCastPolicy` adapts one of those shared Go algorithms to a named Cast persona's current session. **Five policy tiers do not create eight tactically different, measured character minds.**
+
+The 2026-10-14 `createWeiqiCastReactions` feature is a **source-level candidate reusable projection** for expressly authored, event-keyed dialogue. It checks a carried Go match log and checkpoint for **internal source consistency** with `weiqi-engine/match#verifyWeiqiMatch`, reconstructs the last move's source events using the Go engine and selects an authored reaction. It does **not** establish that an adversarial client delivered the authentic running host's committed match, that a stated `principal` is a cryptographically or institutionally authenticated actor, that the persona persists, or that a spectator received its speech. A client can construct a self-consistent fake match in isolation. **Do not call this function “source-authentication,” a verified real-world performance, a signed receipt or an actor biography.** `stateHash` is a replay/checkpoint consistency digest, not producer/merchant authority.
+
+**Boundary and operation, with actual APIs rather than pseudo-running examples:**
+
+| Original owner/export | What its current source can establish | What must be independently qualified before public use |
+| --- | --- | --- |
+| `weiqi-engine/match#createWeiqiMatch/admitWeiqiMatchCommand/verifyWeiqiMatch` | Legal, principal-*labeled* Cartridge command log, exact match revision, pending count and rules-derived state | Effect host's credential-to-seat binding, authorized single writer, durable atomic commit, real result provenance and revocation |
+| `weiqi-engine` policies, events, SGF and tactical planner | Legal local Go choices, witnessed tactical effects and source history | Distinctive opponent teaching doctrine/strength, counterplay, final game result, genuine customer gameplay |
+| `cast/policy/weiqi#createWeiqiCastPolicy/toWeiqiIntent` | Seeded named persona's proposed real Go command at expected match revision | Approved actor identity, host-observed latest state, real adapter `connect/observe/sendIntent/disconnect` |
+| `cast/policy/weiqi#createWeiqiCastReactions` and `cast/dialogue` | Authored optional utterance selected from source-consistent Go event | Authenticated *host-supplied* committed result; licensed character/dialogue data; actual scene/channel consumer and independent actor/player receiving |
+| Qwzspace / Resonator / ActivityPub++ / Causeway | Existing generic renderer, sound, messages, creative rights and service instances have their own source owners | Selected actual versions, installed authority, rights and independently observed spectator or player experience |
+
+**Refusal cases that matter:** an invented `principal` plus locally consistent Cartridge history is insufficient for an authenticated public performance; a `capture` event does not prove strategic skill, national style or fan membership; two eight-element catalogs with unrelated IDs are not the same actor roster; a single emitted text line does not create a second playable match; a result repeated after a legitimate host restart must not issue another Go command or spend money. The old `weiqi-engine/test/match-settlement.test.mjs` uses obsolete `expectedVersion` while the match engine requires `expectedRevision:match.revision`. That original source consumer needs native Code/AOE migration and actual execution before declaring the match system validated.
+
+**Next lawful work:** use the original qualified Game Systems Work, Lenticule's corrected original creative hypothesis and the real Causeway receiver to select a coherent playable challenge worth building. Do not fabricate another NPC framework or reframe this module as an entire season. Any reusable source change follows the already-admitted specification/architecture/design and the Red Cup Data/Code native fabrication path; retain this candidate source until the competent owner reconciles distinct capability, dependencies, invalid assumptions and any independent consumers. The public game, persistent actors, paid media and sats each have separately observable receiving conditions.
+
 ## The five modules
 
 ### `./persona` — who an agent player is

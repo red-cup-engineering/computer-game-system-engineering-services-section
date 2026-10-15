@@ -14,6 +14,10 @@
     {
       "pattern": "weiqi.561.group",
       "custom_domain": true
+    },
+    {
+      "pattern": "weiqi.play.561.group",
+      "custom_domain": true
     }
   ]
 }

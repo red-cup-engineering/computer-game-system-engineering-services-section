@@ -1,128 +1,64 @@
-// SRS parity: education-platform-service/src/srs.mjs is the one scheduler
-// implementation every theme (this app included) schedules through (see
-// srs.mjs's own provenance header) -- no second, hand-vendored copy.
-// public/js/srs.mjs is that same module's text, projected for the browser
-// by scripts/build-kernel.mjs at build time (it has no imports of its own,
-// so the projection is a trim-and-copy, not a translation).
-//
-// This file ports lantern-service's own srs.test.mts assertions (see that
-// file, same repo, for the original) onto the shared module: every
-// structural identity, boundary case, and hardcoded expected value below is
-// the same claim the canonical source's own test suite already makes about
-// itself, checked here against the module every theme actually runs.
-//
-// Run with: node --test 'test/*.test.mts'
-
-import { test } from "node:test";
+// Browser boundary contract, NOT another copy of upstream FSRS-lite's unit
+// tests. All scheduling math belongs to education-platform-service/src/srs.mjs.
+// The Weiqi build projects that one module without translating its code.
+// Upstream tests own constants, transitions, monotonicity and edge cases;
+// this receiver test checks both artifact identity and the running API.
 import assert from "node:assert/strict";
-import {
-  recallProbability,
-  daysUntilRetention,
-  reviewCard,
-  DECAY,
-  FACTOR,
-  DEFAULT_TARGET_RETENTION,
-  STAGE_CUTS,
-} from "@red-cup-engineering/education-platform-service/srs";
+import { readFile } from "node:fs/promises";
+import { test } from "node:test";
 
-test("DECAY and FACTOR are FSRS's published defaults, not arbitrary values", () => {
-  assert.equal(DECAY, -0.5);
-  assert.ok(Math.abs(FACTOR - 19 / 81) < 1e-12);
-  assert.ok(Math.abs(FACTOR - (Math.pow(0.9, 1 / DECAY) - 1)) < 1e-9);
+import * as upstream from "@red-cup-engineering/education-platform-service/srs";
+import * as browser from "../public/js/srs.mjs";
+
+const SOURCE_URL = import.meta.resolve("@red-cup-engineering/education-platform-service/srs");
+const PROJECTED_URL = new URL("../public/js/srs.mjs", import.meta.url);
+
+test("browser SRS is the exact upstream source projection, not independently maintained code", async () => {
+  const [source, projected] = await Promise.all([
+    readFile(new URL(SOURCE_URL), "utf8"),
+    readFile(PROJECTED_URL, "utf8"),
+  ]);
+  // This is the only transformation in the existing build-kernel.mjs.
+  assert.equal(projected, source.replace(/[ \t]+$/gm, ""),
+    "public/js/srs.mjs drifted from education-platform-service; regenerate with npm run build");
 });
 
-test("R(t=S) = 0.9 exactly -- the structural identity FACTOR is derived to produce", () => {
-  for (const S of [0.4, 1, 2.5, 10, 100]) {
-    const R = recallProbability(S, S);
-    assert.ok(Math.abs(R - 0.9) < 1e-9, `expected R(S,S)=0.9, got ${R} for S=${S}`);
+test("browser and upstream SRS expose precisely the same API and constants", () => {
+  assert.deepEqual(Object.keys(browser).sort(), Object.keys(upstream).sort());
+  for (const name of ["FACTOR", "DECAY", "DEFAULT_TARGET_RETENTION", "STAGE_CUTS"]) {
+    assert.deepEqual(browser[name], upstream[name], name);
   }
 });
 
-test("daysUntilRetention(S, 0.9) === S exactly, the inverse identity", () => {
-  for (const S of [0.4, 1, 2.5, 10, 100]) {
-    const t = daysUntilRetention(S, DEFAULT_TARGET_RETENTION);
-    assert.ok(Math.abs(t - S) < 1e-9, `expected t(0.9)=S=${S}, got ${t}`);
+test("browser scheduler and upstream scheduler agree for grades, times and input boundaries", () => {
+  for (const stability of [0, 0.4, 1, 2.5, 10, 100]) {
+    for (const elapsed of [-1, 0, 1, 3, 30, 365]) {
+      assert.equal(browser.recallProbability(elapsed, stability),
+        upstream.recallProbability(elapsed, stability), `S=${stability}, t=${elapsed}`);
+    }
+    for (const target of [0.5, 0.7, 0.9]) {
+      assert.equal(browser.daysUntilRetention(stability, target),
+        upstream.daysUntilRetention(stability, target), `S=${stability}, R=${target}`);
+    }
   }
-});
-
-test("recallProbability is monotonically decreasing in t and increasing in S", () => {
-  const S = 5;
-  let prev = recallProbability(0, S);
-  for (let t = 1; t <= 50; t++) {
-    const R = recallProbability(t, S);
-    assert.ok(R <= prev, `R should not increase with t: R(${t})=${R} > R(${t - 1})=${prev}`);
-    prev = R;
+  const cases = [
+    { stability: 0, difficulty: 5 },
+    { stability: 0.4, difficulty: 9, lastReviewedAt: 0 },
+    { stability: 4.5, difficulty: 5, lastReviewedAt: 10 },
+    { stability: 90, difficulty: 1, lastReviewedAt: 10 },
+  ];
+  for (const prior of cases) {
+    for (const grade of [1, 2, 3, 4]) {
+      for (const now of [0, 10, 11, 30, 100]) {
+        const snapshot = structuredClone(prior);
+        assert.deepEqual(browser.reviewCard(prior, grade, now),
+          upstream.reviewCard(prior, grade, now),
+          `grade=${grade}, now=${now}, prior=${JSON.stringify(prior)}`);
+        assert.deepEqual(prior, snapshot, "neither projection may mutate the input card");
+      }
+    }
   }
-  const R_lowS = recallProbability(3, 1);
-  const R_highS = recallProbability(3, 100);
-  assert.ok(R_highS > R_lowS);
-});
-
-test("recallProbability is bounded in (0, 1] and handles t=0 / degenerate S", () => {
-  assert.equal(recallProbability(0, 5), 1);
-  assert.equal(recallProbability(10, 0), 0);
-  const R = recallProbability(1000, 1);
-  assert.ok(R > 0 && R <= 1);
-});
-
-test("new-card review seeds stability/difficulty from the grade table and sets lastReviewedAt", () => {
-  const now = 100;
-  const easy = reviewCard({ stability: 0, difficulty: 0 }, 4, now);
-  assert.equal(easy.stability, 4.5);
-  assert.equal(easy.difficulty, 3);
-  assert.equal(easy.lastReviewedAt, now);
-
-  const again = reviewCard({ stability: 0, difficulty: 0 }, 1, now);
-  assert.equal(again.stability, 0.4);
-  assert.equal(again.difficulty, 8);
-});
-
-test("lapse rule: Again drops stability to max(S0(Again), 20% of prior)", () => {
-  const now = 50;
-  const highStability = reviewCard({ stability: 100, difficulty: 5, lastReviewedAt: 40 }, 1, now);
-  assert.ok(Math.abs(highStability.stability - 20) < 1e-9); // 100 * 0.2 = 20, dominates S0(1)=0.4
-
-  const lowStability = reviewCard({ stability: 1, difficulty: 5, lastReviewedAt: 40 }, 1, now);
-  assert.equal(lowStability.stability, 0.4); // S0(1) dominates 1*0.2=0.2
-});
-
-test("stability is monotonically non-decreasing across successive Good/Easy reviews at fixed cadence", () => {
-  let card = { stability: 0, difficulty: 0 };
-  let now = 0;
-  card = reviewCard(card, 3, now);
-  let prevStability = card.stability;
-  for (let i = 0; i < 10; i++) {
-    now += Math.round(card.stability); // review right around the due date each time
-    card = reviewCard(card, 3, now);
-    assert.ok(card.stability >= prevStability, `stability should grow: ${card.stability} < ${prevStability}`);
-    prevStability = card.stability;
+  for (const instant of [-86_400_001, -1, 0, 86_399_999, 86_400_000]) {
+    assert.equal(browser.epochDayOf(instant), upstream.epochDayOf(instant));
   }
-});
-
-test("difficulty stays clipped to [1, 10] under repeated Again/Easy extremes", () => {
-  let card = { stability: 1, difficulty: 5 };
-  let now = 0;
-  for (let i = 0; i < 30; i++) {
-    now += 1;
-    card = reviewCard(card, 1, now);
-    assert.ok(card.difficulty <= 10 && card.difficulty >= 1);
-  }
-  card = { stability: 1, difficulty: 5, lastReviewedAt: 0 };
-  now = 0;
-  for (let i = 0; i < 30; i++) {
-    now += 1;
-    card = reviewCard(card, 4, now);
-    assert.ok(card.difficulty <= 10 && card.difficulty >= 1);
-  }
-});
-
-test("determinism: same state + grade + now always produces the same next state", () => {
-  const state = { stability: 3.2, difficulty: 6, lastReviewedAt: 10 };
-  const a = reviewCard(state, 3, 15);
-  const b = reviewCard(state, 3, 15);
-  assert.deepEqual(a, b);
-});
-
-test("STAGE_CUTS matches lantern's published light/embers/dim cut points", () => {
-  assert.deepEqual(STAGE_CUTS, { full: 0.9, embers: 0.7, dim: 0.5 });
 });

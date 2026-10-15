@@ -71,6 +71,19 @@ export function buildStudyReplay(session) {
   });
 }
 
+/**
+ * Branch a recorded Go game at any accepted move. The shared rules engine
+ * replays the real prefix (including captures, handicap and ko history);
+ * exploratory moves then use the same versioned admission as normal play.
+ * The original accepted session is immutable and never overwritten.
+ */
+export function studyBranchAt(session, version) {
+  if (!Number.isSafeInteger(version) || version < 0 || version > session.version) {
+    throw new RangeError("Study branch version is outside the admitted game");
+  }
+  return kernel.createWeiqiGameSession(session.config, session.commands.slice(0, version));
+}
+
 export function describeRulesObservation(event) {
   const noun = event.type.replaceAll("-", " ");
   return `${RULES_OBSERVATION_PREFIX}: ${noun}.`;

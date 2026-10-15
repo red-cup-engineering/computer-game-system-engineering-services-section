@@ -34,6 +34,16 @@
       Learn draw from. This page never hardcodes a definition.
     </p>
 
+    <div class="card" role="search" aria-label="Find a Weiqi concept">
+      <label for="glossary-search">Find a concept, rule, or strategy</label>
+      <div class="controls-row">
+        <input id="glossary-search" type="search" autocomplete="off"
+               aria-controls="glossary-list" placeholder="Try atari, sente, capture, ko…" />
+        <button id="glossary-clear" type="button" hidden>Clear</button>
+      </div>
+      <p id="glossary-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      <p id="glossary-empty" hidden>No matching concepts. Try another word or clear the search.</p>
+    </div>
     <div id="glossary-list"></div>
   </main>
 

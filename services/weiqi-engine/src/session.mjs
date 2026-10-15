@@ -11,6 +11,11 @@ import { marksWholeDeadGroups } from "./scoring.mjs";
 import { createPositionFromCells } from "./position.mjs";
 import { getRuleset, handicapPoints } from "./rulesets.mjs";
 
+// Only sessions constructed by this engine get an in-process validated rules machine.
+// Imported/deserialized records must replay their accepted commands. This WeakMap
+// adds no serialized checkpoint, second rules authority, or persistent state.
+const validatedGames = new WeakMap();
+
 function handicapOf(config) {
   return config.handicap ?? 0;
 }
@@ -115,19 +120,22 @@ function gameFor(config, commands) {
 }
 
 /**
- * Construct a frozen record from the authoritative Game. On admission the
- * caller has already replayed and validated the previous commands, then
- * successfully applied the new command to that Game. Reuse it instead of
- * replaying the entire log a second time. Creation from an arbitrary command
- * list still validates by replaying all commands.
+ * Construct a frozen record from the authoritative Game. An in-process
+ * successor forks the already-validated rules history before accepting one
+ * new command; imported/unrecognized sessions replay the full log. The
+ * ephemeral WeakMap is not a second persisted game state or proof of identity.
  */
 function sessionFromCommands(config, commands, game = gameFor(config, commands)) {
-  return Object.freeze({
+  const session = Object.freeze({
     config: frozenConfig(config),
     version: commands.length,
     commands: Object.freeze(commands.map(freezeCommand)),
     state: snapshot(config, commands, game),
   });
+  // A completed game is only reread, never advanced: leave it to full replay
+  // rather than share a potentially mutable nested score with an external view.
+  if (game.result === null) validatedGames.set(session, game);
+  return session;
 }
 
 /** Creates a replayable session. Invalid historical commands are rejected at the boundary. */
@@ -141,7 +149,14 @@ export function materializeWeiqiGame(session) {
     throw new TypeError("Weiqi session version must equal its accepted command count");
   }
   if (!sameConfig(session.config, session.state.config)) throw new TypeError("Weiqi session state belongs to another configuration");
-  return gameFor(session.config, session.commands);
+  const validated = validatedGames.get(session);
+  if (validated === undefined) return gameFor(session.config, session.commands);
+  // Game.fork preserves immutable positions and full ko/superko history.
+  // Clone event payloads too: callers may inspect or modify the returned
+  // mutable Game, but cannot affect the private already-admitted record.
+  const game = validated.fork();
+  game.moveEvents = structuredClone(game.moveEvents);
+  return game;
 }
 
 /**

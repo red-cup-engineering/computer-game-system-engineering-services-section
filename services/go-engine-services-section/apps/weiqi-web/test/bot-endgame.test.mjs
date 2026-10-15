@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import * as kernel from "@red-cup-engineering/weiqi-engine";
-import { BOT_TIERS, candidateMoveCoords, chooseMonteCarloMove, isSelfHarmingMove, monteCarloBudget, randomPlayout } from "../public/js/bot.mjs";
+import { BOT_TIERS, candidateMoveCoords, chooseMonteCarloMove, isSelfHarmingMove, monteCarloBudget, randomPlayout, searchCandidateWidth } from "../public/js/kernel/policies.mjs";
 
 const first = () => 0;
 
@@ -43,16 +43,74 @@ test("a self-atari that captures nothing is never a candidate, while a capturing
   assert.ok(candidateMoveCoords(capture, kernel).includes("E4"));
 });
 
-test("once the opponent has passed, every tier passes unless it can capture", () => {
+test("an early human pass does not make any opponent abandon useful Go territory", () => {
   const quiet = gameAfter(["E5", "E4", "pass"]);
   assert.equal(quiet.passStreak, 1);
-  assert.deepEqual(candidateMoveCoords(quiet, kernel), []);
-  for (const tier of BOT_TIERS) assert.equal(tier.chooser(quiet, kernel, first), "pass", `${tier.label} must accept the end`);
+  const before = kernel.countPosition(quiet).score;
+  const initialMargin = before.whiteScore - before.blackScore;
+  const candidates = candidateMoveCoords(quiet, kernel);
+  assert.ok(candidates.length > 0, "a pass on an unsettled board must leave real point gains to play");
+  for (const tier of BOT_TIERS) {
+    const selected = tier.chooser(quiet, kernel, first, { playouts: 6, maxPlayoutMoves: 0 });
+    assert.notEqual(selected, "pass", `${tier.label} must keep fighting for valuable intersections`);
+    assert.ok(candidates.includes(selected), `${tier.label} must choose from the rules-authorized contest`);
+    const branch = quiet.fork();
+    assert.equal(branch.play(selected).ok, true);
+    const after = kernel.countPosition(branch).score;
+    assert.ok(after.whiteScore - after.blackScore > initialMargin,
+      `${tier.label} must not waste a stone in territory already owned`);
+  }
+  assert.equal(quiet.passStreak, 1, "candidate evaluation never mutates the real game");
+  assert.equal(quiet.history.length, 4);
 
   const capture = gameAfter(["E5", "D5", "pass", "F5", "pass", "E6", "pass"]);
   assert.equal(capture.passStreak, 1);
-  assert.deepEqual(candidateMoveCoords(capture, kernel), ["E4"]);
-  for (const tier of BOT_TIERS) assert.equal(tier.chooser(capture, kernel, first), "E4", `${tier.label} must take the capture`);
+  const captureCandidates = candidateMoveCoords(capture, kernel);
+  assert.ok(captureCandidates.includes("E4"), "real captures stay available after an early pass");
+  for (const tier of BOT_TIERS) {
+    const selected = tier.chooser(capture, kernel, first,
+      { playouts: 6, maxPlayoutMoves: 0 });
+    assert.ok(captureCandidates.includes(selected), `${tier.label} must play a legal continuation`);
+  }
+  for (const id of ["greedy", "liberty", "influence"]) {
+    const tier = BOT_TIERS.find((bot) => bot.id === id);
+    assert.equal(tier.chooser(capture, kernel, first), "E4",
+      `${tier.label} must retain its actual capture priority`);
+  }
+});
+
+test("an opponent pass cannot trick bots into filling their own territory or a legal eye", () => {
+  const cells = new Array(25).fill(kernel.BLACK);
+  cells[kernel.coordToPoint(5, 5, "B2")] = kernel.EMPTY;
+  cells[kernel.coordToPoint(5, 5, "D4")] = kernel.EMPTY;
+  const game = new kernel.Game(5, "chinese",
+    kernel.createPositionFromCells(5, 5, cells, kernel.WHITE));
+  assert.equal(game.play("pass").ok, true);
+  assert.equal(game.passStreak, 1);
+  assert.deepEqual(candidateMoveCoords(game, kernel), []);
+  for (const tier of BOT_TIERS) assert.equal(tier.chooser(game, kernel, first), "pass",
+    `${tier.label} must not damage a finished position`);
+});
+
+test("area-score endgame candidate evaluation uses the upstream pure scorer, without cloning whole histories", () => {
+  const game = gameAfter(["E5", "E4", "pass"]);
+  game.fork = () => { throw new Error("do not fork every candidate to count area"); };
+  const options = candidateMoveCoords(game, kernel);
+  assert.ok(options.length > 0);
+  for (const coord of options) assert.equal(game.isLegal(coord), true);
+  assert.equal(game.history.length, 4, "a provisional count must not change the accepted match");
+});
+
+test("Japanese territory rules allow a multi-move development after an early pass", () => {
+  const game = gameAfter(["E5", "E4", "pass"], 9, "japanese");
+  const before = kernel.countPosition(game);
+  assert.equal(before.mode, "territory");
+  assert.ok(candidateMoveCoords(game, kernel).length > 0,
+    "territory-play must not demand an immediate score gain for every useful step");
+  const move = BOT_TIERS.find((tier) => tier.id === "liberty").chooser(game, kernel, first);
+  assert.ok(game.isLegal(move));
+  assert.notEqual(move, "pass");
+  assert.equal(game.passStreak, 1);
 });
 
 test("with no eye fill or self-atari at stake, the opening candidate set is the whole legal set", () => {
@@ -202,4 +260,84 @@ test("Monte Carlo playout scores with the upstream ruleset, not unconditional ar
   assert.equal(randomPlayout(japanese, kernel, first, 0), kernel.WHITE);
   assert.equal(chinese.history.length, 19);
   assert.equal(japanese.history.length, 19);
+});
+
+test("19x19 Pondering spends enough visits to examine actual opponent responses", () => {
+  const game = new kernel.Game(19, "chinese");
+  const legal = candidateMoveCoords(game, kernel);
+  const budget = monteCarloBudget(19);
+  assert.ok(legal.length > budget, "full 19x19 opening is wider than the playout budget");
+  const width = searchCandidateWidth(legal.length, budget);
+  assert.ok(width < budget / 2, "cap must reserve repeated visits and replies");
+
+  const simulations = [];
+  const originalFork = game.fork.bind(game);
+  game.fork = () => {
+    const branch = originalFork();
+    let moves = 0;
+    const originalPlay = branch.play.bind(branch);
+    branch.play = (coord) => {
+      const accepted = originalPlay(coord);
+      if (accepted.ok) moves++;
+      return accepted;
+    };
+    simulations.push(() => moves);
+    return branch;
+  };
+  const move = chooseMonteCarloMove(game, kernel, () => 0.37,
+    { playouts: budget, maxPlayoutMoves: 0 });
+  assert.equal(simulations.length, budget);
+  assert.ok(simulations.some((count) => count() >= 2),
+    "UCT must explore a second ply, not spend all 40 simulations on distinct first moves");
+  assert.equal(game.history.length, 1);
+  assert.equal(game.isLegal(move), true);
+});
+
+test("large-board opening shortlist considers genuine kernel-owned 4-4 corner stars", () => {
+  for (const size of [13, 19]) {
+    const game = new kernel.Game(size, "chinese");
+    const stars = kernel.handicapPoints(size, 4);
+    const chosen = chooseMonteCarloMove(game, kernel, () => 0.37,
+      { playouts: 4, maxPlayoutMoves: 0 });
+    assert.ok(stars.includes(chosen),
+      `${size}x${size} opener ${chosen} should prefer an empty 4-4 star to unsupported center bias`);
+  }
+  assert.equal(searchCandidateWidth(361, 40), 6);
+  assert.equal(searchCandidateWidth(81, 400), 20);
+  assert.throws(() => searchCandidateWidth(100, 0), /positive integer/);
+});
+
+test("Pondering emits measured progressive search, not invented win percentages", () => {
+  const game = new kernel.Game(9, "chinese");
+  const observations = [];
+  const tier = BOT_TIERS.find(x => x.id === "montecarlo");
+  const move = tier.chooser(game, kernel, () => 0.37, {
+    playouts: 16,
+    maxPlayoutMoves: 0,
+    onProgress: (progress) => observations.push(progress),
+  });
+  assert.ok(game.isLegal(move));
+  assert.ok(observations.length >= 3);
+  assert.equal(observations.at(-1).completed, 16);
+  assert.equal(observations.at(-1).total, 16);
+  for (let i = 0; i < observations.length; i++) {
+    const progress = observations[i];
+    assert.ok(progress.completed > (observations[i - 1]?.completed ?? 0));
+    assert.ok(progress.explored > 0 && progress.explored <= progress.completed);
+    assert.ok(progress.leadingMove && game.isLegal(progress.leadingMove));
+    assert.ok(progress.leadingVisits >= 1);
+    assert.equal(Object.hasOwn(progress, "winProbability"), false,
+      "search visits must not be presented as calibrated winning odds");
+  }
+  assert.equal(game.history.length, 1);
+});
+
+test("the Play receiver chooses Pondering for normal games and consumes real worker search updates", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const app = await readFile(new URL("../public/js/play-app.mjs", import.meta.url), "utf8");
+  const worker = await readFile(new URL("../public/js/bot-worker.mjs", import.meta.url), "utf8");
+  assert.match(app, /CAPTURE_GO \? "greedy" : "montecarlo"/);
+  assert.match(app, /pending\.onProgress\?\.\(data\.progress\)/);
+  assert.match(app, /progress\.completed/);
+  assert.match(worker, /onProgress: \(progress\) => self\.postMessage/);
 });

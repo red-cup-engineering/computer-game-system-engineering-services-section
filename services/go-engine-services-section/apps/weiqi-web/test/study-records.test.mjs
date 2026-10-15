@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import * as kernel from "../public/js/kernel/index.mjs";
+import { WALL_WITH_INVADER, commandOfMove } from "@red-cup-engineering/weiqi-engine/testing";
 import { buildStudyReplay, playLink, rulesetFromSgf, sessionFromCommands, sessionFromSgf, sessionFromStudyHash, studyLink } from "../public/js/study-replay.mjs";
 
 const BASE = "https://weiqi.561.group/play.html";
@@ -178,10 +179,9 @@ test("Study link preserves a real resignation rather than reopening an unfinishe
 
 test("Study link preserves accepted settlement and its agreed dead stones", () => {
   const commands = [
-    "B1", "D1", "B2", "D2", "B3", "D3", "B4", "D4", "B5", "D5",
-    "pass", "A3", "pass", "pass",
-  ].map(move => move === "pass" ? { kind: "pass" } : { kind: "play", move });
-  commands.push({ kind: "settle", dead: ["a3"] });
+    ...WALL_WITH_INVADER.map(commandOfMove),
+    { kind: "settle", dead: ["a3"] },
+  ];
   const built = sessionFromCommands({ size: 5, ruleset: "chinese" }, commands);
   assert.equal(built.ok, true, built.ok ? undefined : built.reason);
   if (!built.ok) return;
