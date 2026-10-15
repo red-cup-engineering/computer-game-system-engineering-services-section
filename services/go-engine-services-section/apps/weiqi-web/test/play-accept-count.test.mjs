@@ -53,6 +53,7 @@ function mountedCountButton(session, marks = new Set(), {
   const dependencies = {
     acceptCountBtn, CAPTURE_GO, botThinking, session, marking, finished,
     deadPoints: new Set(marks), kernel, localCount, describeLocalCount, resultEl, board,
+    RULESET_LABELS: { chinese: "Chinese", japanese: "Japanese", aga: "AGA", newzealand: "New Zealand", ing: "Ing" },
     setStatus(text) { calls.status.push(text); },
     rebuildEventLog() { calls.events++; },
     showConceptSummary() { calls.summaries++; },
