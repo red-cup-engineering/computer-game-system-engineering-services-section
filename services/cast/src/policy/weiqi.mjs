@@ -1,8 +1,9 @@
 /**
- * The shared Cast agent's Go policy port. Characters are stable actor data;
- * actual legal moves are selected by the source-owned Weiqi engine, never a
- * duplicate Game or browser-supplied fake board. Identity and CAS revision
- * come from an authenticated match observer; timing is owned by Cast runner.
+ * Shared Cast Go-policy port. Go legality comes from Weiqi's original engine,
+ * while identity, current match revision and real event authority must come
+ * from an independently authenticated, committed effect host at the consumer.
+ * A source-consistent JS match supplied to this pure adapter is not itself
+ * proof of the principal's authority. Cast runner owns decision pacing.
  */
 import * as go from "@red-cup-engineering/weiqi-engine";
 import { verifyWeiqiMatch } from "@red-cup-engineering/weiqi-engine/match";
@@ -51,9 +52,11 @@ export function toWeiqiIntent(decision) {
 }
 
 /**
- * Bind a source-authenticated Go match to Cast's existing runner dialogue.
+ * Bind a locally replay-verified Go match result to Cast's optional dialogue.
  * The performer writes its *own* lines keyed by a real engine event type;
  * Cast never invents an event, declares a result, or implements Go legality.
+ * The match verifier checks internal history/checkpoint consistency;
+ * only the independently authenticated host can attest who really played.
  * The transport must return admitWeiqiMatchCommand's match+log result,
  * not only client-supplied event strings. A duplicate never speaks twice.
  */
