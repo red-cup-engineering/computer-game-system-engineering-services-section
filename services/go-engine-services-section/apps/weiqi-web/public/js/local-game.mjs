@@ -58,13 +58,33 @@ export function isUnsettledTwoPassPosition(game) {
   return game.passStreak >= 2 && game.result === null;
 }
 
-/** Count caption: provisional marking is editable; an engine-accepted
- * settlement is final and must never invite the player to change its dead. */
-export function describeLocalCount(score, komi, deadCount, agreed = false) {
+/** Count caption for the engine's COMPLETE receipt, not a copied or assumed
+ * Chinese scoring formula. An actual mode and source ruleset determine which
+ * components are scored. The page supplies the human-readable ruleset label
+ * from its existing selector, not from a second rules table here.
+ *
+ * Provisional marking is editable; an accepted engine settlement is final.
+ */
+export function describeLocalCount(receipt, deadCount, agreed = false, rulesetLabel) {
+  const { mode, ruleset, score } = receipt;
+  if (mode !== "area" && mode !== "territory") {
+    throw new TypeError("Count caption requires an accepted Go scoring mode");
+  }
+  if (typeof rulesetLabel !== "string" || !rulesetLabel.trim()) {
+    throw new TypeError("Count caption requires the selected original ruleset label");
+  }
+  const komi = mode === "territory"
+    ? (ruleset.komi_territory ?? ruleset.komi) : ruleset.komi;
+  const blackParts = mode === "territory"
+    ? `${score.blackTerritory} territory + ${score.blackPrisoners} prisoners`
+    : `${score.blackStones} stones + ${score.blackTerritory} territory`;
+  const whiteParts = mode === "territory"
+    ? `${score.whiteTerritory} territory + ${score.whitePrisoners} prisoners + ${komi} komi`
+    : `${score.whiteStones} stones + ${score.whiteTerritory} territory + ${komi} komi`;
   const dead = agreed
     ? `${deadCount} stone${deadCount === 1 ? "" : "s"} agreed dead and removed before counting.`
     : deadCount === 0
       ? "Every stone on the board is counted as alive; click a stone to mark its group dead."
       : `${deadCount} stone${deadCount === 1 ? "" : "s"} marked dead and removed before counting.`;
-  return `${score.margin}. ${agreed ? "Agreed" : "Provisional"} Chinese area count: Black ${score.blackScore} (${score.blackStones} stones + ${score.blackTerritory} territory), White ${score.whiteScore} (${score.whiteStones} stones + ${score.whiteTerritory} territory + ${komi} komi). Captures: Black took ${score.blackPrisoners}, White took ${score.whitePrisoners}. ${dead}`;
+  return `${score.margin}. ${agreed ? "Agreed" : "Provisional"} ${rulesetLabel} ${mode} count: Black ${score.blackScore} (${blackParts}), White ${score.whiteScore} (${whiteParts}). Captures: Black took ${score.blackPrisoners}, White took ${score.whitePrisoners}. ${dead}`;
 }

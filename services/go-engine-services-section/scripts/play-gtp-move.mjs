@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { spawn } from "node:child_process";
 import { createGtpSession, play, genmove, quit } from "../src/go-engine.mjs";
-import { runJavascriptNodeOperation } from "@red-cup-engineering/javascript-node-services-section/operation";
+import { runJavascriptNodeOperation } from "@red-cup-engineering/javascript-node-operation-engineering-services-section/operation";
 
 /**
  * Send one `play` or `genmove` command to a GTP engine subprocess and return its reply.

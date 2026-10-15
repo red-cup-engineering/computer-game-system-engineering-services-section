@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import * as kernel from "../public/js/kernel/index.mjs";
 import { chooseInfluenceMove, chooseMonteCarloMove } from "../public/js/kernel/policies.mjs";
-import { localCount } from "../public/js/local-game.mjs";
+import { describeLocalCount, localCount } from "../public/js/local-game.mjs";
 
 const playHtml = await readFile(new URL("../public/play.html", import.meta.url), "utf8");
 const captureGoHtml = await readFile(new URL("../public/learn/capture-go/index.html", import.meta.url), "utf8");
@@ -28,7 +28,7 @@ for (const requiredSurface of [
 }
 assert.ok(!playHtml.includes("Capture Go"), "normal-play page still presents Capture Go");
 assert.ok(playApp.includes("You resigned."), "resignation result is not wired into the public app");
-assert.ok(localGame.includes("Provisional Chinese area count:"), "the area count sentence is missing from local-game.mjs");
+assert.ok(localGame.includes("export function describeLocalCount(receipt, deadCount"), "the page must format the actual upstream scoring receipt");
 assert.ok(playApp.includes("describeLocalCount(") && playApp.includes("finishByScore()"), "area-count result is not wired into the public app");
 assert.ok(playApp.includes("toggleDeadGroup(") && playApp.includes("setDeadStones("), "dead-stone marking is not wired into the public app");
 assert.ok(playApp.includes("undoLastExchange("), "undo is not wired into the public app");
@@ -50,7 +50,7 @@ for (const requiredSurface of [
 }
 assert.ok(!playHtml.includes("data-game-mode"), "normal play must not select a learning game mode");
 assert.ok(playApp.includes('const DEFAULT_BOARD_SIZE = CAPTURE_GO ? 7 : 9;'), "page mode must select 7x7 only for Capture Go");
-assert.ok(playApp.includes('const RULESET = CAPTURE_GO ? "japanese" : "chinese";'), "page mode must retain Chinese rules for normal play");
+assert.ok(playApp.includes('const CAPTURE_GO_RULESET = "japanese";') && playApp.includes('const DEFAULT_RULESET = "chinese";') && playApp.includes('selectedRuleset()'), "play must preserve the normal game's selectable native rulesets and Capture Go's separate default");
 assert.ok(
   playApp.includes('if (CAPTURE_GO && outcome.events.some((event) => event.type === "capture")) finishByCapture(mover);'),
   "only Capture Go must finish on its first capture",
@@ -119,5 +119,28 @@ const pageReceipt = localCount(scoreSession, [], kernel);
 assert.deepEqual(pageReceipt, browserReceipt, "the page must not invent its own count");
 assert.equal(pageReceipt.mode, "area", "normal Play uses Chinese area scoring");
 assert.equal(pageReceipt.ownership.length, 81, "the board must receive the whole ownership map");
+
+const chineseCaption = describeLocalCount(pageReceipt, 0, false, "Chinese");
+assert.match(chineseCaption, /Provisional Chinese area count:/,
+  "normal Play's provisional caption must agree with the engine area score");
+assert.match(chineseCaption, /stones \+ \d+ territory/,
+  "area scoring must display living stones plus territory");
+for (const [ruleset, label, mode, komi] of [
+  ["japanese", "Japanese", "territory", 6.5],
+  ["aga", "AGA", "area", 7.5],
+  ["newzealand", "New Zealand", "area", 7],
+  ["ing", "Ing", "area", 8],
+]) {
+  const alternate = kernel.createWeiqiGameSession({ size: 9, ruleset });
+  const alternateCount = localCount(alternate, [], kernel);
+  const actualText = describeLocalCount(alternateCount, 0, false, label);
+  assert.equal(alternateCount.mode, mode);
+  assert.ok(actualText.includes(`Provisional ${label} ${mode} count:`));
+  assert.ok(actualText.includes(`+ ${komi} komi`),
+    `a ${ruleset} player's score must show the chosen ruleset's effective komi`);
+  if (mode === "territory") assert.match(actualText, /territory \+ 0 prisoners/,
+    "territory scoring must name prisoners rather than living stones");
+}
+
 
 console.log("normal-play release receiver check passed");
