@@ -269,7 +269,11 @@
       },
       "castSourceQualification": {
         "readmeBlob": "7e4aabe110038472d226d4b3283a631a9baae81e",
-        "status": "Eight casino personas are not the eight authored Go teaching-character designs; five actual Go policies do not instantiate eight tested idol minds. Local Go match replay does not by itself authenticate a remote actor. No actual recurring public idol is received."
+        "status": "Eight casino personas are not the eight authored Go teaching-character designs; five actual Go policies do not instantiate eight tested idol minds. Local Go match replay does not by itself authenticate a remote actor. No actual recurring public idol is received.",
+        "policySourceBlob": "31e811f527369c71d50bfec5e30500f43638e5db",
+        "policySourcePath": "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/cast/src/policy/weiqi.mjs",
+        "contractCorrection": "Comments at the original shared Cast Go adapter now distinguish replay/checkpoint consistency from host/principal authentication; no code runtime was changed or falsely treated as a login/actor certificate.",
+        "policyCommentCommit": "982bb58a1fdeb5f0946190b29e9b31e7d5246200"
       },
       "sourceTacticalEventClassification": {
         "status": "repaired-and-exercised-with-exact-source-blob-in-isolated-node-22",
@@ -396,7 +400,7 @@
           "metadataPath": "lib/agency/skills/maintain-harmonization-frontier/skill.json",
           "metadataBlob": "96ed9bab63be8b04f70d074b39d36d79edc6853d"
         },
-        "engineeringSourceDefect": "Go settlement caller formerly used obsolete expectedVersion, repaired at source blob 769e3fa708eb5c02b317c6e9d94065515657b81d; authoritative match revision/source unchanged. Tactics planner own-key event guard corrected at blob 64a6732e5a8ceafe3fec6cce35503af920f5a63e, isolated exact-source 5/5 vs prior 3/5. Native full-suite, authenticated online match and customer gameplay still unreceived.",
+        "engineeringSourceDefect": "Go settlement caller formerly used obsolete expectedVersion, repaired at source blob 769e3fa708eb5c02b317c6e9d94065515657b81d; authoritative match revision/source unchanged. Tactics planner own-key event guard corrected at blob 64a6732e5a8ceafe3fec6cce35503af920f5a63e, isolated exact-source 5/5 vs prior 3/5. Native full-suite, authenticated online match and customer gameplay still unreceived. Original Cast Go policy now accurately names host-authorization as a separate consumer; it cannot be discharged by verifyWeiqiMatch.",
         "governingMethod": {
           "repo": "561-group/561-group-services-section",
           "path": "content/text/glossary/concepts/method-for-work-in-the-561-group.md",
