@@ -14,13 +14,28 @@ import { buildStudyReplay, commandLabel, describeRulesObservation, studyBranchAt
 
 export { buildStudyReplay, describeRulesObservation };
 
+const VISITING_CAST = Object.freeze({
+  capture: Object.freeze({ name: "The Miser", sect: "The Hungry Stone Court",
+    call: "One capture is a promise. Can you keep it when the board is yours to play?" }),
+  "atari-escaped": Object.freeze({ name: "The Wanderer", sect: "The Returning River",
+    call: "You escaped an enclosing net. Show me how you found the opening." }),
+  "ko-started": Object.freeze({ name: "The Debtor", sect: "The Circle of Debts",
+    call: "A ko is a debt in time. Open the exchange and make it real." }),
+  connection: Object.freeze({ name: "The Loner", sect: "The Joined Bridge",
+    call: "You drew separate groups together. Repeat the connection under pressure." }),
+  "atari-given": Object.freeze({ name: "The Neighbor", sect: "The Near-Wall House",
+    call: "One remaining liberty changes everything. Find the forcing move." }),
+  "eye-formed": Object.freeze({ name: "The Believer", sect: "The Gate of Eyes",
+    call: "You completed an enclosed point. Build that same simple eye again." }),
+});
+
 function element(id) {
   const found = document.getElementById(id);
   if (!found) throw new Error(`Study Replay is missing #${id}`);
   return found;
 }
 
-function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = study.version, exploreImmediately = false) {
+function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = study.version, exploreImmediately = false, scouting = {}) {
   // Importing a second SGF replaces the previous game, not a second board
   // and second timeline layered over the original.
   const host = element("board-host");
@@ -48,6 +63,9 @@ function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = s
   const reelStatus = element("reel-status");
   const reelProgress = element("reel-progress");
   const reelStage = element("board-wrap");
+  const sectFocus = element("sect-focus");
+  const sectVisitors = element("sect-visitors");
+  const sectStatus = element("sect-status");
   // The same rules events drive the current replay, its reel and the original
   // match feed. The producer is exported by the upstream Weiqi engine.
   const reel = kernel.planReplayMoments(study.frames, { limit: 10 });
@@ -65,6 +83,8 @@ function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = s
   let reelRunning = false;
   let reelTimer = null;
   let reelBeatIndex = 0;
+  let activeTryout = null;
+  sectFocus.value = scouting.focusColor === "white" ? "white" : "black";
 
   function stopReel(message = "Reel paused. Inspect any move or replay the highlights.") {
     if (reelTimer !== null) clearTimeout(reelTimer);
@@ -137,7 +157,10 @@ function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = s
   }
 
   function select(version, { fromReel = false } = {}) {
-    if (!fromReel) stopReel();
+    if (!fromReel) {
+      stopReel();
+      activeTryout = null;
+    }
     branch = null; // timeline navigation returns to the immutable recording
     currentVersion = Math.max(0, Math.min(study.version, version));
     const frame = study.frames[currentVersion];
@@ -212,7 +235,19 @@ function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = s
     }
     branch = outcome.session;
     renderBranch();
-    board.announce(command.kind === "pass" ? "Variation: passed." : `Variation: played ${command.move}.`);
+    if (activeTryout && branch.version === branchBase + 1) {
+      const passed = command.kind === "play" &&
+        outcome.events.some(event => event.type === activeTryout.kind);
+      sectStatus.textContent = passed
+        ? "Tryout passed! The rules engine verified " + activeTryout.title.toLowerCase() +
+          " in your alternative line. This is your actual play, not a cosmetic rank."
+        : "That was a legal continuation, but it did not reproduce the target " +
+          activeTryout.kind.replaceAll("-", " ") +
+          ". Undo that move and try another tactic.";
+      board.announce(sectStatus.textContent);
+    } else {
+      board.announce(command.kind === "pass" ? "Variation: passed." : "Variation: played " + command.move + ".");
+    }
   }
 
   exploreBtn.onclick = () => {
@@ -234,6 +269,9 @@ function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = s
     if (!branch || branch.version <= branchBase) return;
     branch = studyBranchAt(branch, branch.version - 1);
     renderBranch();
+    if (activeTryout && branch.version === branchBase)
+      sectStatus.textContent = "Try again. Reproduce " + activeTryout.title.toLowerCase() +
+        " with a new legal move.";
   };
   returnBtn.onclick = () => select(currentVersion);
 
@@ -256,6 +294,77 @@ function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = s
     timeline.append(item);
   }
 
+
+  function visitTryout(invitation) {
+    select(invitation.branchVersion);
+    exploreBtn.click();
+    if (!branch) {
+      sectStatus.textContent = "That recorded position cannot be explored.";
+      return;
+    }
+    activeTryout = invitation;
+    const visitor = VISITING_CAST[invitation.kind];
+    sectStatus.textContent = visitor.name + " of " + visitor.sect +
+      " is watching. " + invitation.title +
+      " from the accepted position before move " + invitation.sourceVersion +
+      ". Play on the actual board; the engine checks the result.";
+    variationStatus.textContent = "Sect tryout: " + invitation.title +
+      ". Any legal move that triggers the target rules event counts. Undo to retry.";
+    board.announce(sectStatus.textContent);
+    boardHostFocus();
+  }
+
+  function boardHostFocus() {
+    element("board-host").querySelector("svg[tabindex]")?.focus();
+  }
+
+  function renderVisitors() {
+    sectVisitors.replaceChildren();
+    const observed = kernel.planTacticalTryouts(study.frames, {
+      color: sectFocus.value === "white" ? kernel.WHITE : kernel.BLACK, limit: 6,
+    });
+    if (observed.invitations.length === 0) {
+      sectStatus.textContent = "No recorded tactical tryouts for this side yet. " +
+        "Play a complete battle or import a game with captures, escapes or connections.";
+      return observed;
+    }
+    sectStatus.textContent = observed.observedMoves + " recorded moves by " +
+      (sectFocus.value === "white" ? "White" : "Black") +
+      ". " + observed.invitations.length + " visitor challenges drawn from accepted rules events.";
+    for (const invitation of observed.invitations) {
+      const visitor = VISITING_CAST[invitation.kind];
+      const card = document.createElement("article");
+      card.className = "sect-visitor";
+      const title = document.createElement("h3");
+      title.textContent = visitor.name + " · " + visitor.sect;
+      const speech = document.createElement("p");
+      speech.textContent = visitor.call;
+      const evidence = document.createElement("p");
+      evidence.className = "sect-proof";
+      evidence.textContent = invitation.title + " · Recorded move " + invitation.sourceVersion;
+      const accept = document.createElement("button");
+      accept.type = "button";
+      accept.className = "primary";
+      accept.textContent = "Accept real board challenge";
+      accept.addEventListener("click", () => visitTryout(invitation));
+      const hint = document.createElement("button");
+      hint.type = "button";
+      hint.textContent = "Show recorded move";
+      hint.addEventListener("click", () => {
+        sectStatus.textContent = "In the original game, " + invitation.sourceMove +
+          " triggered " + invitation.kind.replaceAll("-", " ") +
+          ". Replaying that move is legal; another legal move can qualify too.";
+      });
+      card.append(title, speech, evidence, accept, hint);
+      sectVisitors.append(card);
+    }
+    return observed;
+  }
+  sectFocus.onchange = () => {
+    activeTryout = null;
+    renderVisitors();
+  };
+
   for (const beat of reel) {
     const button = document.createElement("button");
     button.type = "button";
@@ -274,6 +383,7 @@ function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = s
   reelStart.onclick = () => {
     stopReel();
     reelBeatIndex = 0;
+    activeTryout = null;
     reelRunning = true;
     reelStart.disabled = true;
     reelStop.disabled = false;
@@ -312,7 +422,11 @@ function renderStudyReplay(study, hoverCard, recordedSession, initialVersion = s
   window.addEventListener("keydown", onKeydown);
   document.addEventListener("visibilitychange", onVisibilityChange);
   select(initialVersion);
-  if (exploreImmediately) exploreBtn.click();
+  const initialInvitations = renderVisitors();
+  const initialTryout = initialInvitations.invitations.find(invitation =>
+    invitation.kind === scouting.kind && invitation.branchVersion === initialVersion);
+  if (initialTryout) visitTryout(initialTryout);
+  else if (exploreImmediately) exploreBtn.click();
   return {
     selectedSession: () => branch ?? recordedSession,
     dispose: () => {
@@ -339,6 +453,10 @@ function openStudy(session, notes, hoverCard) {
   const incoming = new URLSearchParams(location.hash.replace(/^#/, ""));
   const momentText = incoming.get("moment");
   const exploreImmediately = incoming.get("explore") === "1";
+  const scouting = {
+    kind: incoming.get("scout"),
+    focusColor: incoming.get("focus") === "white" ? "white" : "black",
+  };
   const requestedMoment = momentText === null ? session.version : Number(momentText);
   const firstMoment = Number.isSafeInteger(requestedMoment) &&
     requestedMoment >= 0 && requestedMoment <= session.version
@@ -348,7 +466,7 @@ function openStudy(session, notes, hoverCard) {
   element("review-empty").hidden = true;
   element("review-app").hidden = false;
   const study = buildStudyReplay(session);
-  activeStudy = renderStudyReplay(study, hoverCard, session, firstMoment, exploreImmediately);
+  activeStudy = renderStudyReplay(study, hoverCard, session, firstMoment, exploreImmediately, scouting);
   const summary = element("concept-summary");
   summary.replaceChildren();
   renderConceptSummaryCard(summary, study, kernel, { hoverCard });

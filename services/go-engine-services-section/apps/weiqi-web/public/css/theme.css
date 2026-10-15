@@ -938,3 +938,21 @@ footer.site-footer {
 @media (prefers-reduced-motion: reduce) {
   .board-wrap.reel-playing { transition: none; }
 }
+
+/* WXWQ invitations are real engine-event puzzles, not a second board. */
+.sect-recruitment {
+  border: 1px solid #ab8352;
+  background: linear-gradient(140deg, #241f29, #42304a);
+  color: #fcf4e7;
+}
+.sect-recruitment h2 { color: #ffe3ae; }
+.sect-recruitment > p { color: #f3e2d4; }
+.sect-recruitment label { display: block; color: #f7e4be; margin: .5rem 0; }
+.sect-recruitment select { background: #fffbef; color: #2a222c; padding: .4rem; }
+.sect-status { min-height: 2rem; font-weight: 650; }
+.sect-visitor-deck { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: .7rem; }
+.sect-visitor { background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.23); border-radius: .6rem; padding: .85rem; }
+.sect-visitor h3 { font-size: 1.02rem; color: #f9dda3; margin: 0 0 .4rem; }
+.sect-visitor p { font-size: .9rem; color: #f0e8eb; line-height: 1.4; }
+.sect-visitor .sect-proof { font-weight: 700; }
+.sect-visitor button { display: block; margin-top: .45rem; min-height: 2.35rem; width: 100%; }

@@ -213,3 +213,40 @@ test("a challenge deep link enters Study's original versioned branch from the se
   assert.match(app, /branch = outcome\.session/);
   assert.match(app, /const requestedMoment/);
 });
+
+test("WXWQ sect visits generate playable challenges from the original accepted match", () => {
+  const session = admittedSession([
+    { kind: "play", move: "C3" }, { kind: "play", move: "C4" },
+    { kind: "play", move: "B4" }, { kind: "play", move: "A1" },
+    { kind: "play", move: "D4" }, { kind: "play", move: "A2" },
+    { kind: "play", move: "C5" },
+  ]);
+  const frames = buildStudyReplay(session).frames;
+  const human = kernel.planTacticalTryouts(frames, { color: kernel.BLACK });
+  const rival = kernel.planTacticalTryouts(frames, { color: kernel.WHITE });
+  assert.ok(human.invitations.some(i => i.kind === "capture"));
+  assert.ok(human.invitations.every(i => i.color === kernel.BLACK));
+  assert.ok(rival.invitations.every(i => i.color === kernel.WHITE));
+  for (const invitation of human.invitations) {
+    const legalPrefix = studyBranchAt(session, invitation.branchVersion);
+    const effect = kernel.admitWeiqiGameCommand(legalPrefix, legalPrefix.version,
+      { kind: "play", move: invitation.sourceMove });
+    assert.equal(effect.ok, true);
+    if (effect.ok) assert.ok(effect.events.some(event => event.type === invitation.kind));
+  }
+});
+
+test("WXWQ visiting sect controls are connected to actual board admission, not a static badge", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const page = await readFile(new URL("../public/review.html", import.meta.url), "utf8");
+  const client = await readFile(new URL("../public/js/review-app.mjs", import.meta.url), "utf8");
+  for (const id of ["sect-focus", "sect-visitors", "sect-status"]) {
+    assert.ok(page.includes('id="' + id + '"'));
+  }
+  assert.match(client, /kernel\.planTacticalTryouts\(study\.frames/);
+  assert.match(client, /visitTryout\(invitation\)/);
+  assert.match(client, /select\(invitation\.branchVersion\)/);
+  assert.match(client, /outcome\.events\.some\(event => event\.type === activeTryout\.kind\)/);
+  assert.match(client, /activeTryout = null/);
+  assert.match(client, /sourceMove/);
+});
