@@ -10,7 +10,7 @@
 import * as kernel from "./kernel/index.mjs";
 import { WeiqiBoard, getEventGlyph } from "./board.mjs";
 import { GlossaryHoverCard, loadGlossary } from "./hover-card.mjs";
-import { BOT_TIERS } from "./bot.mjs";
+import { BOT_TIERS } from "./kernel/policies.mjs";
 import { WeiqiSound } from "./sound.mjs";
 import { ConceptToastStrip } from "./concept-toast.mjs";
 import { canAdmitHumanBoardMove } from "./play-turn-admission.mjs";

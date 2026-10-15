@@ -5,7 +5,7 @@
 // freezes the board this way. No rules live here.
 
 import * as kernel from "./kernel/index.mjs";
-import { BOT_TIERS } from "./bot.mjs";
+import { BOT_TIERS } from "./kernel/policies.mjs";
 
 self.addEventListener("message", ({ data }) => {
   const { id, session, tierId } = data ?? {};

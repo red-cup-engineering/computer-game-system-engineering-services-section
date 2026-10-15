@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import * as kernel from "@red-cup-engineering/weiqi-engine";
-import { BOT_TIERS, candidateMoveCoords, chooseMonteCarloMove, isSelfHarmingMove, monteCarloBudget, randomPlayout, searchCandidateWidth } from "../public/js/bot.mjs";
+import { BOT_TIERS, candidateMoveCoords, chooseMonteCarloMove, isSelfHarmingMove, monteCarloBudget, randomPlayout, searchCandidateWidth } from "../public/js/kernel/policies.mjs";
 
 const first = () => 0;
 

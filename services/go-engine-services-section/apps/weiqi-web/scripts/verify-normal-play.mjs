@@ -6,7 +6,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import * as kernel from "../public/js/kernel/index.mjs";
-import { chooseInfluenceMove, chooseMonteCarloMove } from "../public/js/bot.mjs";
+import { chooseInfluenceMove, chooseMonteCarloMove } from "../public/js/kernel/policies.mjs";
 import { localCount } from "../public/js/local-game.mjs";
 
 const playHtml = await readFile(new URL("../public/play.html", import.meta.url), "utf8");

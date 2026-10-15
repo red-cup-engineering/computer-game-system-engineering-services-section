@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { Game } from "@red-cup-engineering/weiqi-engine";
 import * as kernel from "@red-cup-engineering/weiqi-engine";
-import { chooseInfluenceMove } from "../public/js/bot.mjs";
+import { chooseInfluenceMove } from "../public/js/kernel/policies.mjs";
 import { canAdmitHumanBoardMove } from "../public/js/play-turn-admission.mjs";
 
 test("a board event is admitted only while the human owns the engine turn", () => {
