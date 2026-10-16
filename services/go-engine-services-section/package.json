@@ -18,7 +18,7 @@
   "dependencies": {
     "@red-cup-engineering/metrologic": "workspace:*",
     "@red-cup-engineering/cbor-services-section": "workspace:*",
-    "@red-cup-engineering/javascript-node-services-section": "workspace:*"
+    "@red-cup-engineering/javascript-node-operation-engineering-services-section": "workspace:*"
   },
   "exports": {
     ".": "./src/go-engine.mjs",
