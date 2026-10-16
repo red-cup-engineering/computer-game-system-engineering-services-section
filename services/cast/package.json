@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/cast",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "The house's cast: named, recurring agent players who play the shelf's real games through the same intent APIs as humans — the founding Cowrie Games idea (2026-08-19 \"The Suite and the Studio\": \"named recurring agent players who actually play, by the same intent-log API as humans... this may be the single strongest differentiator the fleet owns\"). Persona identity + temperament + a procedural avatar (persona), seeded data-driven dialogue with no LLM call (dialogue), deterministic decision policies including exact-EV blackjack play with transparent, bounded, costed temperament deviations (policy), and a transport-agnostic harness that paces a persona through think/act/react against an injected adapter, emitting a structured event stream (runner). Ships eight authored starter personas. First consumer is casino.561.group; built generic for any game on the shelf. Zero runtime dependencies beyond card-table (blackjack EV).",
   "keywords": [
@@ -20,14 +20,14 @@
     "node": ">=24"
   },
   "dependencies": {
-    "@red-cup-engineering/card-table": "workspace:*",
-    "@red-cup-engineering/computer-data-engineering-services-section": "workspace:*",
-    "@red-cup-engineering/computer-text-content-engineering-services-section": "workspace:*",
-    "@red-cup-engineering/feltos": "workspace:*",
-    "@red-cup-engineering/weiqi-engine": "workspace:*"
+    "@red-cup-engineering/computer-data-engineering-services-section": "0.2.0",
+    "@red-cup-engineering/computer-text-content-engineering-services-section": "0.1.0",
+    "@red-cup-engineering/card-table": "0.1.1",
+    "@red-cup-engineering/weiqi-engine": "0.3.1",
+    "@red-cup-engineering/feltos": "0.20.2"
   },
   "devDependencies": {
-    "@red-cup-engineering/feltos": "workspace:*"
+    "@red-cup-engineering/feltos": "0.20.2"
   },
   "exports": {
     "./persona": {
@@ -77,5 +77,6 @@
   "scripts": {
     "check": "for f in src/*.mjs src/policy/*.mjs src/personas/*.mjs src/adapters/*.mjs scripts/*.mjs; do node --check \"$f\" || exit 1; done",
     "test": "node --test src/*.test.mjs src/policy/*.test.mjs src/personas/*.test.mjs src/adapters/*.test.mjs"
-  }
+  },
+  "private": false
 }

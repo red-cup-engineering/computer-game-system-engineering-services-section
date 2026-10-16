@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/computer-game-system-services-section",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Ashlar Fabrication — Red Cup Engineering's game-systems house: contract-coupled, zero-dependency systems cut to fit (energy-bank, parlor-kernel, card-table, footing, the render family), each game running through the gaming faculty's rules layer.",
   "type": "module",
   "keywords": [
@@ -14,5 +14,12 @@
   },
   "scripts": {
     "test": "node --test test/*.test.mjs"
-  }
+  },
+  "files": [
+    "scripts/interest-correlation.mjs",
+    "scripts/single-command-game-protocol.mjs",
+    "README.md",
+    "package.json"
+  ],
+  "private": false
 }

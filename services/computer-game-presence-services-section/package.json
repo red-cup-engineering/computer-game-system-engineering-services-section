@@ -1,6 +1,6 @@
 {
   "name": "@red-cup-engineering/computer-game-presence-services-section",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "The cross-game presence/chat primitive every house game parameterizes instead of rolling its own: per-game player status (who's online), channels (subscribe/broadcast), and tells (cross-game direct messages), offered once as a shared service. Agent players are first-class (a session's client is any duck-typed { send(obj):bool }, never assumed to be a human's browser socket) and every presence/chat event lands in an append-only log built on cartridge's intent-log discipline (kind-enveloped, monotonic-seq, canonically-stringified entries), so a game's presence/chat history replays the same way its own intent log does. Built on qwzspace's broadcast-hub for the live client set and best-effort fan-out.",
   "keywords": [
@@ -17,9 +17,9 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@red-cup-engineering/gaming": "workspace:*",
-    "@red-cup-engineering/json-services-section": "workspace:*",
-    "@red-cup-engineering/qwzspace": "workspace:*"
+    "@red-cup-engineering/json-services-section": "0.4.0",
+    "@red-cup-engineering/qwzspace": "0.9.1",
+    "@red-cup-engineering/gaming": "0.1.10"
   },
   "exports": {
     "./session": {
@@ -66,5 +66,6 @@
   "scripts": {
     "check": "for f in src/*.mjs scripts/*.mjs; do node --check \"$f\" || exit 1; done",
     "test": "node --test tests/prove-*.mjs"
-  }
+  },
+  "private": false
 }
