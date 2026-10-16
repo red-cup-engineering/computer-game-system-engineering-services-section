@@ -38,7 +38,9 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "check": "for f in src/*.mjs scripts/*.mjs apps/*.mjs; do node --check \"$f\" || exit 1; done",
-    "test": "node --test test/*.test.mjs"
+    "check": "for f in src/*.mjs scripts/*.mjs apps/*.mjs test/*.mjs test/helpers/*.mjs; do node --check \"$f\" || exit 1; done",
+    "test": "npm run check && node --test 'test/*.test.mjs'",
+    "test:protocol": "node --test test/gtp-session.test.mjs test/analysis-session.test.mjs test/stub-process.test.mjs",
+    "test:readout": "node --test test/derive-readout-envelope.test.mjs"
   }
 }

@@ -108,12 +108,25 @@ the command and its arguments before `node:child_process.spawn` (no shell is
 involved); JS callers pass `engineCommand` and `engineArgs` separately for
 exact argv control.
 
+## Testing the external protocol boundary
+
+```sh
+npm test              # syntax-check src, CLI, tests and test helpers; run all cases
+npm run test:protocol # GTP and KataGo JSON subprocess protocol integration
+npm run test:readout  # pure derived readout and content-identity tests
+```
+
 **Live verification against a real engine is a separate gate from this
-package's own test suite.** The test suite (`test/`) is green against a
-deterministic stub (`test/stub-engine.mjs`, spawned by the tests, speaking
-both protocols) with no real engine installed — it verifies this package's
-own framing, session, and envelope-derivation logic, not any particular
-engine's behavior.
+package's own test suite.** Test processes communicate with the deterministic
+`test/stub-engine.mjs`, not an installed KataGo or GNU Go. GTP and analysis
+tests share the test-only `test/helpers/stub-session.mjs` lifecycle fixture:
+each case spawns its own child, uses a real stdin/stdout exchange, and
+always closes and awaits the child, even on assertion failure. An explicit
+failure-path test covers cleanup; none of these tests starts a network
+service, uses arbitrary sleeps, or shares one mutable engine across cases.
+The readout tests instead remain pure and make no subprocess.
+These tests verify the adapter's framing, session and readout-derivation
+contracts, not the tactical quality of any installed engine.
 
 GTP is verified live against GNU Go 3.8, supplied by Guix (the repository's
 `manifest.scm` lists `gnugo`), on 2026-09-04:
