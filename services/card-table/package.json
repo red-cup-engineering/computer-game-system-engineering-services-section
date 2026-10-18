@@ -3,6 +3,11 @@
   "version": "0.1.1",
   "type": "module",
   "description": "The house's shared playing-card engine: the card model, deterministic FNV-1a + mulberry32 seeded shuffle, N-deck/N-suit deck builder, draw/deal helpers, and a multi-deck dealing shoe with cut-card penetration (deck, shoe); procedural, zero-DOM inline-SVG card faces/backs/chips themed via CSS custom properties (svg); an exact 5-card and best-5-of-7 poker hand evaluator with tiebreak-correct total ordering (evaluate); and blackjack hand-total math, H17/S17 dealer policy, and exact per-decision (stand/hit/double/split) EV by recursive shoe-composition enumeration (blackjack). deck/svg are extracted from solitaire-service's cards.mts/cards-svg.mjs (see README, \"Provenance\"); evaluate/blackjack close the confirmed casino-math gap for poker and blackjack, in the exact-enumeration style parlor-kernel/odds.mjs established. Depends on computer-data randomization for its FNV-1a/mulberry32 seeded shuffle.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-systems-engineering-services-section.git",
+    "directory": "services/computer-game-system-services-section/services/card-table"
+  },
   "keywords": [
     "561-group",
     "card-table",

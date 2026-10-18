@@ -3,6 +3,11 @@
   "version": "0.1.2",
   "type": "module",
   "description": "The cross-game presence/chat primitive every house game parameterizes instead of rolling its own: per-game player status (who's online), channels (subscribe/broadcast), and tells (cross-game direct messages), offered once as a shared service. Agent players are first-class (a session's client is any duck-typed { send(obj):bool }, never assumed to be a human's browser socket) and every presence/chat event lands in an append-only log built on cartridge's intent-log discipline (kind-enveloped, monotonic-seq, canonically-stringified entries), so a game's presence/chat history replays the same way its own intent log does. Built on qwzspace's broadcast-hub for the live client set and best-effort fan-out.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/computer-systems-engineering-services-section.git",
+    "directory": "services/computer-game-system-services-section/services/computer-game-presence-services-section"
+  },
   "keywords": [
     "presence",
     "chat",
