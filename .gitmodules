@@ -1,0 +1,124 @@
+[submodule "aletheon"]
+	path = apps/aletheon
+	url = https://github.com/red-cup-engineering/aletheon.git
+	branch = main
+[submodule "be-not-so-fearful"]
+	path = apps/be-not-so-fearful
+	url = https://github.com/red-cup-engineering/be-not-so-fearful.git
+	branch = main
+[submodule "cowrie-casino"]
+	path = apps/cowrie-casino
+	url = https://github.com/red-cup-engineering/cowrie-casino.git
+	branch = main
+[submodule "crucible"]
+	path = apps/crucible
+	url = https://github.com/red-cup-engineering/crucible.git
+	branch = main
+[submodule "durante"]
+	path = apps/durante
+	url = https://github.com/red-cup-engineering/durante.git
+	branch = main
+[submodule "farstone"]
+	path = apps/farstone
+	url = https://github.com/red-cup-engineering/farstone.561.group.git
+	branch = main
+[submodule "fizzos"]
+	path = apps/fizzos
+	url = https://github.com/red-cup-engineering/fizzos.git
+	branch = main
+[submodule "flickering"]
+	path = apps/flickering
+	url = https://github.com/red-cup-engineering/flickering.git
+	branch = main
+[submodule "games-host"]
+	path = apps/games-host
+	url = https://github.com/red-cup-engineering/games-host.git
+	branch = main
+[submodule "kellys-wager"]
+	path = apps/kellys-wager
+	url = https://github.com/red-cup-engineering/kellys-wager.git
+	branch = main
+[submodule "onestone"]
+	path = apps/onestone
+	url = https://github.com/red-cup-engineering/onestone.git
+	branch = main
+[submodule "parlor"]
+	path = apps/parlor
+	url = https://github.com/red-cup-engineering/parlor.git
+	branch = main
+[submodule "qwzspace"]
+	path = apps/qwzspace
+	url = https://github.com/red-cup-engineering/qwzspace.git
+	branch = main
+[submodule "ruinfold"]
+	path = apps/ruinfold
+	url = https://github.com/red-cup-engineering/ruinfold.git
+	branch = main
+[submodule "solitaire"]
+	path = apps/solitaire
+	url = https://github.com/red-cup-engineering/solitaire.git
+	branch = main
+[submodule "stoke"]
+	path = apps/stoke
+	url = https://github.com/red-cup-engineering/stoke.git
+	branch = main
+[submodule "you-are-conscious"]
+	path = apps/you-are-conscious
+	url = https://github.com/red-cup-engineering/you-are-conscious.git
+	branch = main
+[submodule "racket-mud"]
+	path = services/computer-mud-engineering-services-section/apps/racket-mud
+	url = https://github.com/red-cup-engineering/racket-mud.git
+	branch = main
+[submodule "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/web-game-services-section"]
+	path = services/web-game-services-section
+	url = https://github.com/red-cup-engineering/web-game-services-section.git
+	branch = main
+[submodule "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/weiqi-onchain-arena-services-section"]
+	path = services/weiqi-onchain-arena-services-section
+	url = https://github.com/red-cup-engineering/weiqi-onchain-arena-services-section.git
+	branch = main
+[submodule "weiqi-engine"]
+	path = services/weiqi-engine
+	url = https://github.com/red-cup-engineering/weiqi-engine.git
+	branch = main
+[submodule "resonator"]
+	path = services/resonator
+	url = https://github.com/red-cup-engineering/resonator.git
+	branch = main
+[submodule "parlor-kernel"]
+	path = services/parlor-kernel
+	url = https://github.com/red-cup-engineering/parlor-kernel.git
+	branch = main
+[submodule "go-engine-services-section"]
+	path = services/go-engine-services-section
+	url = https://github.com/red-cup-engineering/go-engine-services-section.git
+	branch = main
+[submodule "gambling-analysis-service"]
+	path = services/gambling-analysis-service
+	url = https://github.com/red-cup-engineering/gambling-analysis-service.git
+	branch = main
+[submodule "footing"]
+	path = services/footing
+	url = https://github.com/red-cup-engineering/footing.git
+	branch = main
+[submodule "energy-bank"]
+	path = services/energy-bank
+	url = https://github.com/red-cup-engineering/energy-bank.git
+	branch = main
+[submodule "education-platform-service"]
+	path = services/education-platform-service
+	url = https://github.com/red-cup-engineering/education-platform-service.git
+	branch = main
+[submodule "computer-game-presence-services-section"]
+	path = services/computer-game-presence-services-section
+	url = https://github.com/red-cup-engineering/computer-game-presence-services-section.git
+	branch = main
+[submodule "cast"]
+	path = services/cast
+	url = https://github.com/red-cup-engineering/cast.git
+	branch = main
+[submodule "card-table"]
+	path = services/card-table
+	url = https://github.com/red-cup-engineering/card-table.git
+	branch = main
