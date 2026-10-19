@@ -1,11 +1,10 @@
 {
   "name": "@red-cup-engineering/computer-game-system-services-section",
   "version": "0.1.1",
-  "description": "Ashlar Fabrication \u2014 Red Cup Engineering's game-systems house: contract-coupled, zero-dependency systems cut to fit (energy-bank, parlor-kernel, card-table, footing, the render family), each game running through the gaming faculty's rules layer.",
+  "description": "Ashlar Fabrication — Red Cup Engineering's game-systems house: contract-coupled, zero-dependency systems cut to fit (energy-bank, parlor-kernel, card-table, footing, the render family), each game running through the gaming faculty's rules layer.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/red-cup-engineering/computer-systems-engineering-services-section.git",
-    "directory": "services/computer-game-system-services-section"
+    "url": "git+https://github.com/red-cup-engineering/computer-game-system-services-section.git"
   },
   "type": "module",
   "keywords": [
