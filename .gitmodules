@@ -72,11 +72,11 @@
 	branch = main
 [submodule "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/web-game-services-section"]
 	path = services/web-game-services-section
-	url = https://github.com/red-cup-engineering/web-game-services-section.git
+	url = https://github.com/red-cup-engineering/web-game-engineering-services-section.git
 	branch = main
 [submodule "services/computer-systems-engineering-services-section/services/computer-game-system-services-section/services/weiqi-onchain-arena-services-section"]
 	path = services/weiqi-onchain-arena-services-section
-	url = https://github.com/red-cup-engineering/weiqi-onchain-arena-services-section.git
+	url = https://github.com/red-cup-engineering/weiqi-onchain-arena-engineering-services-section.git
 	branch = main
 [submodule "weiqi-engine"]
 	path = services/weiqi-engine
@@ -92,7 +92,7 @@
 	branch = main
 [submodule "go-engine-services-section"]
 	path = services/go-engine-services-section
-	url = https://github.com/red-cup-engineering/go-engine-services-section.git
+	url = https://github.com/red-cup-engineering/go-engine-engineering-services-section.git
 	branch = main
 [submodule "gambling-analysis-service"]
 	path = services/gambling-analysis-service
@@ -112,7 +112,7 @@
 	branch = main
 [submodule "computer-game-presence-services-section"]
 	path = services/computer-game-presence-services-section
-	url = https://github.com/red-cup-engineering/computer-game-presence-services-section.git
+	url = https://github.com/red-cup-engineering/computer-game-presence-engineering-services-section.git
 	branch = main
 [submodule "cast"]
 	path = services/cast
