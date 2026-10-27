@@ -1,0 +1,90 @@
+{
+  "id": "2026-10-27-computer-game-system-services-section-normalization",
+  "kind": "misfiled-resources-register",
+  "by": "apply-services-section-normalization",
+  "date": "2026-10-27",
+  "moved": [
+    {
+      "from": "content/requirements/build-our-own-archmage-class-splinterlands-automation-app.json",
+      "to": "data/records/service-records/requirements-management-service-records/build-our-own-archmage-class-splinterlands-automation-app.json",
+      "rule": "requirements-are-service-records",
+      "sourceSha256": "ecca2a3985fd219eccd118c1830923732b1ec3560458368d97e25065ff488121",
+      "destinationSha256": "ecca2a3985fd219eccd118c1830923732b1ec3560458368d97e25065ff488121",
+      "byteIdentical": true
+    },
+    {
+      "from": "content/requirements/close-the-loop-from-game-play-records-to-retrained-strategy-dies.json",
+      "to": "data/records/service-records/requirements-management-service-records/close-the-loop-from-game-play-records-to-retrained-strategy-dies.json",
+      "rule": "requirements-are-service-records",
+      "sourceSha256": "83dd56ab5eea4ac44ab5c33c5667c648d51a2c64cec942d38d7210fc1e1dbf45",
+      "destinationSha256": "83dd56ab5eea4ac44ab5c33c5667c648d51a2c64cec942d38d7210fc1e1dbf45",
+      "byteIdentical": true
+    },
+    {
+      "from": "content/requirements/farstone-orbital-flight-game-beyond-kerbal-space-program.json",
+      "to": "data/records/service-records/requirements-management-service-records/farstone-orbital-flight-game-beyond-kerbal-space-program.json",
+      "rule": "requirements-are-service-records",
+      "sourceSha256": "774ebe0ab99c9bf762e94f40f6f84b926cdeb75a65631af826a3fb23b70937af",
+      "destinationSha256": "774ebe0ab99c9bf762e94f40f6f84b926cdeb75a65631af826a3fb23b70937af",
+      "byteIdentical": true
+    },
+    {
+      "from": "content/requirements/farstone-orbital-flight-game-capabilities.json",
+      "to": "data/records/service-records/requirements-management-service-records/farstone-orbital-flight-game-capabilities.json",
+      "rule": "requirements-are-service-records",
+      "sourceSha256": "f1c082ef8ab45aef97e9ab172bfe6bb2c19c0521e9d8d43fa6baebeab660f9fa",
+      "destinationSha256": "f1c082ef8ab45aef97e9ab172bfe6bb2c19c0521e9d8d43fa6baebeab660f9fa",
+      "byteIdentical": true
+    },
+    {
+      "from": "content/requirements/games-pressure-upstream-and-the-sports-weiqi-lines.json",
+      "to": "data/records/service-records/requirements-management-service-records/games-pressure-upstream-and-the-sports-weiqi-lines.json",
+      "rule": "requirements-are-service-records",
+      "sourceSha256": "f326f3c76826ef8ed7050fb60e5d8b9c8877d6fd37ad3efaaa8b5617d3209124",
+      "destinationSha256": "f326f3c76826ef8ed7050fb60e5d8b9c8877d6fd37ad3efaaa8b5617d3209124",
+      "byteIdentical": true
+    },
+    {
+      "from": "content/requirements/use-the-agent-swarm-to-create-an-ai-that-teaches-itself-web3-games.json",
+      "to": "data/records/service-records/requirements-management-service-records/use-the-agent-swarm-to-create-an-ai-that-teaches-itself-web3-games.json",
+      "rule": "requirements-are-service-records",
+      "sourceSha256": "fdc328e80bdc8f6e56283baabaafd3100a3671a15805963c797e53b1efc96680",
+      "destinationSha256": "fdc328e80bdc8f6e56283baabaafd3100a3671a15805963c797e53b1efc96680",
+      "byteIdentical": true
+    },
+    {
+      "from": "data/records/requirements-records/tidepool-meets-then-beats-application-peers.json",
+      "to": "data/records/service-records/requirements-service-records/tidepool-meets-then-beats-application-peers.json",
+      "rule": "eavt-data-law",
+      "sourceSha256": "8a1c183b352fcde76cdb459c232a5ca881df9914423991128f62bbc695e32039",
+      "destinationSha256": "8a1c183b352fcde76cdb459c232a5ca881df9914423991128f62bbc695e32039",
+      "byteIdentical": true
+    }
+  ],
+  "owed": [
+    {
+      "rule": "stray-top-level",
+      "reason": ".npmrc/ is not an entry the services-section law knows; its owner decides where it belongs",
+      "directory": ".",
+      "count": 1
+    },
+    {
+      "rule": "stray-top-level",
+      "reason": "LICENSE/ is not an entry the services-section law knows; its owner decides where it belongs",
+      "directory": ".",
+      "count": 1
+    },
+    {
+      "rule": "recovered-means-restored",
+      "reason": "Leader, 2026-10-25: \"we need to actually recover these\"; each is restored to the record or code it came from",
+      "directory": "content/text/documents/articles/notes/recovered/history",
+      "count": 6
+    },
+    {
+      "rule": "specifications-have-the-ietf-form-and-live-in-engineering",
+      "reason": "Leader, 2026-10-25: \"literally not a ONE of these is a specification\"; each is reclassified by its owner and real specifications move to engineering",
+      "directory": "content/text/documents/articles/specifications",
+      "count": 3
+    }
+  ]
+}
