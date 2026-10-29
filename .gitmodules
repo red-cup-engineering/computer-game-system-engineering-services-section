@@ -122,3 +122,7 @@
 	path = services/card-table
 	url = https://github.com/red-cup-engineering/card-table.git
 	branch = main
+[submodule "apps/mutualist-mission"]
+	path = apps/mutualist-mission
+	url = https://github.com/red-cup-engineering/mutualist-mission.git
+	branch = main
