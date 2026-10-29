@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard — EVE Assist</title>
+    <meta name="description" content="Your character at a glance: identity, skill queue, wallet trend, and what changed since you were last here — all cited and timestamped." />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/dashboard.css" />
+  </head>
+  <body data-page="dashboard">
+    <header role="banner">
+      <div class="folio-bar">
+        <a class="folio-mark" href="/">EVE ASSIST</a>
+        <nav class="app-nav" aria-label="Primary">
+          <a href="/dashboard.html" data-nav="dashboard">Dashboard</a>
+          <a href="/market.html" data-nav="market">Market</a>
+          <a href="/assets.html" data-nav="assets">Assets</a>
+          <a href="/map.html" data-nav="map">Map</a>
+          <a href="/chat.html" data-nav="chat">Chat</a>
+          <a href="/settings.html" data-nav="settings">Settings</a>
+        </nav>
+        <div class="identity" id="identity" aria-live="polite">
+          <span class="skeleton">Checking session…</span>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+      <section aria-labelledby="dashboard-heading">
+        <h1 id="dashboard-heading">Dashboard</h1>
+        <p class="section-intro">
+          Everything below is a cited
+          <abbr title="A single fact EVE Assist retrieved from a source, stamped with when it was retrieved and how long it stays fresh.">observation</abbr>,
+          not a live game connection — check the "as of" line on each card.
+        </p>
+      </section>
+
+      <section id="status-region" aria-live="polite" aria-labelledby="loading-heading">
+        <h2 id="loading-heading" class="visually-hidden">Loading status</h2>
+        <p class="skeleton" id="dashboard-status">Loading dashboard…</p>
+      </section>
+
+      <!-- Hero row: character identity + server status, side by side. -->
+      <section aria-labelledby="hero-heading" id="hero-section" hidden>
+        <h2 id="hero-heading" class="visually-hidden">Overview</h2>
+        <div class="hero-row" id="hero-row"></div>
+      </section>
+
+      <section aria-labelledby="queue-heading" id="queue-section" hidden>
+        <h2 id="queue-heading">Skill queue</h2>
+        <div id="queue-body"></div>
+      </section>
+
+      <section aria-labelledby="wallet-heading" id="wallet-section" hidden>
+        <h2 id="wallet-heading">Wallet trend</h2>
+        <div class="card" id="wallet-card">
+          <p class="card-title">Balance, recent history</p>
+          <div id="wallet-sparkline-wrap" class="sparkline-wrap">
+            <p class="skeleton">Loading wallet trend…</p>
+          </div>
+          <p id="wallet-delta" class="card-meta" hidden></p>
+          <p id="wallet-provenance" class="card-provenance"></p>
+        </div>
+      </section>
+
+      <!-- Hidden until a prior visit's snapshot exists in this browser to
+           diff against — see dashboard.js loadSinceYouWereGone(). -->
+      <section aria-labelledby="gone-heading" id="gone-section" hidden>
+        <h2 id="gone-heading">Since you were gone</h2>
+        <div class="card" id="gone-card"></div>
+      </section>
+
+      <section aria-labelledby="links-heading">
+        <h2 id="links-heading">Quick links</h2>
+        <div class="card-grid">
+          <a class="card link-card" href="/market.html">
+            <p class="card-title">Market</p>
+            <p>Browse prices and your open orders at current hubs.</p>
+          </a>
+          <a class="card link-card" href="/assets.html">
+            <p class="card-title">Assets</p>
+            <p>See what you own and where it is, across every station and hangar.</p>
+          </a>
+          <a class="card link-card" href="/map.html">
+            <p class="card-title">Map &amp; route</p>
+            <p>Plan routes and check the road ahead before you undock.</p>
+          </a>
+          <a class="card link-card" href="/chat.html">
+            <p class="card-title">Ask the analyst</p>
+            <p>Open chat and ask a question — it cites its sources as it answers.</p>
+          </a>
+          <a class="card link-card" href="/settings-eve.html">
+            <p class="card-title">Wallet ledger export</p>
+            <p>Export your recent wallet journal as a Beancount or hledger file.</p>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <div class="colophon">
+        <span>EVE Assist · Built by <a href="https://561.group">The 561 Group</a></span>
+        <span>Not affiliated with or endorsed by CCP Games</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/dashboard.js"></script>
+  </body>
+</html>

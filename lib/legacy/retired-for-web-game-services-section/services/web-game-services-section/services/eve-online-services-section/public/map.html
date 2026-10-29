@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Map — EVE Assist</title>
+    <meta name="description" content="Plan a route between two systems, see security status per jump, and check recent kill activity at your destination before you undock." />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/wave2.css" />
+  </head>
+  <body data-page="map">
+    <header role="banner">
+      <div class="folio-bar">
+        <a class="folio-mark" href="/">EVE ASSIST</a>
+        <nav class="app-nav" aria-label="Primary">
+          <a href="/dashboard.html" data-nav="dashboard">Dashboard</a>
+          <a href="/market.html" data-nav="market">Market</a>
+          <a href="/assets.html" data-nav="assets">Assets</a>
+          <a href="/map.html" data-nav="map">Map</a>
+          <a href="/chat.html" data-nav="chat">Chat</a>
+          <a href="/settings.html" data-nav="settings">Settings</a>
+        </nav>
+        <div class="identity" id="identity" aria-live="polite">
+          <span class="skeleton">Checking session…</span>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+      <section aria-labelledby="map-heading">
+        <h1 id="map-heading">Map &amp; route</h1>
+        <p class="section-intro">
+          Plan a route, see the security status of every hop, and check a
+          safety readout for your destination before you undock. Every
+          number here is a cited
+          <abbr title="A single fact EVE Assist retrieved from a source, stamped with when it was retrieved and how long it stays fresh.">observation</abbr>.
+        </p>
+      </section>
+
+      <section aria-labelledby="route-form-heading">
+        <h2 id="route-form-heading">Plan a route</h2>
+        <form id="route-form">
+          <div class="form-row">
+            <div class="field">
+              <label for="origin-input">Origin system ID</label>
+              <input type="text" id="origin-input" name="origin" placeholder="e.g. 30000142" inputmode="numeric" required />
+            </div>
+            <div class="field">
+              <label for="destination-input">Destination system ID</label>
+              <input type="text" id="destination-input" name="destination" placeholder="e.g. 30002187" inputmode="numeric" required />
+            </div>
+            <div class="field">
+              <label for="flag-select">Route type</label>
+              <select id="flag-select" name="flag">
+                <option value="safe" selected>Safe (prefer highsec)</option>
+                <option value="shortest">Shortest (fewest jumps)</option>
+              </select>
+            </div>
+            <button type="submit" class="button button-primary" id="route-button">Plot route</button>
+          </div>
+          <p class="field-hint">
+            EVE Assist can't yet resolve a system's name to its ID (see the
+            evidence panel below for why) — enter the numeric solar system
+            ID. Find it via the in-game map (right-click a system →
+            <em>Show Info</em>, the ID is in the URL of its wiki page) or a
+            third-party tool like zKillboard or EVE-DB.
+          </p>
+          <p class="form-message" id="route-form-message" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section id="route-status-region" aria-live="polite" aria-labelledby="route-loading-heading" hidden>
+        <h2 id="route-loading-heading" class="visually-hidden">Route status</h2>
+        <p class="skeleton" id="route-status">Plotting route…</p>
+      </section>
+
+      <section aria-labelledby="route-heading" id="route-section" hidden>
+        <h2 id="route-heading">Route</h2>
+        <div class="card-grid" id="route-summary-cards"></div>
+
+        <div class="route-strip" id="route-strip" role="img" aria-label="Route strip"></div>
+
+        <ol class="jump-list" id="jump-list" aria-label="Systems on route, in order"></ol>
+
+        <details class="evidence-card" id="route-evidence" hidden>
+          <summary>
+            <span><abbr title="A single fact EVE Assist retrieved from a source, stamped with when it was retrieved and how long it stays fresh.">Observations</abbr> for this route</span>
+          </summary>
+          <div class="evidence-body">
+            <p class="card-meta">
+              System-name lookup isn't wired up yet: <code>search_types</code>
+              only resolves ESI's <code>inventory_types</code> category from
+              its bulk name-lookup endpoint, and a solar system ID is a
+              different ID namespace from an item type ID — reusing one as
+              the other would silently plot the wrong route, so this page
+              requires the numeric system ID instead of guessing.
+            </p>
+            <div id="route-observations"></div>
+          </div>
+        </details>
+      </section>
+
+      <section aria-labelledby="safety-heading" id="safety-section" hidden>
+        <h2 id="safety-heading">Safety readout — <span id="safety-system-name"></span></h2>
+        <div id="safety-status-region" aria-live="polite">
+          <p class="skeleton" id="safety-status" hidden>Loading activity…</p>
+        </div>
+        <div class="card-grid" id="safety-cards"></div>
+        <details class="evidence-card" id="safety-evidence" hidden>
+          <summary>
+            <span><abbr title="A single fact EVE Assist retrieved from a source, stamped with when it was retrieved and how long it stays fresh.">Observations</abbr> for this readout</span>
+          </summary>
+          <div class="evidence-body">
+            <div id="safety-observations"></div>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <div class="colophon">
+        <span>EVE Assist · Built by <a href="https://561.group">The 561 Group</a></span>
+        <span>Not affiliated with or endorsed by CCP Games</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/map.js"></script>
+  </body>
+</html>

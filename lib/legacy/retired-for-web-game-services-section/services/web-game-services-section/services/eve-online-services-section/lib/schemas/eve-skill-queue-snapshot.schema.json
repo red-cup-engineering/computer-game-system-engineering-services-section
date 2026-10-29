@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eve-assist.561.group/schemas/eve-skill-queue-snapshot.schema.json",
+  "title": "EVE skill queue snapshot",
+  "description": "Shape of the data returned by src/tools/character-tools.mjs's get_skill_queue (record type EveSkillQueueSnapshot). This schema describes the record's `data`, not the enclosing envelope.",
+  "type": "object",
+  "properties": {
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "skillId": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "skillName": {
+            "type": ["string", "null"]
+          },
+          "finishedLevel": {
+            "type": ["integer", "null"],
+            "minimum": 0,
+            "maximum": 5
+          },
+          "queuePosition": {
+            "type": ["integer", "null"],
+            "minimum": 0
+          },
+          "startDate": {
+            "type": ["string", "null"]
+          },
+          "finishDate": {
+            "type": ["string", "null"]
+          },
+          "trainingTimeRemainingMs": {
+            "type": ["number", "null"],
+            "minimum": 0
+          }
+        },
+        "required": [
+          "skillId",
+          "skillName",
+          "finishedLevel",
+          "queuePosition",
+          "startDate",
+          "finishDate",
+          "trainingTimeRemainingMs"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "totalTimeRemainingMs": {
+      "type": ["number", "null"],
+      "minimum": 0
+    },
+    "isPaused": {
+      "type": "boolean"
+    }
+  },
+  "required": ["entries", "totalTimeRemainingMs", "isPaused"],
+  "additionalProperties": false
+}

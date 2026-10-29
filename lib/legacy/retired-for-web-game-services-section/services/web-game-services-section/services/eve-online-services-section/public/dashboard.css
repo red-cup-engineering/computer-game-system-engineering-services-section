@@ -1,0 +1,200 @@
+/*
+ * EVE Assist — dashboard stylesheet.
+ *
+ * Additive to /style.css (loaded first on dashboard.html): every color,
+ * font-stack, and spacing token here is one of that file's custom
+ * properties (--ink, --surface, --accent, --alarm, --ok, --rule, --sans,
+ * --serif, --mono, --radius, --gutter, --max) so light/dark mode and the
+ * bone/ink Bauhaus register (hard edges, scarce salience, type as mass)
+ * carry over unchanged. This file only adds the new dashboard components:
+ * hero row, portrait, progress meters, sparkline embed, provenance line.
+ */
+
+/* ── Hero row: identity card + server chip ──────────────────────────────── */
+
+.hero-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.identity-card {
+  background: var(--surface-deep);
+  border: 1px solid var(--surface-edge);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.6rem;
+  display: flex;
+  gap: 1.2rem;
+}
+
+.portrait {
+  width: 96px;
+  height: 96px;
+  flex: none;
+  object-fit: cover;
+  background: var(--surface);
+  border: 1px solid var(--ink);
+}
+
+.identity-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.identity-callsign {
+  font-family: var(--sans);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.identity-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.identity-facts strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.identity-wallet {
+  margin-top: 4px;
+  font-family: var(--sans);
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.server-chip {
+  background: var(--surface-deep);
+  border: 1px solid var(--surface-edge);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.badge-alarm {
+  border-color: var(--alarm);
+  color: var(--alarm);
+}
+
+/* ── Skill queue: total readout + progress meters ────────────────────────── */
+
+.queue-total {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 14px;
+}
+
+.queue-total .card-value {
+  font-size: 1.3rem;
+}
+
+.skill-row {
+  padding: 0.65em 0;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.skill-row:first-child {
+  padding-top: 0;
+}
+
+.skill-row-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.progress-track {
+  height: 6px;
+  width: 100%;
+  background: var(--surface-edge);
+  border: 1px solid var(--rule);
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+}
+
+.progress-fill-alarm {
+  background: var(--alarm);
+}
+
+/* ── Wallet sparkline card ───────────────────────────────────────────────── */
+
+.sparkline-wrap {
+  background: var(--surface);
+  border: 1px solid var(--surface-edge);
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sparkline-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 640px;
+}
+
+/* ── "Since you were gone" ───────────────────────────────────────────────── */
+
+.gone-list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gone-list li {
+  border-left: 3px solid var(--accent);
+  padding-left: 0.7em;
+  font-size: 0.95rem;
+}
+
+.gone-list li.gone-item-alarm {
+  border-left-color: var(--alarm);
+}
+
+/* ── Provenance footer, shared by every data card ────────────────────────── */
+
+.card-provenance {
+  margin-top: auto;
+  padding-top: 8px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 880px) {
+  .hero-row {
+    grid-template-columns: 1fr;
+  }
+
+  .identity-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

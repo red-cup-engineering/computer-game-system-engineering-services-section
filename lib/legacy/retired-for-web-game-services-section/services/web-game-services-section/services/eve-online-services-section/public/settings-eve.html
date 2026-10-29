@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Wallet ledger export — EVE Assist</title>
+    <meta name="description" content="Export your recent EVE Online wallet journal as a double-entry Beancount or hledger ledger file, mapped to Assets/Income/Expenses accounts per character." />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body data-page="ledger">
+    <header role="banner">
+      <div class="folio-bar">
+        <a class="folio-mark" href="/">EVE ASSIST</a>
+        <nav class="app-nav" aria-label="Primary">
+          <a href="/dashboard.html" data-nav="dashboard">Dashboard</a>
+          <a href="/market.html" data-nav="market">Market</a>
+          <a href="/assets.html" data-nav="assets">Assets</a>
+          <a href="/map.html" data-nav="map">Map</a>
+          <a href="/chat.html" data-nav="chat">Chat</a>
+          <a href="/settings.html" data-nav="settings">Settings</a>
+          <a href="/settings-eve.html" data-nav="ledger">Ledger</a>
+        </nav>
+        <div class="identity" id="identity" aria-live="polite">
+          <span class="skeleton">Checking session…</span>
+        </div>
+      </div>
+    </header>
+
+    <main role="main">
+      <section aria-labelledby="ledger-heading">
+        <h1 id="ledger-heading">Wallet ledger export</h1>
+        <p class="section-intro">
+          EVE-specific: not part of the generic
+          <a href="/settings.html">settings page</a> (AI chat key, MCP
+          tokens) every Assist application shares — this export is EVE
+          Assist's own.
+        </p>
+        <p class="section-intro">
+          Export your recent wallet journal as a double-entry ledger file —
+          <a href="https://beancount.github.io/">Beancount</a> or
+          <a href="https://hledger.org/">hledger</a> — mapped to
+          Assets/Income/Expenses accounts per character, with every entry
+          cited back to its ESI observation. Covers the last 30 days.
+        </p>
+        <p class="form-actions">
+          <button type="button" class="button button-primary" id="ledger-download-beancount">Download ledger (Beancount)</button>
+          <button type="button" class="button" id="ledger-download-hledger">Download ledger (hledger)</button>
+        </p>
+        <p class="form-message" id="ledger-form-message" aria-live="polite"></p>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <div class="colophon">
+        <span>EVE Assist · Built by <a href="https://561.group">The 561 Group</a></span>
+        <span>Not affiliated with or endorsed by CCP Games</span>
+      </div>
+    </footer>
+
+    <script type="module" src="/settings-eve.js"></script>
+  </body>
+</html>

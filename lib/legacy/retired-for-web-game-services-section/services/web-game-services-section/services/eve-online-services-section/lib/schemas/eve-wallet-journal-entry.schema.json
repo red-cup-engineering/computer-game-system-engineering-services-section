@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eve-assist.561.group/schemas/eve-wallet-journal-entry.schema.json",
+  "title": "EVE wallet journal entry",
+  "description": "Shape of one entry as returned by src/tools/character-tools.mjs's get_wallet_journal (record type EveWalletJournalEntry, wraps one raw ESI /characters/{id}/wallet/journal/ row). This schema describes the record's `data`, not the enclosing envelope.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "CCP-issued stable journal entry id; the dedup key for ledger export."
+    },
+    "date": {
+      "type": "string",
+      "minLength": 1,
+      "description": "ISO 8601 timestamp as returned by ESI."
+    },
+    "amount": {
+      "type": ["number", "null"],
+      "description": "Signed ISK delta: positive received, negative spent."
+    },
+    "balance": {
+      "type": ["number", "null"]
+    },
+    "refType": {
+      "type": ["string", "null"],
+      "description": "ESI's raw snake_case ref_type, e.g. \"bounty_prizes\"."
+    },
+    "refTypeLabel": {
+      "type": "string",
+      "minLength": 1,
+      "description": "humanizeRefType(refType) output, e.g. \"Bounty Prizes\"; never null (falls back to \"Unknown\")."
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "firstPartyId": {
+      "type": ["integer", "null"]
+    },
+    "secondPartyId": {
+      "type": ["integer", "null"]
+    },
+    "reason": {
+      "type": ["string", "null"]
+    }
+  },
+  "required": [
+    "id",
+    "date",
+    "amount",
+    "balance",
+    "refType",
+    "refTypeLabel",
+    "description",
+    "firstPartyId",
+    "secondPartyId",
+    "reason"
+  ],
+  "additionalProperties": false
+}

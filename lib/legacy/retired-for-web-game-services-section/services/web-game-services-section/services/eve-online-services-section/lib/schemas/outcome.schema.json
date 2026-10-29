@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eve-assist.561.group/schemas/outcome.schema.json",
+  "title": "Outcome",
+  "description": "What actually happened after a prior Decision record, plus the lesson drawn — the quant-firm feedback loop (ROADMAP.md, goal ledger with outcomes). This schema describes the record's `data`, not the enclosing envelope.",
+  "type": "object",
+  "properties": {
+    "decisionId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The referenced Decision record's envelope id (id: or rmn: form)."
+    },
+    "observedAt": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Epoch milliseconds, matching the envelope's recordedAt convention."
+    },
+    "result": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lesson": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": ["decisionId", "observedAt", "result", "lesson"],
+  "additionalProperties": false
+}
