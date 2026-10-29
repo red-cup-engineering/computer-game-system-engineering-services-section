@@ -1,0 +1,204 @@
+/*
+ * EVE Assist — wave 2 stylesheet.
+ *
+ * Additive styles for market.html, assets.html, and map.html only. Imports
+ * nothing (loaded alongside /style.css, after it, on each of those three
+ * pages) and reuses style.css's custom-property names — --ink, --ink-soft,
+ * --surface, --surface-deep, --surface-edge, --rule, --accent, --accent-ink,
+ * --alarm, --ok, --sans, --serif, --mono, --radius — so light/dark theming
+ * stays unified with the rest of the app rather than forking a second
+ * palette. Every existing component this file could reuse as-is (.card,
+ * .card-grid, .badge, .status-banner, .table-scroll, .evidence-card,
+ * .observation-list, .skeleton, .form-message, .field, .field-hint,
+ * .button) is reused directly from style.css in the pages' markup, not
+ * redefined here.
+ */
+
+/* ── Chip lists (market item search results) ───────────────────────────── */
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding-left: 0;
+}
+
+.chip-button {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  padding: 0.5em 0.85em;
+  border: 1.5px solid var(--surface-edge);
+  border-radius: var(--radius);
+  background: var(--surface-deep);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.chip-button:hover {
+  border-color: var(--accent);
+}
+
+.chip-button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ── Chart / SVG frames (market price history, map route strip) ────────── */
+
+.chart-frame,
+.route-strip {
+  border: 1px solid var(--surface-edge);
+  background: var(--surface-deep);
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.chart-frame svg,
+.route-strip svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.route-strip svg {
+  /* The route strip's width scales with jump count (see map.js); a floor
+     keeps short routes from looking cramped rather than driving max-width
+     below the drawn viewBox. */
+  min-width: 320px;
+}
+
+/* Highlights the cheapest hub row in the market comparison table. */
+.table-best td {
+  border-left: 3px solid var(--ok);
+}
+
+/* ── Facets (assets page) ───────────────────────────────────────────────── */
+
+.facet-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.facet-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.facet-group-label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+}
+
+.facet-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.facet-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  padding: 0.4em 0.75em;
+  border: 1.5px solid var(--surface-edge);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.facet-chip:hover {
+  border-color: var(--accent);
+}
+
+.facet-chip[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.facet-chip-count {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+.facet-chip[aria-pressed="true"] .facet-chip-count {
+  color: inherit;
+}
+
+/* ── Jump list / security badges (map page) ─────────────────────────────── */
+
+.jump-list {
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.jump-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0.55em 0;
+  border-bottom: 1px solid var(--rule);
+  flex-wrap: wrap;
+}
+
+.jump-row:first-child {
+  padding-top: 0;
+}
+
+.sec-badge {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2em 0.55em;
+  border: 1px solid var(--surface-edge);
+  border-radius: var(--radius);
+  white-space: nowrap;
+}
+
+/* EVE's own convention runs highsec green -> lowsec amber -> nullsec red;
+   this app's palette only has three semantic colors (--ok, --accent,
+   --alarm — see style.css's header comment), so lowsec borrows --accent as
+   the middle "elevated risk" step rather than introducing a fourth color.
+   Mirrored in map.js's securityClass(). */
+.sec-high {
+  color: var(--ok);
+  border-color: var(--ok);
+}
+
+.sec-low {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.sec-null {
+  color: var(--alarm);
+  border-color: var(--alarm);
+}
+
+.sec-unknown {
+  color: var(--ink-soft);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 880px) {
+  .route-strip svg {
+    min-width: 260px;
+  }
+}

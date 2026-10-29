@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eve-assist.561.group/schemas/decision.schema.json",
+  "title": "Decision",
+  "description": "A player decision recorded at the point it's made — question, options weighed, choice, rationale — so its outcome can be recorded later and advice quality becomes inspectable over time (ROADMAP.md, goal ledger with outcomes). This schema describes the record's `data`, not the enclosing envelope; see outcome.schema.json for the paired follow-up record.",
+  "type": "object",
+  "properties": {
+    "question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "optionsConsidered": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "chosen": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hypothesisIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Optional; ids of prior observations/hypotheses this decision was grounded in."
+    }
+  },
+  "required": ["question", "optionsConsidered", "chosen", "rationale"],
+  "additionalProperties": false
+}

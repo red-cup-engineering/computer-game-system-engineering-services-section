@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eve-assist.561.group/schemas/record-envelope.schema.json",
+  "title": "Record envelope",
+  "description": "The shared provenance envelope every typed record in the EVE Assist interchange format wears (see src/records/README.md, \"The interchange-format doctrine\"). `data` is intentionally unconstrained here — validate it separately against the per-kind schema named by `type` (e.g. eve-wallet-journal-entry.schema.json for type EveWalletJournalEntry).",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Present once withIdentity() has run: an ni: URI content id (identifyContent, @red-cup-engineering/computer-data-engine)."
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "PascalCase record kind, e.g. \"EveWalletJournalEntry\"; names the per-kind schema to validate `data` against."
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "recordedAt": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Epoch milliseconds. For source.kind \"esi\" this is the originating ESI observation's recordedAt, not envelope-construction time."
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["esi", "zkillboard", "player", "derived"]
+        },
+        "path": {
+          "type": "string"
+        },
+        "expiresAt": {
+          "type": ["number", "null"]
+        }
+      },
+      "required": ["kind", "expiresAt"],
+      "additionalProperties": false
+    },
+    "data": {}
+  },
+  "required": ["type", "schemaVersion", "recordedAt", "source", "data"],
+  "additionalProperties": false
+}

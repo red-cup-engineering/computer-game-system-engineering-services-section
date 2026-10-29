@@ -1,0 +1,32 @@
+{
+  "name": "@red-cup-engineering/eve-online-services-section",
+  "version": "0.3.0",
+  "type": "module",
+  "description": "EVE Online decision-support engine and web application (EVE Assist), seated on the Assist application platform (@red-cup-engineering/personal-intelligence-systems-services-section).",
+  "exports": {
+    "./application": "./src/application.mjs",
+    "./glossary-record": "./data/records/eve-newbie-glossary.json",
+    "./esi": "./src/esi/esi-client.mjs",
+    "./esi/endpoints": "./src/esi/endpoints.mjs",
+    "./sso": "./src/sso/eve-sso.mjs",
+    "./ledgering": "./src/ledgering/ledger.mjs",
+    "./charting": "./src/charting/charts.mjs",
+    "./cataloging": "./src/cataloging/catalog.mjs",
+    "./graphing": "./src/graphing/graph.mjs",
+    "./records": "./src/records/envelope.mjs",
+    "./records/eve": "./src/records/eve-records.mjs",
+    "./eve-assist-site": "./scripts/eve-assist-site.mjs"
+  },
+  "dependencies": {
+    "@red-cup-engineering/cloudflare-d1-service": "0.1.0",
+    "@red-cup-engineering/computer-content-engineering-services-section": "0.1.0",
+    "@red-cup-engineering/file-services": "0.4.0",
+    "@red-cup-engineering/json-schema-services-section": "0.3.0",
+    "@red-cup-engineering/metrologic": "0.3.0",
+    "@red-cup-engineering/personal-intelligence-systems-services-section": "0.5.0"
+  },
+  "scripts": {
+    "check": "sh -c 'for f in src/*.mjs src/*/*.mjs; do node --check \"$f\" || exit 1; done'",
+    "test": "node --test test/*.test.mjs"
+  }
+}

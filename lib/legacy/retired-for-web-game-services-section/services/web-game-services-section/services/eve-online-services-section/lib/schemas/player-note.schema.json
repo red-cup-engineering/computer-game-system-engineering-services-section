@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eve-assist.561.group/schemas/player-note.schema.json",
+  "title": "Player note",
+  "description": "Free-text player-authored note (record type PlayerNote), first-class evidence alongside API observations per the aspirations note's \"player-authored notes are first-class input\". This schema describes the record's `data`, not the enclosing envelope.",
+  "type": "object",
+  "properties": {
+    "text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "systemName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional; omit the key entirely rather than setting null when not applicable."
+    },
+    "shipType": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional; omit the key entirely rather than setting null when not applicable."
+    }
+  },
+  "required": ["text", "tags"],
+  "additionalProperties": false
+}

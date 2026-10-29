@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EVE Assist</title>
+    <meta
+      name="description"
+      content="Decision support for EVE Online: cited data from your own character, an AI analyst that shows its work, and a toolbelt your own assistant can use over MCP. Never plays the game for you."
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body data-page="home">
+    <header role="banner">
+      <div class="folio-bar">
+        <a class="folio-mark" href="/">EVE ASSIST</a>
+        <nav class="app-nav" aria-label="Primary">
+          <a href="/dashboard.html" data-nav="dashboard">Dashboard</a>
+          <a href="/market.html" data-nav="market">Market</a>
+          <a href="/assets.html" data-nav="assets">Assets</a>
+          <a href="/map.html" data-nav="map">Map</a>
+          <a href="/chat.html" data-nav="chat">Chat</a>
+          <a href="/settings.html" data-nav="settings">Settings</a>
+        </nav>
+        <div class="identity" id="identity" aria-live="polite">
+          <span class="skeleton">Checking session…</span>
+        </div>
+      </div>
+      <div class="hero">
+        <p class="hero-mark">EVE Assist</p>
+        <p class="hero-tagline">Decision support · Not gameplay automation</p>
+        <p class="hero-lede">
+          A dashboard and AI research analyst for EVE Online pilots. It reads
+          your character's public and authorized data from CCP's own
+          <abbr title="EVE Swagger Interface — CCP's read-only API for character and game data.">ESI</abbr>
+          API, cites exactly where every number came from and when it was
+          retrieved, and stops there. You still fly the ship, place the
+          order, and choose the fight.
+        </p>
+        <p class="form-actions" style="margin-top: 28px">
+          <a class="button button-primary" href="/auth/login">Log in with EVE Online</a>
+        </p>
+      </div>
+    </header>
+
+    <main role="main">
+      <section aria-labelledby="what-heading">
+        <h1 id="what-heading">What this is</h1>
+        <p>
+          EVE Assist logs you in through CCP's own
+          <abbr title="EVE Online Single Sign-On — CCP's OAuth2 login. Logging in to EVE Assist is how you grant it read access.">SSO</abbr>
+          — there is no separate password, and logging in is the same act as
+          granting it read access to your character. From there it builds a
+          dashboard of your skill queue, wallet, and standing, and offers an
+          AI analyst you can ask questions of in plain language. The analyst
+          answers by calling the same read-only data tools the dashboard
+          uses, and shows its work: every claim it makes is traceable back to
+          an <abbr title="A single fact EVE Assist retrieved from a source, stamped with when it was retrieved and how long it stays fresh.">observation</abbr>
+          with a timestamp.
+        </p>
+      </section>
+
+      <section aria-labelledby="not-heading">
+        <h2 id="not-heading">What this is not</h2>
+        <ul>
+          <li>Not an autopilot. It never flies your ship, places an order, or sends a message for you.</li>
+          <li>Not a black box. Every figure in the dashboard and every claim in a chat reply cites the observation it came from and when it was recorded.</li>
+          <li>Not omniscient. When the data is thin or stale, it says so instead of guessing — "I don't know" is a correct answer here.</li>
+          <li>Not required. The dashboard is useful with no AI key at all; the chat analyst is an opt-in layer on top.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="principles-heading">
+        <h2 id="principles-heading">How it's built</h2>
+        <div class="card-grid">
+          <div class="card">
+            <p class="card-title">Provenance, always</p>
+            <p>Every retrieved fact carries its source, timestamp, and the identifiers used to fetch it — never a bare number.</p>
+          </div>
+          <div class="card">
+            <p class="card-title">Authority isn't flattened</p>
+            <p>An API observation, a wiki page, and a forum post are different kinds of evidence and are never presented as interchangeable.</p>
+          </div>
+          <div class="card">
+            <p class="card-title">Bring your own key</p>
+            <p>AI chat runs on a Gemini API key you supply and control, stored encrypted, never shown back to anyone — including you, after you've saved it.</p>
+          </div>
+          <div class="card">
+            <p class="card-title">Your assistant, too</p>
+            <p>A remote <abbr title="An open standard that lets an AI assistant call an app's tools directly.">MCP</abbr> endpoint lets your own AI tooling use EVE Assist's data tools directly, with a revocable token you mint yourself.</p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="start-heading">
+        <h2 id="start-heading">Get started</h2>
+        <p>
+          Logging in grants EVE Assist a read-only set of
+          <abbr title="A single fact EVE Assist retrieved from a source, stamped with when it was retrieved and how long it stays fresh.">ESI</abbr>
+          scopes: wallet, skills and skill queue, location, ship type,
+          assets, market orders, and jump clones. Nothing that lets it act on
+          your behalf.
+        </p>
+        <p><a class="button button-primary" href="/auth/login">Log in with EVE Online</a></p>
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <div class="colophon">
+        <span>EVE Assist · Built by <a href="https://561.group">The 561 Group</a></span>
+        <span>Not affiliated with or endorsed by CCP Games</span>
+      </div>
+    </footer>
+
+    <script type="module">
+      import { initHeader } from "/app.js";
+      initHeader({ requireAuth: false });
+    </script>
+  </body>
+</html>

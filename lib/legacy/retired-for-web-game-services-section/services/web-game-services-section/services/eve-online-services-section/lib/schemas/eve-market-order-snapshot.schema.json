@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://eve-assist.561.group/schemas/eve-market-order-snapshot.schema.json",
+  "title": "EVE market order snapshot",
+  "description": "One observed market order (character order or public region order) as a point-in-time snapshot, modeled directly on ESI's own market-order object with this package's camelCase field-naming convention (no existing wave-1 tool emits this shape yet, so there was no prior mapping to match — see this package's assignment report for that ambiguity note). This schema describes the record's `data`, not the enclosing envelope.",
+  "type": "object",
+  "properties": {
+    "orderId": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "typeId": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "regionId": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "systemId": {
+      "type": ["integer", "null"],
+      "minimum": 1
+    },
+    "locationId": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "isBuyOrder": {
+      "type": "boolean"
+    },
+    "price": {
+      "type": "number",
+      "minimum": 0
+    },
+    "volumeRemain": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "volumeTotal": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "minVolume": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "duration": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "issued": {
+      "type": "string",
+      "minLength": 1,
+      "description": "ISO 8601 timestamp as returned by ESI."
+    },
+    "range": {
+      "type": "string",
+      "minLength": 1,
+      "description": "ESI order range flag, e.g. \"station\", \"region\", a jump count as a string."
+    }
+  },
+  "required": [
+    "orderId",
+    "typeId",
+    "regionId",
+    "systemId",
+    "locationId",
+    "isBuyOrder",
+    "price",
+    "volumeRemain",
+    "volumeTotal",
+    "minVolume",
+    "duration",
+    "issued",
+    "range"
+  ],
+  "additionalProperties": false
+}
