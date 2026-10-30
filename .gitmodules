@@ -78,10 +78,6 @@
 	path = services/weiqi-onchain-arena-services-section
 	url = https://github.com/red-cup-engineering/weiqi-onchain-arena-engineering-services-section.git
 	branch = main
-[submodule "weiqi-engine"]
-	path = services/weiqi-engine
-	url = https://github.com/red-cup-engineering/weiqi-engine.git
-	branch = main
 [submodule "resonator"]
 	path = services/resonator
 	url = https://github.com/red-cup-engineering/resonator.git
@@ -90,9 +86,9 @@
 	path = services/parlor-kernel
 	url = https://github.com/red-cup-engineering/parlor-kernel.git
 	branch = main
-[submodule "go-engine-services-section"]
-	path = services/go-engine-services-section
-	url = https://github.com/red-cup-engineering/go-engine-engineering-services-section.git
+[submodule "weiqi-engineering-services-section"]
+	path = services/weiqi-engineering-services-section
+	url = https://github.com/red-cup-engineering/weiqi-engineering-services-section.git
 	branch = main
 [submodule "gambling-analysis-service"]
 	path = services/gambling-analysis-service
