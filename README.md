@@ -62,3 +62,7 @@ This path currently fabricates schema-admitted data and content into executable
 modules. New algorithms still require their own requirements, implementation
 and behavioral receiving. A new schema does not migrate saved runs, and a
 passing build does not establish a public deployment or human playthrough.
+
+## Earlier work
+
+- Restored files at `lib/legacy/2026-06-07-4692cbc` (restore commit 4692cbc); `lib/legacy/2026-06-16-4a3582a` (restore commit 4a3582a); `lib/legacy/2026-08-01-feea63d` (restore commit feea63d), from the 561-group/bare-cedar-fog history.

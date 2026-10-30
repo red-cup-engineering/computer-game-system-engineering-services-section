@@ -1,0 +1,25 @@
+{
+  "name": "@rsc-quiescent/farstone-emsenn-net",
+  "version": "0.0.2",
+  "private": true,
+  "type": "module",
+  "description": "Farstone: the reference game (world, catalogs, campaign, climate, director, depths) built on @emsenn/fizzos.",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "rm -rf .tmp/test-dist && tsc -p tsconfig.test.json && node --test --test-concurrency=1 '.tmp/test-dist/**/*.test.mjs'",
+    "serve": "node src/serve.mts"
+  },
+  "exports": {
+    ".": "./src/index.mts",
+    "./game": "./src/farstone-game.mts",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@red-cup-engineering/fizzos": "0.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  },
+  "sideEffects": false
+}
